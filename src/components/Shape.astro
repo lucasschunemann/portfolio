@@ -1,0 +1,6 @@
+---
+import type { Shape as S } from '../data/site';
+interface Props { shape: S; class?: string }
+const { shape, class: cls = '' } = Astro.props;
+---
+<i class={`sh sh--${shape} ${cls}`} aria-hidden="true"></i>

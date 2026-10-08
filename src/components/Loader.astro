@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+---
+<div class="ld" aria-hidden="true" data-loader>
+  <div class="ld__bg"></div>
+  <div class="ld__top lbl"><span>{site.name}</span><span>Portfólio — 2026</span></div>
+  <div class="ld__shapes">
+    <i class="sh sh--rect" data-ld-shape="0"></i>
+    <i class="sh sh--diamond" data-ld-shape="1"></i>
+    <i class="sh sh--circle" data-ld-shape="2"></i>
+  </div>
+  <div class="ld__meta">
+    <span class="si">von Blumenau</span>
+    <span class="lbl">{site.coords}</span>
+  </div>
+  <p class="ld__count d"><span data-ld-count>000</span></p>
+</div>

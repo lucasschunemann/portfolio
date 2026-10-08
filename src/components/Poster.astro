@@ -1,0 +1,28 @@
+---
+// Capa tipográfica para o Acompanha, que não tem telas públicas.
+const bars = [38, 52, 44, 61, 57, 70, 48, 66, 74, 59, 81, 69, 88, 76, 64, 92, 71, 84, 63, 79, 95, 73, 86, 68];
+const hi = new Set([10, 15, 20]);
+---
+<div class="poster" data-poster>
+  <div class="poster__top lbl">
+    <span>Motor de créditos — Reforma Tributária</span>
+    <span>Simulador editável</span>
+  </div>
+  <p class="poster__old d" aria-hidden="true">
+    <span>PIS</span><span>COFINS</span><span>ICMS</span><span>ISS</span>
+  </p>
+  <svg class="poster__arrow" viewBox="0 0 40 24" fill="none" aria-hidden="true">
+    <path d="M0 12h37M27 2l10 10-10 10" stroke="currentColor" stroke-width="2.4" />
+  </svg>
+  <p class="poster__new" aria-hidden="true">
+    <span class="d">CBS</span><span class="d">IBS</span>
+    <span class="si">preço pago × mercado regional</span>
+  </p>
+  <div class="poster__bars" aria-hidden="true">
+    {bars.map((h, i) => <i style={`--h:${h}`} class={hi.has(i) ? 'is-hi' : ''}></i>)}
+  </div>
+  <div class="poster__foot lbl">
+    <span>Produto de cliente, em desenvolvimento</span>
+    <span>Telas não públicas</span>
+  </div>
+</div>

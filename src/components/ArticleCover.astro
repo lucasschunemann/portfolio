@@ -1,0 +1,60 @@
+---
+// Capa generativa: anéis concêntricos na forma do artigo, ecoando as linhas do hero.
+import type { Shape } from '../data/site';
+
+interface Props {
+  shape: Shape;
+  tone: { bg: string; fg: string; accent: string; mark: string };
+  n: number;
+  theme: string;
+  date: string;
+  minutes: number;
+  mini?: boolean;
+}
+
+const { shape, tone, n, theme, date, minutes, mini = false } = Astro.props;
+const W = 1600;
+const H = 800;
+const cx = mini ? 800 : 1010;
+const cy = 400;
+const N = mini ? 16 : 28;
+
+const ring = (i: number) => {
+  if (shape === 'circle') {
+    const r = 34 + i * 15;
+    return `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0Z`;
+  }
+  if (shape === 'diamond') {
+    const a = 58 + i * 25;
+    const b = a * 0.64;
+    return `M${cx} ${cy - b}L${cx + a} ${cy}L${cx} ${cy + b}L${cx - a} ${cy}Z`;
+  }
+  const w = 64 + i * 30;
+  const h = w * 0.64;
+  return `M${cx - w / 2} ${cy - h / 2}h${w}v${h}h${-w}Z`;
+};
+const rings = Array.from({ length: N }, (_, i) => ring(i + 1));
+const core = ring(mini ? 0.2 : 0);
+const pad2 = (x: number) => String(x).padStart(2, '0');
+---
+
+<div
+  class:list={['acover', { 'acover--mini': mini }]}
+  style={`--abg:${tone.bg}; --afg:${tone.fg}; --aac:${tone.accent}`}
+  data-cover
+>
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="acover__rings" style={`transform-origin:${cx}px ${cy}px`}>
+      {rings.map((d) => <path d={d} />)}
+    </g>
+    <path class="acover__core" d={core} style={`transform-origin:${cx}px ${cy}px`} />
+  </svg>
+  {!mini && (
+    <div class="acover__meta">
+      <span class="lbl">({pad2(n)}) {theme}</span>
+      <span class="lbl">{date}</span>
+      <span class="acover__n d">{pad2(n)}</span>
+      <span class="lbl">{minutes} min de leitura</span>
+    </div>
+  )}
+</div>

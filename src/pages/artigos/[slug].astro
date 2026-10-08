@@ -1,0 +1,112 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import ArticleCover from '../../components/ArticleCover.astro';
+import Shape from '../../components/Shape.astro';
+import { getArticles, type Article } from '../../data/articles';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const list = await getArticles();
+  // "próximo" segue a ordem de leitura do índice (do mais novo para o mais antigo)
+  return list.map((a, i) => ({
+    params: { slug: a.id },
+    props: { a, next: list[(i + 1) % list.length], total: list.length },
+  }));
+}
+
+interface Props {
+  a: Article;
+  next: Article;
+  total: number;
+}
+
+const { a, next, total } = Astro.props;
+const { Content, headings } = await render(a);
+const toc = headings.filter((h) => h.depth === 2);
+const pad = (x: number) => String(x).padStart(2, '0');
+const [head, tail] = a.data.display;
+---
+
+<Base page="article" title={a.data.title} description={a.data.excerpt}>
+  <div class="progress" aria-hidden="true" style={`--pc:${a.tone.mark}`}><span data-progress></span></div>
+
+  <article class="post" style={`--abg:${a.tone.bg}; --afg:${a.tone.fg}; --aac:${a.tone.accent}; --amk:${a.tone.mark}`}>
+    <header class="post-hero grid">
+      <p class="post-hero__lbl lbl" data-intro-fade>
+        <a href="/artigos/" data-label="Artigos"><Arrow dir="up" /> Todos os artigos</a>
+        <span>({pad(a.n)}/{pad(total)}) {a.data.theme}</span>
+      </p>
+      <h1 class="post-hero__title">
+        <span class="post-hero__head d" data-intro-title data-fit="1" data-fit-max="0.15">{head}</span>
+        <span class="post-hero__tail si" data-split>{tail}</span>
+      </h1>
+      <dl class="post-hero__meta" data-intro-fade>
+        <div><dt class="lbl">Publicado</dt><dd>{a.dateLabel}</dd></div>
+        <div><dt class="lbl">Tema</dt><dd>{a.data.theme}</dd></div>
+        <div><dt class="lbl">Leitura</dt><dd>{a.minutes} min</dd></div>
+        <div><dt class="lbl">Autor</dt><dd>{site.name}</dd></div>
+      </dl>
+    </header>
+
+    <figure class="post-cover" data-img-reveal>
+      <ArticleCover shape={a.data.shape} tone={a.tone} n={a.n} theme={a.data.theme} date={a.dateLabel} minutes={a.minutes} />
+    </figure>
+
+    <div class="post-body grid">
+      <aside class="post-aside">
+        <div class="post-aside__in">
+          <p class="lbl">Índice</p>
+          <ol class="toc" data-toc>
+            {toc.map((h, i) => (
+              <li>
+                <a href={`#${h.slug}`} data-toc-link={h.slug}>
+                  <span class="toc__n">{pad(i + 1)}</span>
+                  <span>{h.text}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+          <button type="button" class="copy-link lbl" data-copy-url>
+            <Shape shape={a.data.shape} /><span data-copy-label>Copiar link</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="prose" data-prose>
+        <Content />
+        <footer class="post-end">
+          <p class="post-end__mark" aria-hidden="true">
+            <Shape shape="rect" /><Shape shape="diamond" /><Shape shape="circle" />
+          </p>
+          <p class="post-end__by">
+            Escrito por <strong>{site.name}</strong>, {site.role.toLowerCase()} em {site.city}.
+          </p>
+          <a href="/artigos/" class="btn btn--ghost" data-label="Artigos" data-magnetic>
+            <span class="arrow-box"><Arrow /></span>Todos os artigos
+          </a>
+        </footer>
+      </div>
+    </div>
+
+    <a
+      href={next.href}
+      class="next"
+      style={`--n:${next.tone.bg}; --nf:${next.tone.fg}`}
+      data-label={next.data.display[0]}
+      data-color={next.tone.bg}
+      data-fg={next.tone.fg}
+      data-cursor="Ler"
+      data-cursor-color="var(--ink)"
+      {...(next.data.tone !== 'yellow' ? { 'data-hdr-light': '' } : {})}
+    >
+      <span class="next__top lbl">
+        <span>Próximo artigo</span>
+        <span class="next__go">{next.data.theme} · {next.minutes} min <Arrow /></span>
+      </span>
+      <span class="next__name d" data-fit="0.82" data-fit-max="0.16">{next.data.display[0]}</span>
+      <Shape shape={next.data.shape} />
+    </a>
+  </article>
+</Base>

@@ -1,0 +1,272 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import Barcode from '../components/Barcode.astro';
+import Poster from '../components/Poster.astro';
+import Scribble from '../components/Scribble.astro';
+import Shape from '../components/Shape.astro';
+import { bio, clients, facts, heroWords, numbers, pad, projects, services, site } from '../data/site';
+import type { Shape as S } from '../data/site';
+import { getArticles } from '../data/articles';
+
+const articles = await getArticles();
+
+const shapeCycle: S[] = ['rect', 'diamond', 'circle'];
+---
+
+<Base page="home" loader>
+  <!-- HERO ------------------------------------------------------------ -->
+  <section class="hero" data-hero>
+    <canvas class="hero__canvas" data-lines aria-hidden="true"></canvas>
+
+    <div class="hero__top grid">
+      <p class="hero__tag hero__tag--a"><span>Product design</span></p>
+      <p class="hero__tag hero__tag--b"><span>UX/UI</span></p>
+      <p class="hero__tag hero__tag--c si"><span>e</span></p>
+      <p class="hero__tag hero__tag--d"><span>Websites.</span></p>
+    </div>
+
+    <div class="hero__side">
+      <div class="hero__shapes" aria-hidden="true">
+        <i class="sh sh--rect" data-hero-shape="0"></i>
+        <i class="sh sh--diamond" data-hero-shape="1"></i>
+        <i class="sh sh--circle" data-hero-shape="2"></i>
+      </div>
+      <Barcode />
+    </div>
+
+    <h1 class="hero__title">
+      <span class="sr-only">{site.name}, product designer. Clareza para produtos complexos.</span>
+      <span aria-hidden="true" class="hero__row">
+        <span class="hero__line d" data-hero-line>Clareza</span>
+        <span class="hero__intro">
+          <span>{site.name},</span>{' '}
+          <span>product designer em</span>{' '}
+          <span>{site.city}</span>
+        </span>
+      </span>
+      <span aria-hidden="true" class="hero__line d" data-hero-line>para produtos</span>
+      <span aria-hidden="true" class="hero__cycle si" data-cycle>
+        {heroWords.map((w, i) => <span class:list={['hero__word', { 'is-active': i === 0 }]}>{w}</span>)}
+      </span>
+    </h1>
+
+    <div class="hero__bottom grid">
+      <p class="hero__sign">
+        <span class="si">von Blumenau!</span>
+        <span class="lbl">por {site.handle}</span>
+      </p>
+      <a href="#trabalho" class="hero__scroll" data-label="Trabalho">
+        <span>Ver trabalho <span class="arrow-box"><Arrow dir="down" /></span></span>
+        <Scribble />
+      </a>
+      <div class="hero__status">
+        <p class="lbl">Aberto a<br />freelance</p>
+        <span class="hero__dots" aria-hidden="true"><i class="sh sh--circle"></i><i class="sh sh--circle"></i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE --------------------------------------------------------- -->
+  <section class="mq" aria-label="Com quem já trabalhei">
+    <div class="mq__track" data-marquee>
+      {[0, 1].map((g) => (
+        <div class="mq__group" aria-hidden={g === 1 ? 'true' : undefined}>
+          {clients.map((c, i) => (
+            <>
+              <span class={i % 2 ? 'si' : 'd'}>{c}</span>
+              <Shape shape={shapeCycle[i % 3]} />
+            </>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- STATEMENT ------------------------------------------------------- -->
+  <section class="stmt grid">
+    <p class="lbl stmt__lbl">(01) Hoje</p>
+    <p class="stmt__text" data-words>
+      Product designer com foco em <em>UX/UI</em> <Shape shape="rect" /> co-fundador e CPO da <em>neth!</em>,
+      UX/UI designer na Área Central <Shape shape="diamond" /> e, em paralelo, freelancer: do <em>discovery</em>
+      à interface pronta para desenvolvimento <Shape shape="circle" />
+    </p>
+    <div class="stmt__foot" data-reveal>
+      <a href="#trabalho" class="btn" data-label="Trabalho" data-magnetic>
+        <span class="arrow-box"><Arrow dir="down" /></span>Ver trabalho
+      </a>
+      <a href="#sobre" class="btn btn--ghost" data-label="Sobre" data-magnetic>
+        <span class="arrow-box"><Arrow /></span>Sobre mim
+      </a>
+    </div>
+  </section>
+
+  <!-- TRABALHO -------------------------------------------------------- -->
+  <section class="work" id="trabalho">
+    <header class="sec-head grid">
+      <p class="lbl sec-head__lbl">(02) Trabalho</p>
+      <h2 class="sec-head__title">
+        <span class="d" data-split>Trabalho</span>
+        <span class="si" data-split>recente</span>
+      </h2>
+      <p class="sec-head__aside" style="grid-column: 1 / span 5" data-reveal>
+        Seis projetos entre produto, design system e web, de 2024 a 2026.
+      </p>
+    </header>
+
+    <div class="stack" data-stack>
+      {projects.map((p, i) => (
+        <article class="card" style={`--c:${p.color}; --i:${i}`} data-ink={p.ink} data-card>
+          <a
+            href={`/trabalho/${p.slug}/`}
+            class="card__in"
+            data-label={p.name}
+            data-color={p.color}
+            data-fg={p.ink === 'light' ? 'var(--white)' : 'var(--ink)'}
+            data-cursor="Ver caso"
+            data-cursor-color={p.color}
+            data-cursor-fg={p.ink === 'light' ? 'var(--white)' : 'var(--ink)'}
+          >
+            <div class="card__bar lbl">
+              <span>{pad(i + 1)}</span>
+              <span>{p.service}</span>
+              <span class="hide-m">{p.client}</span>
+              <span class="hide-m">{p.year}</span>
+              <span class="card__go">Ver caso <Arrow /></span>
+            </div>
+            <div class:list={['card__media', { 'is-poster': p.images.length === 0 }]}>
+              {p.images.length > 0 ? (
+                <img
+                  src={p.images[0].src}
+                  alt={p.images[0].caption}
+                  width="1600"
+                  height="878"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              ) : (
+                <Poster />
+              )}
+              <h3 class="card__name d" data-fit="0.9" data-fit-max="0.12">{p.name}</h3>
+            </div>
+            <div class="card__shade"></div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -------------------------------------------------------- -->
+  <section class="svc section" id="servicos">
+    <header class="sec-head grid">
+      <p class="lbl sec-head__lbl">(03) O que eu faço</p>
+      <h2 class="sec-head__title">
+        <span class="d" data-split>O que</span>
+        <span class="si" data-split>eu faço</span>
+      </h2>
+    </header>
+    <div class="svc__cards" data-svc>
+      {services.map((s, i) => (
+        <article class={`svc-card svc-card--${s.tone}`} data-svc-card>
+          <div class="svc-card__top">
+            <span class="lbl">{pad(i + 1)}</span>
+            <Shape shape={s.shape} />
+          </div>
+          <h3 class="svc-card__title">
+            <span class="d">{s.title}</span>
+            <span class="si">{s.serif}</span>
+          </h3>
+          <ul>
+            {s.items.map((it) => <li>{it}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+    <div class="svc__note grid">
+      <p data-split>Do discovery e do mapeamento de jornada até a interface em alta fidelidade, pronta para desenvolvimento.</p>
+    </div>
+  </section>
+
+  <!-- SOBRE ----------------------------------------------------------- -->
+  <section class="about section grid" id="sobre">
+    <div class="about__left">
+      <div class="flag" data-flag aria-hidden="true">
+        <i class="flag__rect"></i>
+        <i class="flag__diamond"></i>
+        <i class="flag__circle"></i>
+        <span class="flag__tex"></span>
+      </div>
+      <div class="about__cap">
+        <span class="mini-flag" aria-hidden="true"></span>
+        <p class="s">{site.city}</p>
+        <p class="s">{site.coords}</p>
+      </div>
+    </div>
+
+    <div class="about__right">
+      <p class="lbl">(04) Sobre</p>
+      <h2 class="about__title">
+        <span class="d" data-split>Sobre</span>
+        <span class="si" data-split>mim</span>
+      </h2>
+      <p class="about__lead" data-split>{bio[0]}</p>
+      <div class="about__cols" data-reveal>
+        {bio.slice(1).map((b) => <p>{b}</p>)}
+      </div>
+      <dl class="facts" data-reveal>
+        {facts.map(([k, v]) => (
+          <div>
+            <dt class="lbl">{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="nums">
+        {numbers.map((n) => (
+          <div class="num">
+            <p class="num__v d"><span data-count={n.value}>{n.value}</span><sup>{n.suffix}</sup></p>
+            <p class="lbl">{n.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTIGOS --------------------------------------------------------- -->
+  <section class="arts section" id="artigos">
+    <header class="sec-head grid">
+      <p class="lbl sec-head__lbl">(05) Artigos</p>
+      <h2 class="sec-head__title">
+        <span class="d" data-split>Escritos</span>
+        <span class="si" data-split>& ideias</span>
+      </h2>
+    </header>
+    <ul class="arts__list">
+      {articles.map((a) => (
+        <li data-reveal>
+          <a
+            href={a.href}
+            class="art"
+            style={`--abg:${a.tone.bg}; --afg:${a.tone.fg}`}
+            data-label={a.data.display[0]}
+            data-color={a.tone.bg}
+            data-fg={a.tone.fg}
+            data-cursor="Ler"
+            data-cursor-color={a.tone.bg}
+            data-cursor-fg={a.tone.fg}
+          >
+            <span class="art__date lbl">{a.dateLabel}</span>
+            <span class="art__title">{a.data.title}</span>
+            <span class="art__theme">{a.data.theme}</span>
+            <span class="art__go"><Arrow /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="arts__more" data-reveal>
+      <a href="/artigos/" class="btn" data-label="Artigos" data-magnetic>
+        <span class="arrow-box"><Arrow /></span>Todos os artigos
+      </a>
+    </div>
+  </section>
+</Base>

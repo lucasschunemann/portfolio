@@ -1,0 +1,24 @@
+---
+import Roll from './Roll.astro';
+interface Props { home?: boolean; current?: string }
+const { home = false, current } = Astro.props;
+const base = home ? '' : '/';
+const nav = [
+  ['Trabalho', `${base}#trabalho`],
+  ['Sobre', `${base}#sobre`],
+  ['Artigos', '/artigos/'],
+];
+---
+<header class="hdr" data-hdr>
+  <a href="/" class="hdr__logo" data-label="Início" aria-label="Lucas Schünemann, página inicial">
+    <b>lucas</b><em>von</em>
+  </a>
+  <nav class="hdr__nav pill" aria-label="Principal">
+    {nav.map(([label, href]) => (
+      <a href={href} data-label={label} class:list={{ 'is-current': current === label }}><Roll text={label} /></a>
+    ))}
+  </nav>
+  <a href={`${base}#contato`} class="hdr__cta pill" data-label="Contato" data-magnetic>
+    <span class="dot"></span><Roll text="Contato" />
+  </a>
+</header>
