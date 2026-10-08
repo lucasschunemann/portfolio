@@ -4,14 +4,13 @@ import Arrow from './Arrow.astro';
 import Roll from './Roll.astro';
 import Scribble from './Scribble.astro';
 const first = 'LUCAS'.split('');
-const second = 'von'.split('');
 ---
 <footer class="ft" id="contato" data-hdr-light>
   <div class="grid">
     <p class="lbl" style="grid-column: 1 / -1">(06) Contato</p>
     <h2 class="ft__title">
       <span class="d" data-split>Tem um projeto?</span>
-      <span class="si" data-split>vamos conversar.</span>
+      <span class="si" data-write>vamos conversar.</span>
     </h2>
     <div class="ft__mail">
       <a href={`mailto:${site.email}`} class="ft__email" data-cursor="Escrever" data-cursor-color="var(--yellow)" data-cursor-fg="var(--ink)">
@@ -49,7 +48,7 @@ const second = 'von'.split('');
 
   <div class="ft__word" aria-hidden="true" data-wordmark data-fit="0.84" data-fit-max="0.3">
     <span class="d">{first.map((c) => <span>{c}</span>)}</span>
-    <span class="si">{second.map((c) => <span>{c}</span>)}</span>
+    <span class="si">von</span>
   </div>
 
   <div class="ft__base lbl">

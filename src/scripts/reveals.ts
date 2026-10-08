@@ -26,6 +26,15 @@ export function initReveals() {
     });
   });
 
+  // assinatura: se escreve da esquerda para a direita
+  document.querySelectorAll<HTMLElement>('[data-write]').forEach((el) => {
+    gsap.fromTo(
+      el,
+      { clipPath: 'inset(0% 100% 0% 0%)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power2.inOut', delay: 0.25, scrollTrigger: once(el) },
+    );
+  });
+
   document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
     gsap.from(el, { y: 44, autoAlpha: 0, duration: 1.3, ease: 'expo.out', scrollTrigger: once(el, 'top 92%') });
   });

@@ -20,7 +20,6 @@ export function setupHero() {
     (l) => SplitText.create(l, { type: 'words,chars', charsClass: 'c', mask: 'words' }).chars as HTMLElement[],
   );
   const words = $$('.hero__word', hero);
-  const wordChars = words.map((w) => SplitText.create(w, { type: 'chars', charsClass: 'c' }).chars as HTMLElement[]);
 
   if (reduced) {
     lines.renderStatic();
@@ -28,7 +27,7 @@ export function setupHero() {
   }
 
   gsap.set(titleChars, { yPercent: 115 });
-  wordChars.forEach((cs) => gsap.set(cs, { yPercent: 115 }));
+  gsap.set(words, { clipPath: HIDDEN });
   gsap.set($$('.hero__tag > span', hero), { yPercent: 110 });
   gsap.set($$('.hero__intro span', hero), { y: 24, autoAlpha: 0 });
   gsap.set($$('.hero__barcode rect', hero), { scaleY: 0, transformOrigin: '50% 100%' });
@@ -43,7 +42,7 @@ export function setupHero() {
     tl.add(() => lines.start(), 0)
       .to(lines.state, { draw: 1, duration: 2.8, ease: 'power2.inOut' }, 0)
       .to(titleChars, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.028 }, 0.05)
-      .to(wordChars[0], { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.03 }, 0.45)
+      .to(words[0], { clipPath: SHOWN, duration: 1.5, ease: 'power2.inOut' }, 0.7)
       .to($$('.hero__tag > span', hero), { yPercent: 0, duration: 1, ease: 'expo.out', stagger: 0.07 }, 0.3)
       .to($$('.hero__intro span', hero), { y: 0, autoAlpha: 1, duration: 1, ease: 'expo.out', stagger: 0.07 }, 0.55)
       .to(
@@ -56,7 +55,7 @@ export function setupHero() {
     if (!loading) {
       tl.to($$('[data-hero-shape]', hero), { scale: 1, rotation: 0, duration: 1.1, ease: 'back.out(1.7)', stagger: 0.1 }, 0.35);
     }
-    tl.add(() => cycleWords(words, wordChars), 1.2);
+    tl.add(() => cycleWords(words), 2.2);
     return tl;
   };
 
@@ -75,7 +74,12 @@ export function setupHero() {
   return { play, lines };
 }
 
-function cycleWords(words: HTMLElement[], chars: HTMLElement[][]) {
+// a assinatura se escreve da esquerda para a direita e some pela direita
+const HIDDEN = 'inset(0% 100% 0% 0%)';
+const SHOWN = 'inset(0% 0% 0% 0%)';
+const GONE = 'inset(0% 0% 0% 100%)';
+
+function cycleWords(words: HTMLElement[]) {
   let i = 0;
   const next = () => {
     const out = i;
@@ -85,11 +89,11 @@ function cycleWords(words: HTMLElement[], chars: HTMLElement[][]) {
       .timeline({
         onComplete: () => {
           words[out].classList.remove('is-active');
-          gsap.delayedCall(2.4, next);
+          gsap.delayedCall(2.2, next);
         },
       })
-      .to(chars[out], { yPercent: -115, duration: 0.7, ease: 'expo.in', stagger: 0.022 })
-      .fromTo(chars[i], { yPercent: 115 }, { yPercent: 0, duration: 1, ease: 'expo.out', stagger: 0.03 }, 0.45);
+      .to(words[out], { clipPath: GONE, duration: 0.7, ease: 'power3.in' })
+      .fromTo(words[i], { clipPath: HIDDEN }, { clipPath: SHOWN, duration: 1.4, ease: 'power2.inOut' }, 0.45);
   };
   gsap.delayedCall(2.2, next);
 }
@@ -351,30 +355,26 @@ export function initWordmark() {
   const wm = $('[data-wordmark]');
   if (!wm || reduced) return;
   const sans = $$('.d span', wm);
-  const serif = $$('.si span', wm);
+  const serif = $$('.si', wm);
   const letters = [...sans, ...serif];
 
-  gsap.from(letters, {
-    yPercent: 105,
-    duration: 1.4,
-    ease: 'expo.out',
-    stagger: 0.06,
-    scrollTrigger: { trigger: wm, start: 'top 98%', once: true },
-  });
+  gsap
+    .timeline({ scrollTrigger: { trigger: wm, start: 'top 98%', once: true } })
+    .from(sans, { yPercent: 105, duration: 1.4, ease: 'expo.out', stagger: 0.06 })
+    .fromTo(serif, { clipPath: HIDDEN }, { clipPath: SHOWN, duration: 1.4, ease: 'power2.inOut' }, 0.45);
 
   if (!finePointer) return;
-  // largura e peso da sans seguem o cursor; o "von" em serifa se inclina
+  // o peso da sans segue o cursor; o "von" em assinatura sobe
   const items = letters.map((el) => {
     const isSans = sans.includes(el);
     return {
       el,
       isSans,
-      w: isSans ? gsap.quickTo(el, '--w', { duration: 0.6, ease: 'power3' }) : null,
       g: isSans ? gsap.quickTo(el, '--g', { duration: 0.6, ease: 'power3' }) : null,
       lift: isSans ? null : gsap.quickTo(el, '--lift', { duration: 0.8, ease: 'power3' }),
     };
   });
-  sans.forEach((el) => gsap.set(el, { '--w': 75, '--g': 850 }));
+  sans.forEach((el) => gsap.set(el, { '--g': 850 }));
   serif.forEach((el) => gsap.set(el, { '--lift': 0 }));
 
   const footer = wm.closest('footer')!;
@@ -384,8 +384,7 @@ export function initWordmark() {
       const d = Math.abs(e.clientX - (r.left + r.width / 2));
       const t = Math.max(0, 1 - d / (innerWidth * 0.22));
       if (it.isSans) {
-        it.w!(75 + t * 30);
-        it.g!(850 - t * 600);
+        it.g!(850 - t * 550);
       } else {
         it.lift!(t);
       }
@@ -394,7 +393,6 @@ export function initWordmark() {
   footer.addEventListener('pointerleave', () => {
     for (const it of items) {
       if (it.isSans) {
-        it.w!(75);
         it.g!(850);
       } else {
         it.lift!(0);

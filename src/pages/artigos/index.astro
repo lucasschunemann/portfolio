@@ -14,7 +14,7 @@ const pad = (x: number) => String(x).padStart(2, '0');
     <p class="lbl blog-hero__lbl" data-intro-fade>(Artigos) — {pad(list.length)} textos</p>
     <h1 class="blog-hero__title">
       <span class="d" data-intro-title>Escritos</span>
-      <span class="si" data-split>& ideias</span>
+      <span class="si" data-write>& ideias</span>
     </h1>
     <p class="blog-hero__aside" data-split>
       Notas sobre design, produto e processo: do frontend ao UX, de filosofias antigas a rituais de foco.
@@ -39,7 +39,7 @@ const pad = (x: number) => String(x).padStart(2, '0');
           <span class="blog-row__n lbl">{pad(a.n)}</span>
           <span class="blog-row__title">
             <span class="d">{a.data.display[0]}</span>
-            <span class="si">{a.data.display[1]}</span>
+            <span class="lt">{a.data.display[1]}</span>
           </span>
           <span class="blog-row__meta">
             <span class="lbl">{a.dateLabel}</span>

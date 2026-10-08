@@ -1,9 +1,9 @@
 # lucas von — portfólio
 
 Pôster suíço com alma brasileira: papel off-white, grid de 12 colunas, muito respiro,
-grotesca condensada (Mona Sans) misturada com uma serifa estreita (Instrument Serif), e as
-três formas da bandeira desmontada (retângulo verde, losango amarelo, círculo azul) como
-sistema gráfico.
+Rubik pesada em caixa-alta com uma assinatura manuscrita (Ms Madi) sobreposta, e as três
+formas da bandeira desmontada (retângulo verde, losango amarelo, círculo azul) como sistema
+gráfico.
 
 ## Rodar
 
@@ -18,8 +18,9 @@ npm run build    # gera dist/ estático
 - **Astro 7**, site estático (multipágina)
 - **GSAP 3.15** com ScrollTrigger, SplitText e DrawSVG (todos gratuitos)
 - **Lenis** para scroll suave
-- Fontes via Fontsource: `Mona Sans Variable` (eixos de peso 200–900 e largura 75–125%) e
-  `Instrument Serif` (normal e itálica)
+- Fontes via Fontsource: `Rubik Variable` (peso 300–900, com itálico) para títulos, textos e
+  rótulos, e `Ms Madi` só para palavras curtas de destaque (classe `.si`). Frases longas de
+  apoio usam Rubik light (classe `.lt`)
 
 ## Onde mexer
 
@@ -66,7 +67,8 @@ A capa de cada artigo é gerada a partir de `shape` e `tone` (`src/components/Ar
 | Trabalho | Pilha de cards sticky que encolhem e escurecem | `initStack` |
 | Serviços | Três cards saem empilhados e abrem em leque, com tilt 3D no hover | `initServices` |
 | Sobre | A bandeira se monta no scroll, com parallax no mouse | `initFlag` |
-| Rodapé | Letras de "LUCAS von" mudam peso e largura conforme o cursor | `initWordmark` |
+| Assinaturas | Palavras em Ms Madi se escrevem da esquerda para a direita (`data-write`) | `scripts/reveals.ts` |
+| Rodapé | Letras de "LUCAS" mudam de peso conforme o cursor e o "von" sobe | `initWordmark` |
 | Entre páginas | Cortina na cor do projeto ou do artigo, com o nome dele | `scripts/core.ts` → `leave` / `enter` |
 | Artigos (índice) | A prévia da capa segue o cursor e a linha se pinta na cor do artigo | `scripts/article.ts` → `initBlogList` |
 | Artigo | Os anéis da capa nascem do centro, torcem com o scroll e fazem túnel com o cursor; barra de leitura e índice que acompanha a seção | `scripts/article.ts` |

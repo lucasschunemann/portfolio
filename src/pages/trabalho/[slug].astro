@@ -41,7 +41,7 @@ const [cover, second] = p.images;
           <span>({pad(i + 1)}/{pad(projects.length)}) {p.type}</span>
         </p>
         <h1 class="case-hero__title d" style={`--len:${Math.max(p.name.length, 6)}`} data-intro-title data-fit="0.995" data-fit-max="0.24">{p.name}</h1>
-        <p class="case-hero__sum si" data-split>{p.summary}</p>
+        <p class="case-hero__sum lt" data-split>{p.summary}</p>
         <dl class="case-hero__meta" data-intro-fade>
           {meta.map(([k, v, href]) => (
             <div>
