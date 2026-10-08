@@ -1,9 +1,12 @@
 # Lucas Schünemann — portfólio
 
-Um portfólio pensado como o catálogo de uma exposição: cubo branco, muito respiro, texto
-pequeno e as imagens no centro. Cada projeto é uma obra na parede, com etiqueta de museu
-(número, título, ano, disciplina, cliente). O Acompanha, que não tem telas públicas, aparece
-como "Coleção particular".
+Um portfólio pensado como o catálogo de uma exposição, e escrito para trazer clientes: a
+abertura diz o que eu faço e para quem, os serviços e o processo vêm logo depois das obras,
+e todo caminho termina num contato (com e-mail já preenchido com um roteiro curto).
+
+Cada projeto é uma obra na parede, com etiqueta de museu (número, título, ano, disciplina,
+cliente). O Acompanha, que não tem telas públicas, aparece como um diagrama do motor de
+créditos, marcado como "Coleção particular".
 
 ## Rodar
 
@@ -25,7 +28,8 @@ npm run build    # gera dist/ estático
 
 | O quê | Arquivo |
 |---|---|
-| Bio, prática, ficha e obras | `src/data/site.ts` |
+| Bio, clientes, serviços, processo, ficha e obras | `src/data/site.ts` |
+| Pranchas das obras (capturas em passe-partout) | `src/assets/work/<projeto>/` |
 | Posição de cada obra na parede da home | campo `wall` de cada projeto em `src/data/site.ts` |
 | Retratos (abertura e díptico do Sobre) | `src/assets/retratos/` e `src/pages/index.astro` |
 | Textos (um Markdown por texto) | `src/content/artigos/*.md` |
@@ -44,6 +48,19 @@ theme: UX design
 excerpt: 'Uma frase para a listagem e o SEO.'
 ---
 ```
+
+## Imagens das obras
+
+As pranchas foram feitas a partir de capturas dos sites publicados (desktop em 2x e celular em
+3x), centralizadas sobre um fundo no tom de cada projeto, com cantos arredondados e sombra
+leve. A VON entra em tela cheia. O Sendeski usa as telas do protótipo, que não está no ar.
+
+Cada figura tem um `layout` em `src/data/site.ts`: `full` (largura toda), `right` e `left`
+(pendurada de um lado) ou `center`. A imagem da parede da home pode ser diferente da capa
+(campo `wall.img`), como os celulares do Acronos e do TravelDone.
+
+`public/og.jpg` é a imagem de compartilhamento. Ao publicar num domínio próprio, vale definir
+`site` em `astro.config.mjs` e trocar `/og.jpg` por um endereço absoluto no `Base.astro`.
 
 ## Movimento
 

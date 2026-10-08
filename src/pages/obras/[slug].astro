@@ -1,8 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import Placeholder from '../../components/Placeholder.astro';
-import { pad, projects, type Project } from '../../data/site';
+import Diagram from '../../components/Diagram.astro';
+import Fig from '../../components/Fig.astro';
+import { mailto, pad, projects, type Project } from '../../data/site';
 
 export function getStaticPaths() {
   return projects.map((p, i) => ({
@@ -28,15 +29,15 @@ interface Props {
 }
 
 const { p, n, prev, prevN, next, nextN } = Astro.props;
-const [cover, ...rest] = p.images;
-const meta: [string, string, string?][] = [
+const [cover, second, third, ...rest] = p.images;
+const meta: [string, string][] = [
   ['Ano', p.when],
   ['Cliente', p.client],
   ['Indústria', p.industry],
   ['Disciplina', p.service],
   ['Ferramentas', p.tools],
 ];
-if (p.link) meta.push(['Online', p.link.replace(/^https?:\/\//, ''), p.link]);
+const personal = p.client === 'Projeto pessoal';
 ---
 
 <Base title={p.name} description={p.summary} section="obras">
@@ -48,39 +49,57 @@ if (p.link) meta.push(['Online', p.link.replace(/^https?:\/\//, ''), p.link]);
       <div class="room__title" data-r style="--d:60ms">
         <h1>{p.name}</h1>
         <p class="mute">{p.summary}</p>
+        {p.link && (
+          <a class="pill" href={p.link} target="_blank" rel="noopener">
+            Ver {personal ? 'a galeria' : 'o site'} no ar ↗
+          </a>
+        )}
       </div>
       <dl class="room__meta" data-r style="--d:120ms">
-        {meta.map(([k, v, href]) => (
+        {meta.map(([k, v]) => (
           <div>
             <dt class="mute">{k}</dt>
-            <dd>{href ? <a class="link link--line" href={href} target="_blank" rel="noopener">{v} ↗</a> : v}</dd>
+            <dd>{v}</dd>
           </div>
         ))}
       </dl>
     </header>
 
-    <figure class="fig fig--cover grid">
+    <figure class="fig fig--full grid">
       <div class="fig__frame" transition:name={`obra-${p.slug}`}>
         {cover ? (
-          <Image src={cover.src} alt={cover.caption} widths={[800, 1200, 1600]} sizes="100vw" loading="eager" />
+          <Image src={cover.src} alt={cover.caption} widths={[800, 1200, 1600, 2000, 2400]} sizes="100vw" loading="eager" />
         ) : (
-          <Placeholder name={p.name} year={p.year} />
+          <Diagram />
         )}
       </div>
-      {cover && (
-        <figcaption class="fig__cap">
-          <span class="mono mute">Fig. 1</span>
-          <span class="mute">{cover.caption}</span>
-        </figcaption>
-      )}
+      <figcaption class="fig__cap">
+        <span class="mono mute">Fig. 1</span>
+        <span class="mute">
+          {cover ? cover.caption : 'Diagrama do motor de créditos. Produto em desenvolvimento; as telas não são públicas.'}
+        </span>
+      </figcaption>
     </figure>
 
     <section class="room__text grid">
-      <p class="room__k mono mute" data-r>Texto</p>
+      <p class="room__k mono mute" data-r>Contexto</p>
       <div class="prose" data-r>
-        {p.body.map((t) => <p>{t}</p>)}
+        <p>{p.body[0]}</p>
       </div>
     </section>
+
+    {second && <Fig f={second} n={2} />}
+
+    {p.body.length > 1 && (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>Abordagem</p>
+        <div class="prose" data-r>
+          {p.body.slice(1).map((t) => <p>{t}</p>)}
+        </div>
+      </section>
+    )}
+
+    {third && <Fig f={third} n={3} />}
 
     {p.lists.map((l) => (
       <section class="room__text grid">
@@ -96,17 +115,20 @@ if (p.link) meta.push(['Online', p.link.replace(/^https?:\/\//, ''), p.link]);
       </section>
     ))}
 
-    {rest.map((f, j) => (
-      <figure class="fig fig--hung grid" data-r>
-        <div class="fig__frame">
-          <Image src={f.src} alt={f.caption} widths={[800, 1200, 1600]} sizes="(max-width: 760px) 100vw, 60vw" />
-        </div>
-        <figcaption class="fig__cap">
-          <span class="mono mute">Fig. {j + 2}</span>
-          <span class="mute">{f.caption}</span>
-        </figcaption>
-      </figure>
-    ))}
+    {rest.map((f, j) => <Fig f={f} n={j + 4} />)}
+
+    <section class="cta grid" data-r>
+      <p class="room__k mono mute">{personal ? 'Contato' : 'Próximo passo'}</p>
+      <div class="cta__body">
+        <p class="cta__lead">
+          {personal
+            ? 'Quer algo fora do comum para a sua marca?'
+            : `Precisa de ${p.service === 'Design system' ? 'um design system' : p.type === 'Web' ? 'um site assim' : 'um produto assim'}?`}{' '}
+          <span class="mute">Conte o que você precisa e eu respondo com os próximos passos.</span>
+        </p>
+        <a class="pill pill--solid" href={mailto(`Projeto parecido com ${p.name}`)}>Iniciar um projeto →</a>
+      </div>
+    </section>
 
     <nav class="pager grid" aria-label="Outras obras">
       <a class="pager__prev" href={`/obras/${prev.slug}/`}>

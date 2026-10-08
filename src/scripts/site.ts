@@ -70,9 +70,9 @@ function copy() {
       const original = btn.textContent;
       try {
         await navigator.clipboard.writeText(btn.dataset.copy!);
-        btn.textContent = 'copiado';
+        btn.textContent = btn.dataset.copyLabel ?? 'copiado';
       } catch {
-        btn.textContent = 'não deu';
+        btn.textContent = 'Não deu, copie à mão';
       }
       setTimeout(() => (btn.textContent = original), 1600);
     };

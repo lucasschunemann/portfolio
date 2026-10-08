@@ -2,9 +2,8 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Work from '../components/Work.astro';
-import { bio, facts, pad, practice, projects, site } from '../data/site';
+import { bio, clients, facts, mailto, pad, process, projects, services, site } from '../data/site';
 import { getArticles } from '../data/articles';
-
 import rio from '../assets/retratos/rio.jpg';
 import copoPerto from '../assets/retratos/copo-perto.jpg';
 import perfil from '../assets/retratos/perfil.jpg';
@@ -12,6 +11,7 @@ import copo from '../assets/retratos/copo.jpg';
 
 const articles = await getArticles();
 const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
+const bySlug = new Map(projects.map((p) => [p.slug, p]));
 ---
 
 <Base>
@@ -21,18 +21,26 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
       <Image src={rio} alt="Lucas Schünemann sorrindo, encostado num guarda-corpo à beira de um rio" widths={[240, 480]} sizes="(max-width: 760px) 45vw, 15vw" loading="eager" />
       <Image src={copoPerto} alt="" class="portrait__alt" widths={[240, 480]} sizes="(max-width: 760px) 45vw, 15vw" loading="eager" />
     </figure>
-    <p class="intro__text" data-r style="--d:80ms">
-      Sou product designer com foco em UX/UI, co-fundador e CPO da neth! e designer na Área Central.{' '}
+    <h1 class="intro__text" data-r style="--d:80ms">
+      Desenho produtos digitais e sites que as pessoas entendem de primeira.{' '}
       <span class="mute">
-        Em paralelo, desenho plataformas de dados e sites para clientes B2B e B2C, do discovery à interface pronta
-        para desenvolvimento.
+        Sou Lucas, product designer em Blumenau. Ajudo startups, SaaS e negócios a sair da ideia e chegar numa
+        interface clara, pronta para desenvolvimento ou já publicada.
       </span>
-    </p>
-    <div class="intro__meta" data-r style="--d:120ms">
-      <span><i class="dot" aria-hidden="true"></i>{site.status}</span>
-      <a class="link" href={`mailto:${site.email}`}>{site.email}</a>
-      <span class="mono mute">{site.coords}</span>
+    </h1>
+    <div class="intro__meta" data-r style="--d:160ms">
+      <a class="pill pill--solid" href={mailto()}>Iniciar um projeto →</a>
+      <a class="pill" href="#obras">Ver obras</a>
+      <span class="intro__status"><i class="dot" aria-hidden="true"></i>{site.status}</span>
     </div>
+  </section>
+
+  <!-- com quem -->
+  <section class="clients grid" aria-label="Com quem já trabalhei" data-r>
+    <p class="mono mute">Com quem já trabalhei</p>
+    <ul>
+      {clients.map((c) => <li>{c}</li>)}
+    </ul>
   </section>
 
   <!-- parede -->
@@ -45,6 +53,57 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
     <div class="wall grid">
       {projects.map((p, i) => <Work p={p} n={i + 1} />)}
     </div>
+  </section>
+
+  <!-- serviços -->
+  <section class="block" id="servicos" aria-labelledby="servicos-t">
+    <header class="block__head grid" data-r>
+      <h2 id="servicos-t">Serviços</h2>
+      <span class="mute">O que posso fazer pelo seu projeto</span>
+    </header>
+    <ol class="services grid">
+      {services.map((s, i) => (
+        <li class="service" data-r style={`--d:${i * 80}ms`}>
+          <span class="mono mute">{pad(i + 1)}</span>
+          <h3>{s.title}</h3>
+          <p class="mute">{s.text}</p>
+          <dl class="service__meta">
+            <div>
+              <dt class="mono mute">Ideal para</dt>
+              <dd>{s.fit}</dd>
+            </div>
+            <div>
+              <dt class="mono mute">Veja</dt>
+              <dd>
+                {s.refs.map((slug, j) => (
+                  <>
+                    {j > 0 && ', '}
+                    <a class="link link--line" href={`/obras/${slug}/`}>{bySlug.get(slug)!.name}</a>
+                  </>
+                ))}
+              </dd>
+            </div>
+          </dl>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- como funciona -->
+  <section class="block" aria-labelledby="processo-t">
+    <header class="block__head grid" data-r>
+      <h2 id="processo-t">Como funciona</h2>
+      <span class="mute">Do primeiro e-mail à entrega</span>
+    </header>
+    <ol class="steps grid">
+      {process.map((s, i) => (
+        <li data-r style={`--d:${i * 80}ms`}>
+          <span class="mono mute">{pad(i + 1)}</span>
+          <h3>{s.title}</h3>
+          <p class="mute">{s.text}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <!-- índice -->
@@ -62,27 +121,6 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
             <span class="mute">{p.service}</span>
             <span class="mute hide-s">{p.client}</span>
             <span class="mono mute">{p.year}</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- textos -->
-  <section class="block" aria-labelledby="textos-t">
-    <header class="block__head grid" data-r>
-      <h2 id="textos-t">Textos</h2>
-      <span class="mono mute">{pad(articles.length)} textos</span>
-      <a class="link block__aside" href="/artigos/">Todos os textos →</a>
-    </header>
-    <ol class="rows rows--texts" data-r>
-      {articles.map((a) => (
-        <li>
-          <a class="row" href={a.href}>
-            <span class="mono mute">{a.dateLabel}</span>
-            <span class="row__t">{a.data.title}</span>
-            <span class="mute hide-s">{a.data.theme}</span>
-            <span class="mono mute">{a.minutes} min</span>
           </a>
         </li>
       ))}
@@ -118,29 +156,54 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
             </div>
           ))}
         </dl>
-        <p class="mute about__k">Prática</p>
-        <ul class="practice">
-          {practice.map((x) => <li>{x}</li>)}
-        </ul>
       </div>
     </div>
+  </section>
+
+  <!-- textos -->
+  <section class="block" aria-labelledby="textos-t">
+    <header class="block__head grid" data-r>
+      <h2 id="textos-t">Textos</h2>
+      <span class="mono mute">{pad(articles.length)} textos</span>
+      <a class="link block__aside" href="/artigos/">Todos os textos →</a>
+    </header>
+    <ol class="rows rows--texts" data-r>
+      {articles.map((a) => (
+        <li>
+          <a class="row" href={a.href}>
+            <span class="mono mute">{a.dateLabel}</span>
+            <span class="row__t">{a.data.title}</span>
+            <span class="mute hide-s">{a.data.theme}</span>
+            <span class="mono mute">{a.minutes} min</span>
+          </a>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <!-- contato -->
   <section class="block contact" id="contato" aria-labelledby="contato-t">
     <header class="block__head grid" data-r>
       <h2 id="contato-t">Contato</h2>
+      <span class="mute"><i class="dot" aria-hidden="true"></i>{site.status}</span>
     </header>
     <div class="grid">
       <div class="contact__body" data-r>
         <p class="contact__lead">
-          Tem um produto, um sistema ou um site em mente? Escreva para{' '}
-          <a class="link link--line" href={`mailto:${site.email}`}>{site.email}</a>
-          <button type="button" class="copy mono mute" data-copy={site.email}>copiar</button>
+          Vamos tirar o seu projeto do papel.{' '}
+          <span class="mute">
+            Conte em poucas linhas o que você precisa, em que ponto está e qual é o prazo. Eu respondo com os próximos
+            passos.
+          </span>
         </p>
+        <div class="contact__actions">
+          <a class="pill pill--solid" href={mailto()}>Escrever um e-mail →</a>
+          <button type="button" class="pill" data-copy={site.email} data-copy-label="E-mail copiado ✓">Copiar e-mail</button>
+        </div>
         <p class="contact__links">
           <a class="link" href={site.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
           <a class="link" href={site.instagram} target="_blank" rel="noopener">Instagram ↗</a>
+          <span class="mute">{site.city} · GMT-3</span>
         </p>
       </div>
     </div>

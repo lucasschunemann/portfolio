@@ -7,9 +7,9 @@ interface Props {
 const { section } = Astro.props;
 const nav = [
   { label: 'Obras', href: '/#obras', key: 'obras' },
-  { label: 'Textos', href: '/artigos/', key: 'textos' },
-  { label: 'Sobre', href: '/#sobre', key: 'sobre' },
-  { label: 'Contato', href: '/#contato', key: 'contato' },
+  { label: 'Serviços', href: '/#servicos', key: 'servicos' },
+  { label: 'Sobre', href: '/#sobre', key: 'sobre', hide: true },
+  { label: 'Textos', href: '/artigos/', key: 'textos', hide: true },
 ];
 ---
 
@@ -21,9 +21,10 @@ const nav = [
   </span>
   <nav class="top__nav" aria-label="Principal">
     {nav.map((n) => (
-      <a href={n.href} aria-current={section === n.key ? 'page' : undefined}>
+      <a href={n.href} class:list={{ 'hide-s': n.hide }} aria-current={section === n.key ? 'page' : undefined}>
         {n.label}
       </a>
     ))}
+    <a href="/#contato" class="top__cta"><i class="dot" aria-hidden="true"></i>Contato</a>
   </nav>
 </header>
