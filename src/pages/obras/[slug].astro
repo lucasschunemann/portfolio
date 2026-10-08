@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { pad, projects, type Project } from '../../data/site';
+
+export function getStaticPaths() {
+  return projects.map((p, i) => ({
+    params: { slug: p.slug },
+    props: {
+      p,
+      n: i + 1,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      prevN: ((i - 1 + projects.length) % projects.length) + 1,
+      next: projects[(i + 1) % projects.length],
+      nextN: ((i + 1) % projects.length) + 1,
+    },
+  }));
+}
+
+interface Props {
+  p: Project;
+  n: number;
+  prev: Project;
+  prevN: number;
+  next: Project;
+  nextN: number;
+}
+
+const { p, n, prev, prevN, next, nextN } = Astro.props;
+const [cover, ...rest] = p.images;
+const meta: [string, string, string?][] = [
+  ['Ano', p.when],
+  ['Cliente', p.client],
+  ['Indústria', p.industry],
+  ['Disciplina', p.service],
+  ['Ferramentas', p.tools],
+];
+if (p.link) meta.push(['Online', p.link.replace(/^https?:\/\//, ''), p.link]);
+---
+
+<Base title={p.name} description={p.summary} section="obras">
+  <article class="room">
+    <header class="room__head grid">
+      <p class="room__crumb mono mute" data-r>
+        <a class="link" href="/#obras">Obras</a> / Nº {pad(n)}
+      </p>
+      <div class="room__title" data-r style="--d:60ms">
+        <h1>{p.name}</h1>
+        <p class="mute">{p.summary}</p>
+      </div>
+      <dl class="room__meta" data-r style="--d:120ms">
+        {meta.map(([k, v, href]) => (
+          <div>
+            <dt class="mute">{k}</dt>
+            <dd>{href ? <a class="link link--line" href={href} target="_blank" rel="noopener">{v} ↗</a> : v}</dd>
+          </div>
+        ))}
+      </dl>
+    </header>
+
+    <figure class="fig fig--cover grid">
+      <div class="fig__frame" transition:name={`obra-${p.slug}`}>
+        {cover ? (
+          <Image src={cover.src} alt={cover.caption} widths={[800, 1200, 1600]} sizes="100vw" loading="eager" />
+        ) : (
+          <Placeholder name={p.name} year={p.year} />
+        )}
+      </div>
+      {cover && (
+        <figcaption class="fig__cap">
+          <span class="mono mute">Fig. 1</span>
+          <span class="mute">{cover.caption}</span>
+        </figcaption>
+      )}
+    </figure>
+
+    <section class="room__text grid">
+      <p class="room__k mono mute" data-r>Texto</p>
+      <div class="prose" data-r>
+        {p.body.map((t) => <p>{t}</p>)}
+      </div>
+    </section>
+
+    {p.lists.map((l) => (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>{l.title}</p>
+        <ol class="items" data-r>
+          {l.items.map((it, j) => (
+            <li>
+              <span class="mono mute">{pad(j + 1)}</span>
+              <span>{it}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    {rest.map((f, j) => (
+      <figure class="fig fig--hung grid" data-r>
+        <div class="fig__frame">
+          <Image src={f.src} alt={f.caption} widths={[800, 1200, 1600]} sizes="(max-width: 760px) 100vw, 60vw" />
+        </div>
+        <figcaption class="fig__cap">
+          <span class="mono mute">Fig. {j + 2}</span>
+          <span class="mute">{f.caption}</span>
+        </figcaption>
+      </figure>
+    ))}
+
+    <nav class="pager grid" aria-label="Outras obras">
+      <a class="pager__prev" href={`/obras/${prev.slug}/`}>
+        <span class="mono mute">← Nº {pad(prevN)}</span>
+        <span>{prev.name}</span>
+      </a>
+      <a class="pager__next" href={`/obras/${next.slug}/`}>
+        <span class="mono mute">Nº {pad(nextN)} →</span>
+        <span>{next.name}</span>
+      </a>
+    </nav>
+  </article>
+</Base>

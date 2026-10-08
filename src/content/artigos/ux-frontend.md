@@ -1,11 +1,8 @@
 ---
 title: 'Do Código ao Design: Minha Jornada do Frontend para o UX'
-display: ['Do código ao design', 'minha jornada do frontend para o UX']
 date: 2024-12-31
 theme: Tech e design
 excerpt: 'Sair do desenvolvimento frontend para me tornar um UX Designer foi um processo de aprendizado constante, cheio de desafios e descobertas.'
-tone: blue
-shape: rect
 ---
 
 Mudar de carreira nunca é fácil, especialmente quando se trata de transitar entre duas áreas que, à primeira vista, podem parecer bem diferentes. No meu caso, sair do desenvolvimento frontend para me tornar um UX Designer foi um processo de aprendizado constante, cheio de desafios e descobertas. Hoje, vejo como minha experiência anterior enriqueceu minha forma de pensar design e criar experiências digitais melhores.

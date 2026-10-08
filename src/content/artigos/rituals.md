@@ -1,11 +1,8 @@
 ---
 title: 'Rituais de Foco: Como Pequenos Hábitos Podem Transformar seu Processo Criativo'
-display: ['Rituais de foco', 'como pequenos hábitos podem transformar seu processo criativo']
 date: 2025-03-12
 theme: Disciplina
 excerpt: 'Como rituais de foco ajudaram meu processo criativo, e como aplicar isso na sua rotina profissional.'
-tone: ink
-shape: circle
 ---
 
 A produtividade e a criatividade não surgem do nada. Muitas vezes, elas são resultado de pequenos rituais diários que ajudam a mente a entrar no estado ideal para criar, projetar e solucionar problemas. Seja tomando um chá, um café ou praticando um momento de silêncio antes de começar o trabalho, esses hábitos podem ser fundamentais para designers e desenvolvedores que precisam de concentração profunda.

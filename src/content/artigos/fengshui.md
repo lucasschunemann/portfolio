@@ -1,11 +1,8 @@
 ---
 title: 'Feng Shui no UX Design'
-display: ['Feng Shui', 'no UX design']
 date: 2025-02-12
 theme: UX design
 excerpt: 'Como conceitos do Feng Shui podem melhorar a usabilidade e a experiência do usuário em produtos digitais.'
-tone: green
-shape: diamond
 ---
 
 O Feng Shui é uma filosofia chinesa milenar que busca harmonizar espaços para promover bem-estar e fluxo de energia. Embora tradicionalmente aplicado em ambientes físicos, seus princípios também podem ser usados no UX Design para criar interfaces digitais equilibradas, intuitivas e agradáveis.

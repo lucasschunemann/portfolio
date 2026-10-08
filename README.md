@@ -1,9 +1,9 @@
-# lucas von — portfólio
+# Lucas Schünemann — portfólio
 
-Pôster suíço com alma brasileira: papel off-white, grid de 12 colunas, muito respiro,
-Rubik pesada em caixa-alta com uma assinatura manuscrita (Ms Madi) sobreposta, e as três
-formas da bandeira desmontada (retângulo verde, losango amarelo, círculo azul) como sistema
-gráfico.
+Um portfólio pensado como o catálogo de uma exposição: cubo branco, muito respiro, texto
+pequeno e as imagens no centro. Cada projeto é uma obra na parede, com etiqueta de museu
+(número, título, ano, disciplina, cliente). O Acompanha, que não tem telas públicas, aparece
+como "Coleção particular".
 
 ## Rodar
 
@@ -15,63 +15,45 @@ npm run build    # gera dist/ estático
 
 ## Stack
 
-- **Astro 7**, site estático (multipágina)
-- **GSAP 3.15** com ScrollTrigger, SplitText e DrawSVG (todos gratuitos)
-- **Lenis** para scroll suave
-- Fontes via Fontsource: `Rubik Variable` (peso 300–900, com itálico) para títulos, textos e
-  rótulos, e `Ms Madi` só para palavras curtas de destaque (classe `.si`). Frases longas de
-  apoio usam Rubik light (classe `.lt`)
+- **Astro 7**, site estático, com `<ClientRouter />` (View Transitions)
+- Imagens otimizadas pelo `astro:assets` (WebP em vários tamanhos, a partir de `src/assets/work`)
+- Fontes via Fontsource: **Host Grotesk** (texto e títulos) e **Fragment Mono** (números,
+  datas e coordenadas)
+- Sem biblioteca de animação: CSS e um script pequeno em `src/scripts/site.ts`
 
 ## Onde mexer
 
 | O quê | Arquivo |
 |---|---|
-| Conteúdo (bio, projetos, serviços) | `src/data/site.ts` |
-| Artigos (um Markdown por artigo) | `src/content/artigos/*.md` |
-| Cores, tipografia e todos os estilos | `src/styles/global.css` (tokens no `:root`) |
+| Bio, prática, ficha e obras | `src/data/site.ts` |
+| Posição de cada obra na parede da home | campo `wall` de cada projeto em `src/data/site.ts` |
+| Textos (um Markdown por texto) | `src/content/artigos/*.md` |
+| Cores, tipografia e layout | `src/styles/global.css` (tokens no `:root`) |
 | Home | `src/pages/index.astro` |
-| Página de caso | `src/pages/trabalho/[slug].astro` |
-| Índice e página de artigo | `src/pages/artigos/index.astro`, `src/pages/artigos/[slug].astro` |
-| Imagens dos projetos | `public/work/<projeto>/01.jpg`, `02.jpg` |
+| Página de obra | `src/pages/obras/[slug].astro` |
+| Textos | `src/pages/artigos/index.astro`, `src/pages/artigos/[slug].astro` |
 
-Para adicionar um projeto, basta incluir um objeto em `projects` no `site.ts`. A página
-`/trabalho/<slug>/` é gerada sozinha. Projeto sem imagem (`images: []`) usa uma capa
-tipográfica (veja `src/components/Poster.astro`, hoje feita para o Acompanha).
-
-Para publicar um artigo, crie `src/content/artigos/<slug>.md` com este cabeçalho e escreva
-o texto em Markdown abaixo dele (o primeiro parágrafo vira o lead em serifa, e cada `##`
-entra no índice lateral):
+Para publicar um texto, crie `src/content/artigos/<slug>.md`:
 
 ```yaml
 ---
-title: 'Título completo'
-display: ['Parte em caixa-alta', 'parte em itálico']
-date: 2026-10-07
+title: 'Título'
+date: 2026-10-08
 theme: UX design
 excerpt: 'Uma frase para a listagem e o SEO.'
-tone: blue # blue | green | yellow | ink
-shape: circle # rect | diamond | circle
 ---
 ```
 
-A capa de cada artigo é gerada a partir de `shape` e `tone` (`src/components/ArticleCover.astro`).
+## Movimento
 
-## Motion
+Pouco, e só onde ajuda:
 
-| Onde | O que acontece | Arquivo |
-|---|---|---|
-| Primeiro acesso | Loader: as três formas giram, trocam de lugar e voam até o hero | `scripts/home.ts` → `runLoader` |
-| Hero | Arte generativa de linhas (ref. pôster *Brazilidade*). O cursor afasta as linhas, o clique solta uma onda, e no scroll a forma abre e gira | `scripts/lines.ts` |
-| Hero | Título entra letra a letra; a palavra em itálico alterna | `scripts/home.ts` → `setupHero` |
-| Marquee | Velocidade e direção seguem o scroll, com skew | `initMarquee` |
-| Trabalho | Pilha de cards sticky que encolhem e escurecem | `initStack` |
-| Serviços | Três cards saem empilhados e abrem em leque, com tilt 3D no hover | `initServices` |
-| Sobre | A bandeira se monta no scroll, com parallax no mouse | `initFlag` |
-| Assinaturas | Palavras em Ms Madi se escrevem da esquerda para a direita (`data-write`) | `scripts/reveals.ts` |
-| Rodapé | Letras de "LUCAS" mudam de peso conforme o cursor e o "von" sobe | `initWordmark` |
-| Entre páginas | Cortina na cor do projeto ou do artigo, com o nome dele | `scripts/core.ts` → `leave` / `enter` |
-| Artigos (índice) | A prévia da capa segue o cursor e a linha se pinta na cor do artigo | `scripts/article.ts` → `initBlogList` |
-| Artigo | Os anéis da capa nascem do centro, torcem com o scroll e fazem túnel com o cursor; barra de leitura e índice que acompanha a seção | `scripts/article.ts` |
+- Ao abrir uma obra, a imagem viaja da parede até a capa da página (View Transitions)
+- Blocos aparecem com um fade curto ao entrar na tela
+- Na parede, a imagem aproxima de leve no hover e a seta da etiqueta aparece
+- Nos índices, as outras linhas esmaecem quando uma está em foco
+- "Luz: acesa / apagada", no rodapé, troca entre tema claro e escuro (a primeira visita
+  segue o sistema; a escolha fica salva)
+- A hora de Blumenau no cabeçalho, com os dois pontos piscando
 
-Com `prefers-reduced-motion` ligado, o loader, o Lenis e as animações de scroll
-ficam desligados, e a arte do hero vira um quadro estático.
+Com `prefers-reduced-motion`, tudo isso fica parado.

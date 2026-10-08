@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import Placeholder from './Placeholder.astro';
+import { pad, type Project } from '../data/site';
+
+interface Props {
+  p: Project;
+  n: number;
+}
+const { p, n } = Astro.props;
+const cover = p.images[0];
+---
+
+<a
+  href={`/obras/${p.slug}/`}
+  class="work"
+  style={`grid-column:${p.wall.col}; --ratio:${p.wall.ratio}; --drop:${p.wall.drop ?? '0px'}`}
+  data-r
+>
+  <div class="work__frame" transition:name={`obra-${p.slug}`}>
+    {cover ? (
+      <Image
+        src={cover.src}
+        alt={cover.caption}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 760px) 100vw, 60vw"
+        loading={n <= 2 ? 'eager' : 'lazy'}
+      />
+    ) : (
+      <Placeholder name={p.name} year={p.year} />
+    )}
+  </div>
+  <div class="label">
+    <span class="label__n mono">Nº {pad(n)}</span>
+    <span class="label__body">
+      <span class="label__t">{p.name}, <span class="mute">{p.year}</span></span>
+      <span class="mute">{p.service} · {p.client}</span>
+    </span>
+    <span class="label__go" aria-hidden="true">→</span>
+  </div>
+</a>

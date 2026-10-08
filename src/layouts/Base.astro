@@ -1,79 +1,67 @@
 ---
-import '@fontsource-variable/rubik/wght.css';
-import '@fontsource-variable/rubik/wght-italic.css';
-import '@fontsource/ms-madi/400.css';
+import '@fontsource-variable/host-grotesk/wght.css';
+import '@fontsource-variable/host-grotesk/wght-italic.css';
+import '@fontsource/fragment-mono/400.css';
 import '../styles/global.css';
 
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Cursor from '../components/Cursor.astro';
-import Transition from '../components/Transition.astro';
-import Loader from '../components/Loader.astro';
 import { site } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
-  page: 'home' | 'case' | 'articles' | 'article' | '404';
-  loader?: boolean;
-  themeColor?: string;
+  section?: 'obras' | 'textos' | 'sobre';
 }
 
-const { title, description = site.description, page, loader = false, themeColor = '#efeee8' } = Astro.props;
-const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Product designer, UX/UI`;
+const { title, description = site.description, section } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.role}`;
 ---
 
 <!doctype html>
-<html lang="pt-BR" data-page={page}>
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content={themeColor} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="pt_BR" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script is:inline define:vars={{ loader }}>
+    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      // tema: escolha salva > preferência do sistema; reaplicado a cada troca de página
       (function () {
-        var d = document.documentElement;
-        d.classList.add('js');
-        try {
-          var pt = sessionStorage.getItem('pt');
-          if (pt) {
-            var o = JSON.parse(pt);
-            d.classList.add('is-entering');
-            d.style.setProperty('--pt-color', o.color);
-            d.style.setProperty('--pt-fg', o.fg);
-          } else if (
-            loader &&
-            !location.hash &&
-            !sessionStorage.getItem('seen') &&
-            !matchMedia('(prefers-reduced-motion: reduce)').matches
-          ) {
-            d.classList.add('is-loading');
-          }
-        } catch (e) {}
-        setTimeout(function () {
-          d.classList.add('is-ready');
-        }, 4000);
+        var apply = function (doc) {
+          var t = null;
+          try {
+            t = localStorage.getItem('luz');
+          } catch (e) {}
+          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'apagada' : 'acesa';
+          doc.documentElement.dataset.luz = t;
+          doc.documentElement.classList.add('js');
+        };
+        apply(document);
+        document.addEventListener('astro:before-swap', function (e) {
+          apply(e.newDocument);
+        });
       })();
     </script>
+    <ClientRouter />
   </head>
   <body>
-    {loader && <Loader />}
-    <Transition />
-    <Cursor />
-    <Header home={page === 'home'} current={page === 'articles' || page === 'article' ? 'Artigos' : undefined} />
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <Header section={section} />
     <main id="conteudo">
       <slot />
     </main>
     <Footer />
-    <div class="grain" aria-hidden="true"></div>
     <script>
-      import '../scripts/main.ts';
+      import '../scripts/site.ts';
     </script>
   </body>
 </html>

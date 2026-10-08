@@ -1,32 +1,17 @@
-export type Shape = 'rect' | 'diamond' | 'circle';
+import type { ImageMetadata } from 'astro';
 
 export const site = {
   name: 'Lucas Schünemann',
-  handle: 'lucas von',
-  role: 'Product designer',
-  focus: 'UX/UI',
-  city: 'Blumenau, SC',
+  role: 'Product designer, UX/UI',
+  city: 'Blumenau, Brasil',
   coords: '26°55′S 49°04′W',
-  timezone: 'America/Sao_Paulo',
   email: 'lucas.vhschunemann@gmail.com',
   linkedin: 'https://www.linkedin.com/in/lucas-von-helden/',
   instagram: 'https://www.instagram.com/lucasvonhelden/',
   status: 'Aberto a projetos freelance',
   description:
-    'Lucas Schünemann, product designer com foco em UX/UI em Blumenau, SC. Co-fundador e CPO da neth!, UX/UI designer na Área Central e freelancer em produtos e sites.',
+    'Lucas Schünemann, product designer com foco em UX/UI em Blumenau. Co-fundador e CPO da neth!, UX/UI designer na Área Central e freelancer em produtos e sites.',
 };
-
-export const heroWords = ['complexos.', 'de dados.', 'de saúde.', 'em escala.'];
-
-export const clients = [
-  'Acompanha',
-  'Área Central',
-  'neth!',
-  'Sendeski Café',
-  'WF Odontologia',
-  'MetaCumprida',
-  'PF Advogados',
-];
 
 export const bio = [
   'Sou product designer com foco em UX/UI, co-fundador e CPO da neth!, uma startup de saúde e bem-estar digital.',
@@ -35,95 +20,65 @@ export const bio = [
   'Em paralelo pego projetos freelance B2B e B2C, na maioria plataformas de inteligência de dados e sites. Vou do discovery e do mapeamento de jornada até a interface em alta fidelidade, pronta para desenvolvimento.',
 ];
 
+export const practice = [
+  'Pesquisa de UX e validação de hipóteses',
+  'Arquitetura de informação e estruturação de fluxos',
+  'Prototipação em média e alta fidelidade no Figma',
+  'Design systems e consistência entre produtos',
+  'Sites em Framer com código customizado',
+  'Handoff e colaboração próxima com desenvolvedores',
+];
+
 export const facts: [string, string][] = [
-  ['Função', 'Product designer, foco em UX/UI'],
   ['Hoje', 'CPO e co-fundador na neth!'],
   ['Também', 'UX/UI designer na Área Central'],
+  ['Experiência', '4+ anos, 15+ projetos'],
   ['Formação', 'Interaction Design Foundation'],
-  ['Local', 'Blumenau, Santa Catarina (GMT-3)'],
-  ['Situação', 'Aberto a projetos freelance'],
+  ['Base', 'Blumenau, Santa Catarina (GMT-3)'],
 ];
 
-export const numbers: { value: number; suffix: string; label: string }[] = [
-  { value: 4, suffix: '+', label: 'anos desenhando produtos' },
-  { value: 15, suffix: '+', label: 'projetos entregues' },
-];
+/* ------------------------------------------------------------------ obras */
 
-export const services: {
-  title: string;
-  serif: string;
-  shape: Shape;
-  tone: 'green' | 'yellow' | 'blue';
-  items: string[];
-}[] = [
-  {
-    title: 'Produto',
-    serif: 'pesquisa & fluxo',
-    shape: 'rect',
-    tone: 'green',
-    items: [
-      'Pesquisa de UX e validação de hipóteses',
-      'Arquitetura de informação e estruturação de fluxos',
-    ],
-  },
-  {
-    title: 'Interface',
-    serif: 'sistema & detalhe',
-    shape: 'diamond',
-    tone: 'yellow',
-    items: [
-      'Prototipação em média e alta fidelidade no Figma',
-      'Design systems e consistência entre produtos',
-    ],
-  },
-  {
-    title: 'Web',
-    serif: 'código & entrega',
-    shape: 'circle',
-    tone: 'blue',
-    items: [
-      'Sites em Framer com código customizado',
-      'Handoff e colaboração próxima com desenvolvedores',
-    ],
-  },
-];
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/work/*/*.jpg', { eager: true });
+const img = (key: string) => {
+  const hit = files[`../assets/work/${key}.jpg`];
+  if (!hit) throw new Error(`Imagem não encontrada: ${key}`);
+  return hit.default;
+};
+
+export type Figure = { src: ImageMetadata; caption: string };
 
 export type Project = {
   slug: string;
   name: string;
-  color: string;
-  ink: 'light' | 'dark';
-  shape: Shape;
+  year: string;
+  when: string;
   type: string;
   service: string;
   client: string;
   industry: string;
-  when: string;
-  year: string;
   tools: string;
   link?: string;
   summary: string;
   body: string[];
   lists: { title: string; items: string[] }[];
-  images: { src: string; caption: string }[];
+  images: Figure[];
+  /** posição na parede da home (colunas de 12, proporção, recuo vertical) */
+  wall: { col: string; ratio: string; drop?: string };
 };
 
 export const projects: Project[] = [
   {
     slug: 'acompanha',
     name: 'Acompanha',
-    color: '#ff6a2b',
-    ink: 'dark',
-    shape: 'diamond',
+    year: '2025—26',
+    when: '2025 a 2026',
     type: 'Produto',
     service: 'Design de produto',
     client: 'Acompanha',
     industry: 'Materiais de construção',
-    when: '2025 a 2026',
-    year: '2025—26',
     tools: 'Figma',
-    summary:
-      'SaaS que mostra para lojas de material de construção se elas estão comprando bem.',
+    summary: 'SaaS que mostra para lojas de material de construção se elas estão comprando bem.',
     body: [
       'O produto acompanha preço e demanda do mercado regional e compara com o que a loja está de fato pagando, para mostrar se a compra dela está boa ou não. Entrei nele para desenhar as telas e os fluxos que hoje seguem para desenvolvimento. A tela de produto, por exemplo, passou por várias versões inteiras até fechar num layout de coluna única com indicadores de confiança nos dados, num vocabulário visual próximo do Linear.',
       'Um dos módulos que desenhei transforma a Reforma Tributária brasileira em oportunidade de produto: um motor de créditos que simula a transição de PIS/COFINS/ICMS/ISS para CBS/IBS, com um simulador editável na própria tela em vez de um cenário fixo. Também fiz o módulo de Educação do produto.',
@@ -140,23 +95,20 @@ export const projects: Project[] = [
       },
     ],
     images: [],
+    wall: { col: '1 / span 4', ratio: '4 / 5' },
   },
   {
     slug: 'acronos',
     name: 'Acronos',
-    color: '#3d5bff',
-    ink: 'light',
-    shape: 'rect',
+    year: '2025',
+    when: 'Fevereiro de 2025',
     type: 'Interface, design system',
     service: 'Design system',
     client: 'Área Central',
     industry: 'Software',
-    when: 'Fevereiro de 2025',
-    year: '2025',
     tools: 'Figma, design tokens',
     link: 'https://acronosds.framer.website',
-    summary:
-      'Sistema de design para consistência entre os produtos digitais da Área Central.',
+    summary: 'Sistema de design para consistência entre os produtos digitais da Área Central.',
     body: [
       'O Acronos foi criado para dar consistência, escalabilidade e eficiência aos produtos digitais da Área Central. Antes dele, cada time construía seus próprios componentes, e as pequenas diferenças entre eles se acumulavam até virar atrito.',
       'O sistema entrega componentes reutilizáveis e diretrizes de acessibilidade. Com ele, os times passam menos tempo redecidindo decisões já tomadas, e a colaboração entre design e desenvolvimento fica mais direta.',
@@ -183,32 +135,27 @@ export const projects: Project[] = [
     ],
     images: [
       {
-        src: '/work/acronos/01.jpg',
-        caption:
-          'A documentação do Acronos DS: navegação lateral com styleguides e componentes, e atalhos para os mais usados.',
+        src: img('acronos/01'),
+        caption: 'A documentação do Acronos DS: navegação lateral com styleguides e componentes, e atalhos para os mais usados.',
       },
       {
-        src: '/work/acronos/02.jpg',
-        caption:
-          'A página Sobre explica por que o sistema existe e o que ele resolve para os times.',
+        src: img('acronos/02'),
+        caption: 'A página Sobre explica por que o sistema existe e o que ele resolve para os times.',
       },
     ],
+    wall: { col: '7 / span 6', ratio: '16 / 10', drop: '22vh' },
   },
   {
     slug: 'sendeski-cafe',
     name: 'Sendeski Café',
-    color: '#c07a3e',
-    ink: 'light',
-    shape: 'circle',
+    year: '2025',
+    when: 'Junho de 2025',
     type: 'Produto (e-commerce)',
     service: 'Protótipo',
     client: 'Sendeski Café',
     industry: 'Café gourmet',
-    when: 'Junho de 2025',
-    year: '2025',
     tools: 'Framer',
-    summary:
-      'Site para uma marca de café gourmet brasileira, construído em torno do produto.',
+    summary: 'Site para uma marca de café gourmet brasileira, construído em torno do produto.',
     body: [
       'O Sendeski Café precisava de um site moderno e funcional para uma marca de café gourmet. O processo começou com análise competitiva no segmento e identificação de um público que valoriza experiências autênticas além do próprio produto.',
       'A estrutura final prioriza os produtos premium na hierarquia visual, com um layout responsivo pensado para navegação simples entre loja, produtos e informações institucionais.',
@@ -233,29 +180,25 @@ export const projects: Project[] = [
     ],
     images: [
       {
-        src: '/work/sendeski/01.jpg',
-        caption:
-          'A home abre com o ritual do café: foto de produto em tela cheia e tipografia serifada.',
+        src: img('sendeski/01'),
+        caption: 'A home abre com o ritual do café: foto de produto em tela cheia e tipografia serifada.',
       },
       {
-        src: '/work/sendeski/02.jpg',
-        caption:
-          'A página de produto, com variações de tamanho, preço e selos de qualidade logo abaixo da compra.',
+        src: img('sendeski/02'),
+        caption: 'A página de produto, com variações de tamanho, preço e selos de qualidade logo abaixo da compra.',
       },
     ],
+    wall: { col: '3 / span 7', ratio: '16 / 10' },
   },
   {
     slug: 'wf-odontologia',
     name: 'WF Odontologia',
-    color: '#14c3a5',
-    ink: 'dark',
-    shape: 'rect',
+    year: '2025',
+    when: 'Março de 2025',
     type: 'Web',
     service: 'Website',
     client: 'WF Odontologia',
     industry: 'Odontologia',
-    when: 'Março de 2025',
-    year: '2025',
     tools: 'Framer',
     link: 'https://wfodontologia.framer.website',
     summary: 'Landing page minimalista para uma clínica odontológica.',
@@ -265,28 +208,20 @@ export const projects: Project[] = [
     ],
     lists: [],
     images: [
-      {
-        src: '/work/wf-odontologia/01.jpg',
-        caption: 'A home: chamada curta, foto da equipe e um único botão de contato.',
-      },
-      {
-        src: '/work/wf-odontologia/02.jpg',
-        caption: 'Quem atende e o que a clínica faz, com as especialidades em etiquetas.',
-      },
+      { src: img('wf-odontologia/01'), caption: 'A home: chamada curta, foto da equipe e um único botão de contato.' },
+      { src: img('wf-odontologia/02'), caption: 'Quem atende e o que a clínica faz, com as especialidades em etiquetas.' },
     ],
+    wall: { col: '1 / span 5', ratio: '4 / 3' },
   },
   {
     slug: 'traveldone',
     name: 'TravelDone',
-    color: '#ff4fa3',
-    ink: 'dark',
-    shape: 'diamond',
+    year: '2025',
+    when: 'Março de 2025',
     type: 'Web',
     service: 'Landing page',
     client: 'MetaCumprida',
     industry: 'Infoproduto',
-    when: 'Março de 2025',
-    year: '2025',
     tools: 'Framer',
     link: 'https://traveldone.framer.website',
     summary: 'Landing page para o infoproduto TravelDone, da MetaCumprida.',
@@ -297,29 +232,25 @@ export const projects: Project[] = [
     lists: [],
     images: [
       {
-        src: '/work/traveldone/01.jpg',
-        caption:
-          'O topo da landing page: a promessa, uma foto de família viajando e a chamada para começar.',
+        src: img('traveldone/01'),
+        caption: 'O topo da landing page: a promessa, uma foto de família viajando e a chamada para começar.',
       },
       {
-        src: '/work/traveldone/02.jpg',
-        caption:
-          'Quem está por trás do curso, com selos de prova: mais de 15 países e 15 anos viajando.',
+        src: img('traveldone/02'),
+        caption: 'Quem está por trás do curso, com selos de prova: mais de 15 países e 15 anos viajando.',
       },
     ],
+    wall: { col: '8 / span 5', ratio: '4 / 3', drop: '30vh' },
   },
   {
     slug: 'pf-advogados',
     name: 'PF Advogados',
-    color: '#7b5cff',
-    ink: 'light',
-    shape: 'circle',
+    year: '2024',
+    when: 'Janeiro de 2024',
     type: 'Web',
     service: 'Website',
     client: 'PF Advogados (Passig & Firmino)',
     industry: 'Advocacia',
-    when: 'Janeiro de 2024',
-    year: '2024',
     tools: 'Framer',
     link: 'https://passigfirmino.adv.br',
     summary: 'Site institucional para um escritório de advocacia.',
@@ -330,16 +261,15 @@ export const projects: Project[] = [
     lists: [],
     images: [
       {
-        src: '/work/pf-advogados/01.jpg',
-        caption:
-          'A home vai direto à dor de quem chega: a suspensão da CNH, com contato por WhatsApp sempre à mão.',
+        src: img('pf-advogados/01'),
+        caption: 'A home vai direto à dor de quem chega: a suspensão da CNH, com contato por WhatsApp sempre à mão.',
       },
       {
-        src: '/work/pf-advogados/02.jpg',
-        caption:
-          'Quem somos: a equipe, a especialidade em direito de trânsito e os valores do escritório.',
+        src: img('pf-advogados/02'),
+        caption: 'Quem somos: a equipe, a especialidade em direito de trânsito e os valores do escritório.',
       },
     ],
+    wall: { col: '5 / span 6', ratio: '16 / 10' },
   },
 ];
 

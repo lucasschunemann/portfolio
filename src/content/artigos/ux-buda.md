@@ -1,11 +1,8 @@
 ---
 title: 'A Arte da Simplicidade: Filosofia Budista e UX Design'
-display: ['A arte da simplicidade', 'filosofia budista e UX design']
 date: 2025-02-27
 theme: Vida e design
 excerpt: 'Como a simplicidade, a atenção plena e o equilíbrio da filosofia budista podem inspirar o design centrado no usuário.'
-tone: yellow
-shape: circle
 ---
 
 A filosofia budista enfatiza a simplicidade, a atenção plena e o equilíbrio como formas de levar uma vida mais significativa. No UX Design, esses princípios podem ser aplicados para criar experiências digitais mais intuitivas, funcionais e eficientes. Mas como essa abordagem filosófica pode inspirar o design centrado no usuário?

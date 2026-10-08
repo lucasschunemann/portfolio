@@ -1,24 +1,29 @@
 ---
-import Roll from './Roll.astro';
-interface Props { home?: boolean; current?: string }
-const { home = false, current } = Astro.props;
-const base = home ? '' : '/';
+import { site } from '../data/site';
+
+interface Props {
+  section?: 'obras' | 'textos' | 'sobre';
+}
+const { section } = Astro.props;
 const nav = [
-  ['Trabalho', `${base}#trabalho`],
-  ['Sobre', `${base}#sobre`],
-  ['Artigos', '/artigos/'],
+  { label: 'Obras', href: '/#obras', key: 'obras' },
+  { label: 'Textos', href: '/artigos/', key: 'textos' },
+  { label: 'Sobre', href: '/#sobre', key: 'sobre' },
+  { label: 'Contato', href: '/#contato', key: 'contato' },
 ];
 ---
-<header class="hdr" data-hdr>
-  <a href="/" class="hdr__logo" data-label="Início" aria-label="Lucas Schünemann, página inicial">
-    <b>lucas</b><em>von</em>
-  </a>
-  <nav class="hdr__nav pill" aria-label="Principal">
-    {nav.map(([label, href]) => (
-      <a href={href} data-label={label} class:list={{ 'is-current': current === label }}><Roll text={label} /></a>
+
+<header class="top grid">
+  <a href="/" class="top__name">{site.name}</a>
+  <span class="top__role mute">{site.role}</span>
+  <span class="top__place mute">
+    Blumenau <span class="mono" data-clock aria-label="Horário em Blumenau">--<i>:</i>--</span>
+  </span>
+  <nav class="top__nav" aria-label="Principal">
+    {nav.map((n) => (
+      <a href={n.href} aria-current={section === n.key ? 'page' : undefined}>
+        {n.label}
+      </a>
     ))}
   </nav>
-  <a href={`${base}#contato`} class="hdr__cta pill" data-label="Contato" data-magnetic>
-    <span class="dot"></span><Roll text="Contato" />
-  </a>
 </header>
