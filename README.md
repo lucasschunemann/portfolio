@@ -27,6 +27,7 @@ npm run build    # gera dist/ estático
 |---|---|
 | Bio, prática, ficha e obras | `src/data/site.ts` |
 | Posição de cada obra na parede da home | campo `wall` de cada projeto em `src/data/site.ts` |
+| Retratos (abertura e díptico do Sobre) | `src/assets/retratos/` e `src/pages/index.astro` |
 | Textos (um Markdown por texto) | `src/content/artigos/*.md` |
 | Cores, tipografia e layout | `src/styles/global.css` (tokens no `:root`) |
 | Home | `src/pages/index.astro` |
@@ -51,6 +52,7 @@ Pouco, e só onde ajuda:
 - Ao abrir uma obra, a imagem viaja da parede até a capa da página (View Transitions)
 - Blocos aparecem com um fade curto ao entrar na tela
 - Na parede, a imagem aproxima de leve no hover e a seta da etiqueta aparece
+- O retrato da abertura troca, no hover, para a outra foto (com o copo)
 - Nos índices, as outras linhas esmaecem quando uma está em foco
 - "Luz: acesa / apagada", no rodapé, troca entre tema claro e escuro (a primeira visita
   segue o sistema; a escolha fica salva)

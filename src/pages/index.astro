@@ -1,8 +1,14 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Work from '../components/Work.astro';
 import { bio, facts, pad, practice, projects, site } from '../data/site';
 import { getArticles } from '../data/articles';
+
+import rio from '../assets/retratos/rio.jpg';
+import copoPerto from '../assets/retratos/copo-perto.jpg';
+import perfil from '../assets/retratos/perfil.jpg';
+import copo from '../assets/retratos/copo.jpg';
 
 const articles = await getArticles();
 const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
@@ -11,7 +17,11 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
 <Base>
   <!-- abertura -->
   <section class="intro grid">
-    <p class="intro__text" data-r>
+    <figure class="portrait" data-r>
+      <Image src={rio} alt="Lucas Schünemann sorrindo, encostado num guarda-corpo à beira de um rio" widths={[240, 480]} sizes="(max-width: 760px) 45vw, 15vw" loading="eager" />
+      <Image src={copoPerto} alt="" class="portrait__alt" widths={[240, 480]} sizes="(max-width: 760px) 45vw, 15vw" loading="eager" />
+    </figure>
+    <p class="intro__text" data-r style="--d:80ms">
       Sou product designer com foco em UX/UI, co-fundador e CPO da neth! e designer na Área Central.{' '}
       <span class="mute">
         Em paralelo, desenho plataformas de dados e sites para clientes B2B e B2C, do discovery à interface pronta
@@ -84,6 +94,16 @@ const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
     <header class="block__head grid" data-r>
       <h2 id="sobre-t">Sobre</h2>
     </header>
+    <div class="diptych grid">
+      <figure class="diptych__a" data-r>
+        <Image src={perfil} alt="Lucas de perfil, olhando um rio, com morros e prédios ao fundo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 50vw, 30vw" />
+        <figcaption class="mono mute">Retrato, I</figcaption>
+      </figure>
+      <figure class="diptych__b" data-r style="--d:120ms">
+        <Image src={copo} alt="Lucas de boné, bebendo de um copo, diante de casas em estilo enxaimel" widths={[480, 800]} sizes="(max-width: 760px) 50vw, 22vw" />
+        <figcaption class="mono mute">Retrato, II</figcaption>
+      </figure>
+    </div>
     <div class="about grid">
       <div class="about__text" data-r>
         <p class="about__lead">{bio[0]}</p>
