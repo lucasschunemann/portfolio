@@ -2,6 +2,7 @@
 
 Site estático em Astro 7 (pt-BR). Objetivo: **atrair clientes** (produto, UX/UI, design systems e sites).
 O visual é de catálogo de exposição: cubo branco, texto pequeno, imagens como obras na parede.
+**Menos é mais:** antes de acrescentar, veja o que dá para tirar.
 
 ## Como trabalhar aqui
 
@@ -18,36 +19,33 @@ O visual é de catálogo de exposição: cubo branco, texto pequeno, imagens com
 |---|---|
 | Todo o conteúdo (bio, serviços, processo, obras, legendas, layout das figuras) | `src/data/site.ts` |
 | Textos/artigos (um Markdown cada) | `src/content/artigos/*.md` |
-| Imagens das obras (pranchas já compostas) | `src/assets/work/<slug>/` |
+| Imagens e vídeos das obras (pranchas já compostas) | `src/assets/work/<slug>/` |
 | Retratos | `src/assets/retratos/` |
 | Home / obra / textos | `src/pages/index.astro`, `src/pages/obras/[slug].astro`, `src/pages/artigos/` |
-| Figura da obra (layouts `full/right/left/center`) | `src/components/Fig.astro` |
+| Figura da obra (layouts `full/right/left/center`, imagem ou vídeo) | `src/components/Fig.astro` |
 | Diagrama do Acompanha | `src/components/Diagram.astro` |
 | Estilo (tokens no `:root`) | `src/styles/global.css` |
-| Material bruto (não vai pro git) | `material/<slug>/` |
+| Material bruto e perguntas por obra (não vai pro git) | `material/<slug>/`, `material/<slug>/notas.md` |
 | Ferramentas de captura e composição | `tools/capture/` |
 
 Para uma obra nova: um objeto em `projects` (`site.ts`) e as imagens em `src/assets/work/<slug>/`. A página sai sozinha.
+Só vai para a parede da home quem tem `wall`; o resto fica no índice. Textos com `featured: true` aparecem na home.
 
-## Próxima sessão: detalhar mais cada projeto
+## Próxima sessão: preencher os casos com o que o Lucas responder
 
-Veja `docs/PROJETOS.md` (o que já existe e o que falta, obra por obra) e `material/README.md` (como entregar prints e fotos).
+A estrutura dos casos já existe (Desafio, Decisões, Processo, Resultado, "Hoje eu faria diferente"; seções vazias somem).
+Veja `docs/PROJETOS.md` (estado obra por obra e fatos já levantados) e as perguntas em `material/<slug>/notas.md`.
 
-Direção: cada obra deve virar um case que convença um cliente: problema, o que foi feito, processo, resultado,
-com mais imagens (telas, processo, detalhes, antes e depois). Hoje cada uma tem de 2 a 6 imagens e texto curto.
-
-Ideias já levantadas:
-- Estrutura de case mais rica: Desafio, Solução, Processo, Resultado (só com dados reais) e "O que eu faria diferente".
-- Galeria por obra com mais figuras e legendas de verdade, escritas por quem fez.
-- Resultados reais por projeto (conversão, tempo, feedback do cliente). Se não houver número, não inventar.
-- Depoimentos curtos de clientes, com nome e permissão.
-- Páginas de serviço ou preço-base, se o Lucas quiser.
+- Quando as `notas.md` tiverem respostas: ficha (papel, duração), resultados reais, frases de clientes, processo.
+- neth! já é caso (Nº 01), feito só com o site público. Falta o que só o Lucas tem: telas do painel, quais decisões foram dele, números.
+- Fluxo de documentos da Área Central: tem resultado citado na bio; pode virar caso (`material/area-central/notas.md`).
+- Analytics do Framer: volume baixo não vai para o site; só proporções que sustentam uma decisão (ex.: "quase nove em cada dez visitas pelo celular").
 
 ## Pontos em aberto
 
-- Textos que eu escrevi e o Lucas ainda deve revisar: abertura, serviços, etapas, "Vamos tirar o seu projeto do papel", "Eu respondo com os próximos passos".
-- Acompanha não tem telas públicas: hoje é um diagrama. Perguntar se há prints liberados.
+- Textos que eu escrevi e o Lucas ainda deve revisar: abertura, serviços, etapas, "Vamos tirar o seu projeto do papel", "Eu respondo com os próximos passos", e os desafios e decisões de cada caso (a lista do que confirmar está em cada `notas.md`).
+- Acompanha fica sem imagens por enquanto (decidido em 09/10/2026): diagrama e duas decisões em texto.
 - Sendeski não está no ar: usa as telas do protótipo.
-- O site da PF Advogados hoje é de Direito Imobiliário (não mais da CNH).
+- O site da PF Advogados hoje é de Direito Imobiliário; nasceu para defesa de CNH (Wayback, dez/2024). Isso está no Resultado, a confirmar.
 - Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image`.
 - Há "—" em títulos e anos (`2025—26`). Na galeria VON o Lucas tirou todo "—" do copy; confirmar se vale aqui.

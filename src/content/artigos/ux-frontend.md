@@ -2,6 +2,7 @@
 title: 'Do Código ao Design: Minha Jornada do Frontend para o UX'
 date: 2024-12-31
 theme: Tech e design
+featured: true
 excerpt: 'Sair do desenvolvimento frontend para me tornar um UX Designer foi um processo de aprendizado constante, cheio de desafios e descobertas.'
 ---
 

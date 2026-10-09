@@ -2,6 +2,7 @@ import { chromium } from 'playwright-core';
 import fs from 'node:fs';
 
 const exe = process.env.CHROME_PATH || '/Users/lucas/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+// HIDE='seletor' esconde algo a mais (um aviso de cookies, por exemplo) sem clicar em nada
 const [, , slug, url, extra = ''] = process.argv;
 const out = new URL(`./out/${slug}/`, import.meta.url).pathname;
 fs.mkdirSync(out, { recursive: true });
@@ -9,6 +10,7 @@ fs.mkdirSync(out, { recursive: true });
 const hide = `
   #__framer-badge-container, [class*="framer-badge"], a[href*="framer.com/?utm"], a[href*="framer.link"] { display: none !important; }
   *, *::before, *::after { caret-color: transparent !important; }
+  ${process.env.HIDE ? `${process.env.HIDE} { display: none !important; }` : ''}
 `;
 
 const browser = await chromium.launch({

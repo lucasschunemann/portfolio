@@ -8,6 +8,8 @@ const artigos = defineCollection({
     date: z.coerce.date(),
     theme: z.string(),
     excerpt: z.string(),
+    /** aparece na home */
+    featured: z.boolean().default(false),
   }),
 });
 

@@ -2,6 +2,7 @@
 title: 'A Arte da Simplicidade: Filosofia Budista e UX Design'
 date: 2025-02-27
 theme: Vida e design
+featured: true
 excerpt: 'Como a simplicidade, a atenção plena e o equilíbrio da filosofia budista podem inspirar o design centrado no usuário.'
 ---
 

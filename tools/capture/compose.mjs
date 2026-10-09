@@ -73,59 +73,93 @@ const o = (slug, f) => {
 };
 
 const tint = {
+  neth: '#ece3de',
   acronos: '#e9e6e8',
   'pf-advogados': '#e6e1dc',
   'wf-odontologia': '#ece5e4',
   traveldone: '#e9e5ee',
+  real: '#e2e7eb',
   sendeski: '#e9e2d8',
   von: '#d9e6f2',
 };
 
-// guarda as imagens antigas do Sendeski antes de sobrescrever a pasta
-const sendeski1 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/01-original.jpg');
-const sendeski2 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/02-original.jpg');
-for (const d of ['acronos', 'pf-advogados', 'wf-odontologia', 'traveldone', 'sendeski']) fs.rmSync(OUT + d, { recursive: true, force: true });
+/** apaga as pranchas antigas da obra, mas guarda os vídeos e os pôsteres deles (feitos por video.mjs) */
+function clear(slug) {
+  const dir = OUT + slug + '/';
+  if (!fs.existsSync(dir)) return;
+  const files = fs.readdirSync(dir);
+  const keep = new Set(files.filter((f) => f.endsWith('.mp4')).flatMap((f) => [f, f.replace(/\.mp4$/, '.jpg')]));
+  for (const f of files) if (!keep.has(f)) fs.rmSync(dir + f);
+}
 
-// Acronos
-await desk(p('acronos', 'x-dark-auto.png'), '#2c2b2e', o('acronos', '01-capa.jpg'), { alpha: 0.4, line: 'rgba(255,255,255,0.08)' });
-await desk(p('acronos', 'd-00.png'), tint.acronos, o('acronos', '02-claro.jpg'));
-await desk(p('acronos', 'p-projects-1.png'), tint.acronos, o('acronos', '03-componentes.jpg'));
-await desk(p('acronos', 'p-cores-0.png'), tint.acronos, o('acronos', '04-cores.jpg'));
-await desk(p('acronos', 'p-botoes-0.png'), tint.acronos, o('acronos', '05-botoes.jpg'));
-await phones([p('acronos', 'm-00.png'), p('acronos', 'm-01.png'), p('acronos', 'm-04.png')], tint.acronos, o('acronos', '06-celular.jpg'));
-await phones([p('acronos', 'm-00.png')], tint.acronos, o('acronos', '00-parede.jpg'), { W: 1600, H: 2000, ph: 1640, r: 64 });
+const jobs = {
+  async neth() {
+    clear('neth');
+    await desk(p('neth', 'd-00.png'), tint.neth, o('neth', '01-capa.jpg'));
+    await phones([p('neth', 'm-00.png'), p('neth', 'm-03.png'), p('neth', 'm-05.png')], tint.neth, o('neth', '02-celular.jpg'));
+    await desk(p('neth', 'd-05.png'), tint.neth, o('neth', '03-metodo.jpg'));
+    await desk(p('neth', 'x-empresas-ve.png'), tint.neth, o('neth', '04-empresas.jpg'));
+  },
+  async acronos() {
+    clear('acronos');
+    await desk(p('acronos', 'x-dark-auto.png'), '#2c2b2e', o('acronos', '01-capa.jpg'), { alpha: 0.4, line: 'rgba(255,255,255,0.08)' });
+    await desk(p('acronos', 'd-00.png'), tint.acronos, o('acronos', '02-claro.jpg'));
+    await desk(p('acronos', 'p-projects-1.png'), tint.acronos, o('acronos', '03-componentes.jpg'));
+    await desk(p('acronos', 'p-cores-0.png'), tint.acronos, o('acronos', '04-cores.jpg'));
+    await desk(p('acronos', 'p-botoes-0.png'), tint.acronos, o('acronos', '05-botoes.jpg'));
+    await phones([p('acronos', 'm-00.png'), p('acronos', 'm-01.png'), p('acronos', 'm-04.png')], tint.acronos, o('acronos', '06-celular.jpg'));
+    await phones([p('acronos', 'm-00.png')], tint.acronos, o('acronos', '00-parede.jpg'), { W: 1600, H: 2000, ph: 1640, r: 64 });
+  },
+  async 'pf-advogados'() {
+    clear('pf-advogados');
+    await desk(p('pf-advogados', 'd-00.png'), tint['pf-advogados'], o('pf-advogados', '01-capa.jpg'));
+    await desk(p('pf-advogados', 'd-01.png'), tint['pf-advogados'], o('pf-advogados', '02-servicos.jpg'));
+    await desk(p('pf-advogados', 'd-03.png'), tint['pf-advogados'], o('pf-advogados', '04-duvidas.jpg'));
+    // 05-rolagem (vídeo): node video.mjs pf-advogados https://passigfirmino.adv.br 05-rolagem --down 10 --max 99999
+  },
+  async 'wf-odontologia'() {
+    clear('wf-odontologia');
+    await desk(p('wf-odontologia', 'd-00.png'), tint['wf-odontologia'], o('wf-odontologia', '01-capa.jpg'));
+    await desk(p('wf-odontologia', 'd-01.png'), tint['wf-odontologia'], o('wf-odontologia', '02-equipe.jpg'));
+    await desk(p('wf-odontologia', 'd-02.png'), tint['wf-odontologia'], o('wf-odontologia', '03-contato.jpg'));
+    await phones([p('wf-odontologia', 'm-00.png'), p('wf-odontologia', 'm-01.png'), p('wf-odontologia', 'm-03.png')], tint['wf-odontologia'], o('wf-odontologia', '04-celular.jpg'));
+  },
+  async traveldone() {
+    clear('traveldone');
+    await desk(p('traveldone', 'd-00.png'), tint.traveldone, o('traveldone', '01-capa.jpg'));
+    await desk(p('traveldone', 'd-01.png'), tint.traveldone, o('traveldone', '02-sobre.jpg'));
+    await desk(p('traveldone', 'd-05.png'), tint.traveldone, o('traveldone', '03-viagens.jpg'));
+    await desk(p('traveldone', 'd-03.png'), tint.traveldone, o('traveldone', '04-oferta.jpg'));
+    await phones([p('traveldone', 'm-00.png'), p('traveldone', 'm-03.png'), p('traveldone', 'm-05.png')], tint.traveldone, o('traveldone', '05-celular.jpg'));
+    await phones([p('traveldone', 'm-00.png')], tint.traveldone, o('traveldone', '00-parede.jpg'), { W: 1600, H: 2000, ph: 1640, r: 64 });
+  },
+  async real() {
+    clear('real');
+    await desk(p('real', 'd-00.png'), tint.real, o('real', '01-capa.jpg'));
+    await desk(p('real', 'd-01.png'), tint.real, o('real', '02-projeto.jpg'));
+    await phones([p('real', 'm-00.png'), p('real', 'm-01.png'), p('real', 'm-06.png')], tint.real, o('real', '03-celular.jpg'));
+  },
+  // sem site no ar: telas do protótipo, guardadas em material/sendeski
+  async sendeski() {
+    const s1 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/01-original.jpg');
+    const s2 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/02-original.jpg');
+    clear('sendeski');
+    await desk(s1, tint.sendeski, o('sendeski', '01-capa.jpg'), { maxW: 1600 });
+    await desk(s2, tint.sendeski, o('sendeski', '02-produto.jpg'), { maxW: 1600 });
+  },
+  async von() {
+    await raw(p('von', 'd-00-intro.png'), o('von', '01-capa.jpg'));
+    await raw(p('von', 'd-10-acronos.png'), o('von', '02-sala.jpg'));
+    // 03-passeio (vídeo): gravação de tela do Lucas, 11 s a 25,5 s, crop=2940:1562:406:0, 1600 px, crf 29
+    await raw(p('von', 'd-11-caso.png'), o('von', '04-caso.jpg'));
+    await raw(p('von', 'd-03-catalogo.png'), o('von', '05-catalogo.jpg'));
+    await phones([p('von', 'm-00-intro.png'), p('von', 'm-01-mundo.png')], tint.von, o('von', '06-celular.jpg'), { gap: 140 });
+  },
+};
 
-// PF Advogados
-await desk(p('pf-advogados', 'd-00.png'), tint['pf-advogados'], o('pf-advogados', '01-capa.jpg'));
-await desk(p('pf-advogados', 'd-01.png'), tint['pf-advogados'], o('pf-advogados', '02-servicos.jpg'));
-await desk(p('pf-advogados', 'd-02.png'), tint['pf-advogados'], o('pf-advogados', '03-quem-somos.jpg'));
-await desk(p('pf-advogados', 'd-03.png'), tint['pf-advogados'], o('pf-advogados', '04-duvidas.jpg'));
-await phones([p('pf-advogados', 'm-00.png'), p('pf-advogados', 'm-02.png'), p('pf-advogados', 'm-04.png')], tint['pf-advogados'], o('pf-advogados', '05-celular.jpg'));
-
-// WF Odontologia
-await desk(p('wf-odontologia', 'd-00.png'), tint['wf-odontologia'], o('wf-odontologia', '01-capa.jpg'));
-await desk(p('wf-odontologia', 'd-01.png'), tint['wf-odontologia'], o('wf-odontologia', '02-equipe.jpg'));
-await desk(p('wf-odontologia', 'd-02.png'), tint['wf-odontologia'], o('wf-odontologia', '03-contato.jpg'));
-await phones([p('wf-odontologia', 'm-00.png'), p('wf-odontologia', 'm-01.png'), p('wf-odontologia', 'm-03.png')], tint['wf-odontologia'], o('wf-odontologia', '04-celular.jpg'));
-
-// TravelDone
-await desk(p('traveldone', 'd-00.png'), tint.traveldone, o('traveldone', '01-capa.jpg'));
-await desk(p('traveldone', 'd-01.png'), tint.traveldone, o('traveldone', '02-sobre.jpg'));
-await desk(p('traveldone', 'd-05.png'), tint.traveldone, o('traveldone', '03-viagens.jpg'));
-await desk(p('traveldone', 'd-03.png'), tint.traveldone, o('traveldone', '04-oferta.jpg'));
-await phones([p('traveldone', 'm-00.png'), p('traveldone', 'm-03.png'), p('traveldone', 'm-05.png')], tint.traveldone, o('traveldone', '05-celular.jpg'));
-await phones([p('traveldone', 'm-00.png')], tint.traveldone, o('traveldone', '00-parede.jpg'), { W: 1600, H: 2000, ph: 1640, r: 64 });
-
-// Sendeski (sem site no ar: telas do protótipo)
-await desk(sendeski1, tint.sendeski, o('sendeski', '01-capa.jpg'), { maxW: 1600 });
-await desk(sendeski2, tint.sendeski, o('sendeski', '02-produto.jpg'), { maxW: 1600 });
-
-// VON
-await raw(p('von', 'd-00-intro.png'), o('von', '01-capa.jpg'));
-await raw(p('von', 'd-10-acronos.png'), o('von', '02-sala.jpg'));
-await raw(p('von', 'd-12-noite.png'), o('von', '03-noite.jpg'));
-await raw(p('von', 'd-11-caso.png'), o('von', '04-caso.jpg'));
-await raw(p('von', 'd-03-catalogo.png'), o('von', '05-catalogo.jpg'));
-await phones([p('von', 'm-00-intro.png'), p('von', 'm-01-mundo.png')], tint.von, o('von', '06-celular.jpg'), { gap: 140 });
+// node compose.mjs            monta todas (precisa das capturas de todas em out/)
+// node compose.mjs neth real  monta só essas
+const only = process.argv.slice(2);
+for (const [slug, job] of Object.entries(jobs)) if (!only.length || only.includes(slug)) await job();
 
 console.log('ok');

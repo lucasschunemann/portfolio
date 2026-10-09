@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Work from '../components/Work.astro';
-import { bio, clients, facts, mailto, pad, process, projects, services, site } from '../data/site';
+import { bio, clients, facts, mailto, pad, process, projects, services, site, whatsapp } from '../data/site';
 import { getArticles } from '../data/articles';
 import rio from '../assets/retratos/rio.jpg';
 import copoPerto from '../assets/retratos/copo-perto.jpg';
@@ -10,8 +10,10 @@ import perfil from '../assets/retratos/perfil.jpg';
 import copo from '../assets/retratos/copo.jpg';
 
 const articles = await getArticles();
+const featuredArticles = articles.filter((a) => a.data.featured);
 const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
 const bySlug = new Map(projects.map((p) => [p.slug, p]));
+const onWall = projects.filter((p) => p.wall);
 ---
 
 <Base>
@@ -47,11 +49,11 @@ const bySlug = new Map(projects.map((p) => [p.slug, p]));
   <section class="block" id="obras" aria-labelledby="obras-t">
     <header class="block__head grid" data-r>
       <h2 id="obras-t">Obras selecionadas</h2>
-      <span class="mono mute">Nº 01—{pad(projects.length)}</span>
+      <span class="mono mute">Nº 01—{pad(onWall.length)}</span>
       <span class="mute block__aside">{years[0]}—{years[years.length - 1]}</span>
     </header>
     <div class="wall grid">
-      {projects.map((p, i) => <Work p={p} n={i + 1} />)}
+      {onWall.map((p, i) => <Work p={p} n={i + 1} />)}
     </div>
   </section>
 
@@ -168,7 +170,7 @@ const bySlug = new Map(projects.map((p) => [p.slug, p]));
       <a class="link block__aside" href="/artigos/">Todos os textos →</a>
     </header>
     <ol class="rows rows--texts" data-r>
-      {articles.map((a) => (
+      {featuredArticles.map((a) => (
         <li>
           <a class="row" href={a.href}>
             <span class="mono mute">{a.dateLabel}</span>
@@ -198,6 +200,7 @@ const bySlug = new Map(projects.map((p) => [p.slug, p]));
         </p>
         <div class="contact__actions">
           <a class="pill pill--solid" href={mailto()}>Escrever um e-mail →</a>
+          <a class="pill" href={whatsapp()} target="_blank" rel="noopener">Chamar no WhatsApp ↗</a>
           <button type="button" class="pill" data-copy={site.email} data-copy-label="E-mail copiado ✓">Copiar e-mail</button>
         </div>
         <p class="contact__links">

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Diagram from '../../components/Diagram.astro';
 import Fig from '../../components/Fig.astro';
-import { mailto, pad, projects, type Project } from '../../data/site';
+import { mailto, pad, projects, type Figure, type Project } from '../../data/site';
 
 export function getStaticPaths() {
   return projects.map((p, i) => ({
@@ -29,14 +29,27 @@ interface Props {
 }
 
 const { p, n, prev, prevN, next, nextN } = Astro.props;
-const [cover, second, third, ...rest] = p.images;
-const meta: [string, string][] = [
-  ['Ano', p.when],
-  ['Cliente', p.client],
-  ['Indústria', p.industry],
-  ['Disciplina', p.service],
-  ['Ferramentas', p.tools],
+const [cover, ...rest] = p.images;
+
+// Fig. 1 é a capa; as outras seguem a ordem em que aparecem na página.
+const figs: Figure[] = [
+  ...p.decisions.flatMap((d) => (d.fig ? [d.fig] : [])),
+  ...(p.process?.figs ?? []),
+  ...rest,
 ];
+const fig = (f: Figure) => figs.indexOf(f) + 2;
+
+const meta = (
+  [
+    ['Ano', p.when],
+    ['Cliente', p.client],
+    ['Indústria', p.industry],
+    ['Disciplina', p.service],
+    ['Papel', p.role],
+    ['Duração', p.duration],
+    ['Ferramentas', p.tools],
+  ] as [string, string | undefined][]
+).filter((m): m is [string, string] => !!m[1]);
 const personal = p.client === 'Projeto pessoal';
 ---
 
@@ -82,40 +95,56 @@ const personal = p.client === 'Projeto pessoal';
     </figure>
 
     <section class="room__text grid">
-      <p class="room__k mono mute" data-r>Contexto</p>
+      <p class="room__k mono mute" data-r>Desafio</p>
       <div class="prose" data-r>
-        <p>{p.body[0]}</p>
+        {p.challenge.map((t) => <p>{t}</p>)}
       </div>
     </section>
 
-    {second && <Fig f={second} n={2} />}
+    {p.decisions.map((d, i) => (
+      <>
+        <section class="room__text grid">
+          <p class="room__k mono mute" data-r>Decisão {pad(i + 1)}</p>
+          <div class="prose" data-r>
+            <h2>{d.title}</h2>
+            <p>{d.text}</p>
+          </div>
+        </section>
+        {d.fig && <Fig f={d.fig} n={fig(d.fig)} />}
+      </>
+    ))}
 
-    {p.body.length > 1 && (
+    {p.process && (
+      <>
+        <section class="room__text grid">
+          <p class="room__k mono mute" data-r>Processo</p>
+          <div class="prose" data-r>
+            <p>{p.process.text}</p>
+          </div>
+        </section>
+        {p.process.figs?.map((f) => <Fig f={f} n={fig(f)} />)}
+      </>
+    )}
+
+    {p.result && (
       <section class="room__text grid">
-        <p class="room__k mono mute" data-r>Abordagem</p>
+        <p class="room__k mono mute" data-r>Resultado</p>
         <div class="prose" data-r>
-          {p.body.slice(1).map((t) => <p>{t}</p>)}
+          {p.result.map((t) => <p>{t}</p>)}
         </div>
       </section>
     )}
 
-    {third && <Fig f={third} n={3} />}
-
-    {p.lists.map((l) => (
+    {p.retro && (
       <section class="room__text grid">
-        <p class="room__k mono mute" data-r>{l.title}</p>
-        <ol class="items" data-r>
-          {l.items.map((it, j) => (
-            <li>
-              <span class="mono mute">{pad(j + 1)}</span>
-              <span>{it}</span>
-            </li>
-          ))}
-        </ol>
+        <p class="room__k mono mute" data-r>Hoje eu faria diferente</p>
+        <div class="prose" data-r>
+          <p>{p.retro}</p>
+        </div>
       </section>
-    ))}
+    )}
 
-    {rest.map((f, j) => <Fig f={f} n={j + 4} />)}
+    {rest.map((f) => <Fig f={f} n={fig(f)} />)}
 
     <section class="cta grid" data-r>
       <p class="room__k mono mute">{personal ? 'Contato' : 'Próximo passo'}</p>

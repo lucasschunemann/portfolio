@@ -6,6 +6,8 @@ export const site = {
   city: 'Blumenau, Brasil',
   coords: '26°55′S 49°04′W',
   email: 'lucas.vhschunemann@gmail.com',
+  /** só dígitos, com DDI e DDD */
+  whatsapp: '5547992396261',
   linkedin: 'https://www.linkedin.com/in/lucas-von-helden/',
   instagram: 'https://www.instagram.com/_vonhelden/',
   status: 'Agenda aberta para novos projetos',
@@ -26,14 +28,18 @@ export const mailto = (subject = 'Novo projeto') => {
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 };
 
-export const clients = ['Área Central', 'neth!', 'Acompanha', 'PF Advogados', 'WF Odontologia', 'MetaCumprida', 'Sendeski Café'];
+/** Conversa no WhatsApp já com uma primeira frase. */
+export const whatsapp = () =>
+  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Olá, Lucas! Vi o seu portfólio e quero conversar sobre um projeto.')}`;
+
+export const clients = ['Área Central', 'neth!', 'Acompanha', 'PF Advogados', 'WF Odontologia', 'RealPlay', 'MetaCumprida', 'Sendeski Café'];
 
 export const services = [
   {
     title: 'Produto e UX/UI',
     text: 'Telas e fluxos para SaaS e plataformas de dados. Pesquisa, arquitetura de informação, protótipos e interface em alta fidelidade no Figma, prontos para o time desenvolver.',
     fit: 'Startups e times de produto',
-    refs: ['acompanha', 'acronos'],
+    refs: ['neth', 'acompanha', 'acronos'],
   },
   {
     title: 'Design systems',
@@ -80,9 +86,20 @@ const img = (key: string) => {
   return hit.default;
 };
 
+const clips = import.meta.glob<string>('../assets/work/*/*.mp4', { eager: true, query: '?url', import: 'default' });
+const clip = (key: string) => {
+  const hit = clips[`../assets/work/${key}.mp4`];
+  if (!hit) throw new Error(`Vídeo não encontrado: ${key}`);
+  return hit;
+};
+
 /** full: largura toda · right/left: pendurada de um lado · center: centralizada e menor */
 export type Layout = 'full' | 'right' | 'left' | 'center';
-export type Figure = { src: ImageMetadata; caption: string; layout?: Layout };
+/** Com `video`, a figura vira um vídeo curto em loop e `src` serve de pôster. */
+export type Figure = { src: ImageMetadata; caption: string; layout?: Layout; video?: string };
+
+/** O que foi decidido e por quê, com a figura que mostra a decisão (se houver). */
+export type Decision = { title: string; text: string; fig?: Figure };
 
 export type Project = {
   slug: string;
@@ -94,39 +111,79 @@ export type Project = {
   client: string;
   industry: string;
   tools: string;
+  /** o que foi meu e o que foi do time */
+  role?: string;
+  duration?: string;
   link?: string;
   summary: string;
-  body: string[];
-  lists: { title: string; items: string[] }[];
+  /** o problema de partida */
+  challenge: string[];
+  decisions: Decision[];
+  process?: { text: string; figs?: Figure[] };
+  /** só com dado real; sem isso a seção não aparece */
+  result?: string[];
+  /** o que eu faria diferente hoje */
+  retro?: string;
+  /** a capa (a primeira) e as figuras que não pertencem a nenhuma decisão */
   images: Figure[];
-  /** posição na parede da home (colunas de 12, proporção, recuo vertical, imagem própria) */
-  wall: { col: string; ratio: string; drop?: string; img?: ImageMetadata };
+  /**
+   * Só os casos completos vão para a parede da home; os outros ficam no índice.
+   * Posição em colunas de 12, proporção, recuo vertical e imagem própria.
+   */
+  wall?: { col: string; ratio: string; drop?: string; img?: ImageMetadata };
 };
 
 export const projects: Project[] = [
   {
-    slug: 'pf-advogados',
-    name: 'PF Advogados',
-    year: '2024',
-    when: 'Janeiro de 2024',
-    type: 'Web',
-    service: 'Website',
-    client: 'Passig & Firmino Advogados',
-    industry: 'Advocacia, direito imobiliário',
-    tools: 'Framer',
-    link: 'https://passigfirmino.adv.br',
-    summary: 'Site institucional para um escritório de advocacia.',
-    body: [
-      'Um escritório de advocacia vive de credibilidade, então o site da PF Advogados foi construído em torno disso: tons sóbrios, tipografia refinada e uma navegação direta até áreas de atuação e equipe.',
-      'A seriedade da marca precisa aparecer antes de qualquer coisa, sem elementos brigando por atenção.',
+    slug: 'neth',
+    name: 'neth!',
+    year: '2026',
+    when: 'Em andamento',
+    type: 'Produto',
+    service: 'Direção de produto',
+    client: 'neth!',
+    industry: 'Saúde mental, educação em saúde',
+    tools: 'Figma',
+    role: 'Co-fundador e CPO: direção de produto, protótipos, roadmap e gestão do time de desenvolvimento',
+    link: 'https://somosneth.com',
+    summary: 'Vídeos curtos sobre saúde mental, feitos por profissionais de saúde, para pessoas, empresas e consultórios.',
+    challenge: [
+      'Quem tenta entender a própria saúde mental na internet esbarra antes em opinião e em promessa fácil, num formato feito para prender a atenção. O neth! precisava ser leve como as redes e confiável como a ciência, sem virar mais uma tarefa nem mais um feed.',
     ],
-    lists: [],
+    decisions: [
+      {
+        title: 'Leve como as redes, sem o algoritmo',
+        text: 'O formato é o vídeo curto, porque conteúdo que ninguém assiste até o fim não serve para nada. Mas não há feed infinito, anúncio nem meta de tempo de tela: a pessoa escolhe uma playlist por tema, assiste e sai. Avaliações curtas mostram a evolução em números.',
+        fig: {
+          src: img('neth/02-celular'),
+          caption: 'No celular: a abertura, as playlists por tema e o espaço sem anúncio.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Nome e registro em cada vídeo',
+        text: 'Confiança não vem de seguidores. Cada vídeo tem um responsável técnico com nome, formação e registro no conselho, e o roteiro passa por revisão antes da gravação. O site mostra esse caminho inteiro, inclusive os pontos em que um vídeo pode ser barrado.',
+        fig: {
+          src: img('neth/03-metodo'),
+          caption: 'O método na própria home: pauta com origem, nome e registro, revisão antes da câmera.',
+          layout: 'right',
+        },
+      },
+      {
+        title: 'A conta é de quem assiste',
+        text: 'O mesmo catálogo chega por três caminhos: a assinatura individual, o plano para empresas, que cobre a etapa de informação e prevenção da NR-01, e o neth! Clínica, em que um profissional convida até 14 pacientes. Em todos, a conta é de quem usa. O RH vê números do time, não quais vídeos cada pessoa viu; o profissional libera o acesso, não acompanha o paciente. Sem esse limite, as pessoas aprendem a marcar presença sem assistir a nada.',
+        fig: {
+          src: img('neth/04-empresas'),
+          caption: 'Para empresas: o que o RH vê e o que não vê, lado a lado.',
+          layout: 'center',
+        },
+      },
+    ],
     images: [
-      { src: img('pf-advogados/01-capa'), caption: 'A abertura apresenta o escritório em uma frase, com o contato por WhatsApp sempre à mão.' },
-      { src: img('pf-advogados/02-servicos'), caption: 'As áreas de atuação em cartões: compra e venda, contratos, regularização, locações, posse e condomínios.', layout: 'right' },
-      { src: img('pf-advogados/03-quem-somos'), caption: 'Quem somos: a apresentação do escritório e dos sócios.', layout: 'left' },
-      { src: img('pf-advogados/04-duvidas'), caption: 'As dúvidas mais comuns, abertas uma de cada vez.', layout: 'center' },
-      { src: img('pf-advogados/05-celular'), caption: 'No celular, a mesma hierarquia em uma coluna.', layout: 'full' },
+      {
+        src: img('neth/01-capa'),
+        caption: 'A abertura, com a Janeth: a personagem que dá as boas-vindas e aparece nos assuntos mais pesados, onde só texto deixaria a tela dura demais.',
+      },
     ],
     wall: { col: '1 / span 7', ratio: '16 / 10' },
   },
@@ -139,96 +196,103 @@ export const projects: Project[] = [
     service: 'Design system',
     client: 'Área Central',
     industry: 'Software',
-    tools: 'Figma, design tokens',
+    tools: 'Figma, design tokens, Framer',
+    role: 'Liderei a criação, das bases à documentação',
     link: 'https://acronosds.framer.website',
     summary: 'Sistema de design para consistência entre os produtos digitais da Área Central.',
-    body: [
-      'O Acronos foi criado para dar consistência, escalabilidade e eficiência aos produtos digitais da Área Central. Antes dele, cada time construía seus próprios componentes, e as pequenas diferenças entre eles se acumulavam até virar atrito.',
-      'O sistema entrega componentes reutilizáveis e diretrizes de acessibilidade. Com ele, os times passam menos tempo redecidindo decisões já tomadas, e a colaboração entre design e desenvolvimento fica mais direta.',
+    challenge: [
+      'Antes do Acronos, cada time da Área Central construía os próprios componentes. As pequenas diferenças entre eles se acumulavam até virar atrito, entre os produtos e entre design e desenvolvimento.',
     ],
-    lists: [
+    decisions: [
       {
-        title: 'Os quatro pilares',
-        items: [
-          'Consistência: uma identidade visual só, entre todos os produtos',
-          'Velocidade: componentes reutilizáveis e documentados aceleram o desenvolvimento',
-          'Acessibilidade: interfaces inclusivas, alinhadas aos padrões',
-          'Escalabilidade: o sistema cresce junto com as plataformas',
-        ],
+        title: 'Bases antes de componentes',
+        text: 'A primeira versão começou pelas bases: famílias de cor, tipografia, espaçamentos e efeitos, já com tema claro e escuro. É em cima delas que os componentes são construídos.',
+        fig: {
+          src: img('acronos/04-cores'),
+          caption: 'Cores: as famílias da marca em escala, do tom mais escuro ao mais claro.',
+          layout: 'right',
+        },
       },
       {
-        title: 'O que tem dentro',
-        items: [
-          'Styleguides de cor, tipografia, espaçamento e efeitos',
-          'Componentes de navegação, formulário, avatar, avisos, botões e categorias',
-          'Foco em produtos SaaS, pensado mobile-first',
-          'Changelog e acesso direto ao arquivo no Figma',
-        ],
+        title: 'Poucas opções, bem nomeadas',
+        text: 'Cada opção que o sistema oferece é uma decisão a mais para o time. Por isso há só dois estilos de sombra, e os botões se organizam em três eixos: hierarquia, cor e estado.',
+        fig: { src: img('acronos/05-botoes'), caption: 'Botões: variações de hierarquia, cor e estado.', layout: 'center' },
+      },
+      {
+        title: 'Documentação fora do Figma',
+        text: 'O sistema mora num site, não só num arquivo: quem é de design ou de desenvolvimento encontra o componente, vê a prévia e lê como usar sem abrir o Figma. Um changelog registra o que mudou em cada versão.',
+        fig: { src: img('acronos/03-componentes'), caption: 'O índice de componentes, cada um com a sua prévia.', layout: 'left' },
       },
     ],
+    process: {
+      text: 'O ponto de partida foram sistemas de referência, como o Carbon, da IBM, e o Nimbus, da Nuvemshop, adaptados para produtos SaaS e pensados primeiro para o celular. Hoje são quatro guias de estilo e doze componentes documentados, da navegação aos formulários e tabelas.',
+    },
     images: [
       {
         src: img('acronos/01-capa'),
-        caption: 'A documentação no tema escuro: navegação lateral com styleguides e componentes, e atalhos para os mais usados.',
+        caption: 'A documentação no tema escuro: navegação lateral com guias de estilo e componentes, e atalhos para os mais usados.',
       },
       { src: img('acronos/02-claro'), caption: 'O mesmo início no tema claro.', layout: 'right' },
-      { src: img('acronos/03-componentes'), caption: 'O índice de componentes, cada um com a sua prévia.', layout: 'left' },
-      { src: img('acronos/04-cores'), caption: 'Cores: as famílias da marca em escala, do tom mais escuro ao mais claro.', layout: 'right' },
-      { src: img('acronos/05-botoes'), caption: 'Botões: variações de hierarquia, cor e estado.', layout: 'center' },
       { src: img('acronos/06-celular'), caption: 'No celular, a documentação vira uma coluna, com o menu recolhido.', layout: 'full' },
     ],
     wall: { col: '9 / span 4', ratio: '4 / 5', drop: '14vh', img: img('acronos/00-parede') },
   },
   {
-    slug: 'wf-odontologia',
-    name: 'WF Odontologia',
-    year: '2025',
-    when: 'Março de 2025',
+    slug: 'pf-advogados',
+    name: 'PF Advogados',
+    year: '2024',
+    when: 'Janeiro de 2024',
     type: 'Web',
     service: 'Website',
-    client: 'WF Odontologia',
-    industry: 'Odontologia',
+    client: 'Passig & Firmino Advogados',
+    industry: 'Advocacia, direito imobiliário',
     tools: 'Framer',
-    link: 'https://wfodontologia.framer.website',
-    summary: 'Landing page minimalista para uma clínica odontológica.',
-    body: [
-      'A WF Odontologia precisava de uma presença digital que comunicasse confiabilidade e expertise sem depender de excesso de informação na tela. A resposta foi um site limpo, com navegação intuitiva e conteúdo objetivo.',
-      'O foco ficou na experiência de quem chega buscando um profissional: encontrar o que precisa rápido, sem ruído visual no caminho.',
+    role: 'Design e construção no Framer',
+    link: 'https://passigfirmino.adv.br',
+    summary: 'Site institucional para um escritório de advocacia em Rio do Sul.',
+    challenge: [
+      'Quem procura um advogado chega com um problema e pouca vontade de ler. O site precisava passar seriedade logo na abertura e levar a pessoa até uma conversa com o escritório, sem desvios no caminho.',
     ],
-    lists: [],
+    decisions: [
+      {
+        title: 'Um caminho só',
+        text: 'Todas as seções terminam no mesmo lugar: a conversa pelo WhatsApp. O botão aparece na abertura, fica fixo no canto da tela durante a rolagem e volta no fechamento. Para um escritório pequeno, é o canal que o cliente já tem aberto.',
+        fig: {
+          src: img('pf-advogados/05-rolagem'),
+          video: clip('pf-advogados/05-rolagem'),
+          caption: 'No celular, o botão do WhatsApp acompanha a rolagem do começo ao fim.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Serviços que descrevem situações',
+        text: 'Cada uma das seis áreas de atuação ganha um cartão curto, com o nome da área e, logo abaixo, as situações em que ela entra: imóvel sem escritura, construção não averbada, conflito com o condomínio. Quem chega se reconhece na descrição antes de saber o nome técnico.',
+        fig: {
+          src: img('pf-advogados/02-servicos'),
+          caption: 'As áreas de atuação: compra e venda, contratos, regularização, locações, posse e condomínios.',
+          layout: 'right',
+        },
+      },
+      {
+        title: 'As dúvidas antes da ligação',
+        text: 'Dez perguntas frequentes, escritas como o cliente perguntaria, respondidas uma de cada vez. Logo depois vêm as avaliações do Google, na voz de quem já foi atendido.',
+        fig: {
+          src: img('pf-advogados/04-duvidas'),
+          caption: 'As perguntas frequentes, abertas uma de cada vez.',
+          layout: 'center',
+        },
+      },
+    ],
+    result: [
+      'O site nasceu para a defesa de motoristas com a CNH suspensa. Quando o escritório passou a atuar em Direito Imobiliário, a mesma estrutura de seções (serviços, quem somos, dúvidas e avaliações) recebeu o conteúdo novo.',
+    ],
     images: [
-      { src: img('wf-odontologia/01-capa'), caption: 'A abertura: chamada curta, a foto da equipe e um único botão de contato.' },
-      { src: img('wf-odontologia/02-equipe'), caption: 'Os dentistas, as especialidades em etiquetas e os números da clínica.', layout: 'right' },
-      { src: img('wf-odontologia/03-contato'), caption: 'O fechamento leva direto ao WhatsApp de cada unidade.', layout: 'left' },
-      { src: img('wf-odontologia/04-celular'), caption: 'No celular.', layout: 'full' },
+      {
+        src: img('pf-advogados/01-capa'),
+        caption: 'A abertura: o que o escritório faz em uma frase e o botão para falar com um advogado.',
+      },
     ],
-    wall: { col: '3 / span 7', ratio: '16 / 10' },
-  },
-  {
-    slug: 'traveldone',
-    name: 'TravelDone',
-    year: '2025',
-    when: 'Março de 2025',
-    type: 'Web',
-    service: 'Landing page',
-    client: 'MetaCumprida',
-    industry: 'Infoproduto',
-    tools: 'Framer',
-    link: 'https://traveldone.framer.website',
-    summary: 'Landing page para o infoproduto TravelDone, da MetaCumprida.',
-    body: [
-      'O TravelDone é um infoproduto sobre viajar com liberdade e praticidade. A landing page precisava traduzir essa promessa em algo visual e persuasivo sem soar como propaganda genérica de curso online.',
-      'O resultado combina clareza, comunicação direta e uma estética leve, pensada para transmitir confiança antes mesmo de o visitante ler o primeiro parágrafo.',
-    ],
-    lists: [],
-    images: [
-      { src: img('traveldone/01-capa'), caption: 'A promessa logo na abertura, com a chamada para começar.' },
-      { src: img('traveldone/02-sobre'), caption: 'Quem está por trás do curso, com selos de prova: mais de 15 países e 15 anos viajando.', layout: 'right' },
-      { src: img('traveldone/03-viagens'), caption: 'As viagens dos autores, em fotos com legenda à mão.', layout: 'left' },
-      { src: img('traveldone/04-oferta'), caption: 'A oferta: o que está incluso e a garantia de sete dias lado a lado.', layout: 'center' },
-      { src: img('traveldone/05-celular'), caption: 'No celular.', layout: 'full' },
-    ],
-    wall: { col: '1 / span 4', ratio: '4 / 5', img: img('traveldone/00-parede') },
+    wall: { col: '1 / span 6', ratio: '16 / 10' },
   },
   {
     slug: 'acompanha',
@@ -240,70 +304,23 @@ export const projects: Project[] = [
     client: 'Acompanha',
     industry: 'Materiais de construção',
     tools: 'Figma',
+    role: 'Telas e fluxos do produto, do motor de créditos ao módulo de Educação',
     summary: 'SaaS que mostra para lojas de material de construção se elas estão comprando bem.',
-    body: [
-      'O produto acompanha preço e demanda do mercado regional e compara com o que a loja está de fato pagando, para mostrar se a compra dela está boa ou não. Entrei nele para desenhar as telas e os fluxos que hoje seguem para desenvolvimento. A tela de produto, por exemplo, passou por várias versões inteiras até fechar num layout de coluna única com indicadores de confiança nos dados, num vocabulário visual próximo do Linear.',
-      'Um dos módulos que desenhei transforma a Reforma Tributária brasileira em oportunidade de produto: um motor de créditos que simula a transição de PIS/COFINS/ICMS/ISS para CBS/IBS, com um simulador editável na própria tela em vez de um cenário fixo. Também fiz o módulo de Educação do produto.',
+    challenge: [
+      'Uma loja de material de construção compra o tempo todo, mas nem sempre sabe se comprou bem. O Acompanha acompanha preço e demanda do mercado regional e compara com o que a loja de fato pagou. Entrei no produto para desenhar as telas e os fluxos que hoje seguem para desenvolvimento.',
     ],
-    lists: [
+    decisions: [
       {
-        title: 'O que eu desenhei',
-        items: [
-          'Telas e fluxos principais, hoje em desenvolvimento',
-          'A tela de produto, refeita várias vezes até chegar numa coluna única com indicadores de confiança nos dados',
-          'O motor de créditos da Reforma Tributária, com um simulador editável na própria tela',
-          'O módulo de Educação',
-        ],
+        title: 'Uma coluna, com a confiança à vista',
+        text: 'A tela de produto passou por várias versões inteiras até fechar num layout de coluna única, com indicadores de confiança nos dados. Quem decide uma compra precisa saber o quanto pode confiar no número que está vendo. O vocabulário visual ficou próximo do Linear.',
+      },
+      {
+        title: 'Um simulador em vez de um cenário',
+        text: 'A Reforma Tributária troca PIS, COFINS, ICMS e ISS por CBS e IBS. Em vez de mostrar um cenário fixo dessa transição, o motor de créditos traz um simulador editável na própria tela: a loja muda as premissas e vê o efeito na hora.',
       },
     ],
     images: [],
-    wall: { col: '7 / span 6', ratio: '4 / 3', drop: '24vh' },
-  },
-  {
-    slug: 'sendeski-cafe',
-    name: 'Sendeski Café',
-    year: '2025',
-    when: 'Junho de 2025',
-    type: 'Produto (e-commerce)',
-    service: 'Protótipo',
-    client: 'Sendeski Café',
-    industry: 'Café gourmet',
-    tools: 'Framer',
-    summary: 'Site para uma marca de café gourmet brasileira, construído em torno do produto.',
-    body: [
-      'O Sendeski Café precisava de um site moderno e funcional para uma marca de café gourmet. O processo começou com análise competitiva no segmento e identificação de um público que valoriza experiências autênticas além do próprio produto.',
-      'A estrutura final prioriza os produtos premium na hierarquia visual, com um layout responsivo pensado para navegação simples entre loja, produtos e informações institucionais.',
-    ],
-    lists: [
-      {
-        title: 'Pesquisa e descoberta',
-        items: [
-          'Análise de concorrentes locais e internacionais de café gourmet',
-          'Tendências de design minimalista e storytelling visual para produtos premium',
-          'Persona: quem toma café gourmet e procura experiências autênticas e exclusivas',
-        ],
-      },
-      {
-        title: 'Wireframes e arquitetura',
-        items: [
-          'Hierarquia clara, com produtos premium e promoções em destaque',
-          'Layout responsivo, pensado para desktop e mobile',
-          'Navegação simples entre produtos, loja online e a marca',
-        ],
-      },
-    ],
-    images: [
-      {
-        src: img('sendeski/01-capa'),
-        caption: 'A home abre com o ritual do café: foto de produto em tela cheia e tipografia serifada.',
-      },
-      {
-        src: img('sendeski/02-produto'),
-        caption: 'A página de produto, com variações de tamanho, preço e selos de qualidade logo abaixo da compra.',
-        layout: 'right',
-      },
-    ],
-    wall: { col: '4 / span 6', ratio: '16 / 10' },
+    wall: { col: '8 / span 5', ratio: '4 / 3', drop: '18vh' },
   },
   {
     slug: 'von',
@@ -315,41 +332,159 @@ export const projects: Project[] = [
     client: 'Projeto pessoal',
     industry: 'Portfólio interativo',
     tools: 'TypeScript, three.js, Web Audio, Vite',
+    role: 'Projeto solo: conceito, design, código e som',
     link: 'https://galery-lemon.vercel.app',
     summary: 'Um portfólio por onde se anda: uma galeria 3D em ilhas flutuantes, com cada projeto exposto como escultura.',
-    body: [
-      'A VON é a minha galeria de trabalho em forma de lugar. Um boneco de cromo percorre ilhas brancas que flutuam sobre um mar de nuvens, e cada projeto está exposto numa sala, como escultura, com uma placa que abre o caso completo.',
-      'A referência é o CGI do começo dos anos 2000: renders de demonstração de placa de vídeo, Frutiger Aero, o Aqua dos primeiros Mac OS X e menus de DVD. O mundo é renderizado pequeno e ampliado sem suavização, com o serrilhado de render antigo; a interface por cima é o contrário, nítida, em vidro fosco, com a grade e a hierarquia do design suíço.',
+    challenge: [
+      'A pergunta era se um portfólio podia ser um lugar que se visita, e não uma página que se rola, sem pesar mais que um site comum. Na VON, um boneco de cromo percorre ilhas brancas sobre um mar de nuvens, e cada projeto está exposto numa sala, como escultura, com uma placa que abre o caso completo.',
     ],
-    lists: [
+    decisions: [
       {
-        title: 'O que tem dentro',
-        items: [
-          'Seis salas, uma por projeto, cada uma com uma escultura gerada em código',
-          'NPCs que conversam, um fliperama com jogo de verdade, uma lagoa, um mirante e um jardim com respiração guiada',
-          'Tubos de vidro que levam de uma ilha a outra',
-          'Dia e noite, cada um com a sua paleta e a sua música',
-        ],
+        title: 'Dois tempos na mesma tela',
+        text: 'O mundo é renderizado pequeno e ampliado sem suavização, com o serrilhado do CGI do começo dos anos 2000: demos de placa de vídeo, Frutiger Aero, o Aqua dos primeiros Mac OS X e menus de DVD. A interface por cima é o contrário: nítida, em vidro fosco, com a grade e a hierarquia do design suíço.',
+        fig: {
+          src: img('von/02-sala'),
+          caption: 'A sala do Acronos: a escultura de módulos e a placa com o resumo do caso.',
+          layout: 'right',
+        },
       },
       {
-        title: 'Por baixo',
-        items: [
-          'three.js com piso espelhado de verdade e renderização em pixel',
-          'Música generativa e efeitos sintetizados na hora com Web Audio, sem nenhum arquivo de áudio',
-          'Nenhuma imagem, modelo 3D ou áudio carregado: o site inteiro pesa cerca de 185 kB com gzip',
-          'Sem WebGL, a galeria abre como lista e continua navegável',
-        ],
+        title: 'Nada para baixar',
+        text: 'Nenhuma imagem, modelo 3D ou arquivo de áudio é carregado. As esculturas são geradas em código, a música é generativa e os efeitos são sintetizados na hora com Web Audio. O site inteiro pesa cerca de 185 kB com gzip.',
+        fig: {
+          src: img('von/03-passeio'),
+          video: clip('von/03-passeio'),
+          caption: 'Um passeio de dia, de noite e pelo tubo de vidro até a colina. Tudo o que aparece é gerado em código, na hora.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Andar é opcional',
+        text: 'Quem anda acha mais: NPCs que conversam, um fliperama com jogo de verdade, uma lagoa, um mirante e um jardim com respiração guiada. Quem tem pressa abre o catálogo e vai direto a qualquer sala. Sem WebGL, a galeria abre como lista e continua navegável.',
+        fig: { src: img('von/05-catalogo'), caption: 'O catálogo: os seis trabalhos e as outras salas, a um clique.', layout: 'center' },
       },
     ],
     images: [
       { src: img('von/01-capa'), caption: 'A entrada: a galeria inteira aparece ao fundo antes de você entrar.' },
-      { src: img('von/02-sala'), caption: 'A sala do Acronos: a escultura de módulos e a placa com o resumo do caso.', layout: 'right' },
-      { src: img('von/03-noite'), caption: 'De noite, o céu fica periwinkle e as luzes das ilhas acendem.', layout: 'full' },
       { src: img('von/04-caso'), caption: 'O caso completo abre em tela cheia, com as imagens num monitor.', layout: 'left' },
-      { src: img('von/05-catalogo'), caption: 'O catálogo leva direto a qualquer sala.', layout: 'center' },
       { src: img('von/06-celular'), caption: 'No celular: toque no chão para andar, pinça para o zoom.', layout: 'full' },
     ],
     wall: { col: '2 / span 10', ratio: '16 / 9' },
+  },
+
+  /* fora da parede: só no índice */
+  {
+    slug: 'wf-odontologia',
+    name: 'WF Odontologia',
+    year: '2025',
+    when: 'Março de 2025',
+    type: 'Web',
+    service: 'Website',
+    client: 'WF Odontologia',
+    industry: 'Odontologia',
+    tools: 'Framer',
+    role: 'Design e construção no Framer',
+    link: 'https://wfodontologia.framer.website',
+    summary: 'Landing page minimalista para uma clínica odontológica.',
+    challenge: [
+      'A WF Odontologia precisava de uma presença digital que passasse confiança sem encher a tela de informação. Quem chega buscando um dentista quer saber quem vai atender e como marcar.',
+    ],
+    decisions: [],
+    images: [
+      { src: img('wf-odontologia/01-capa'), caption: 'A abertura: chamada curta, a foto da equipe e um único botão de contato.' },
+      { src: img('wf-odontologia/02-equipe'), caption: 'Os dentistas, as especialidades em etiquetas e os números da clínica.', layout: 'right' },
+      { src: img('wf-odontologia/03-contato'), caption: 'O fechamento leva direto ao WhatsApp de cada unidade.', layout: 'left' },
+      {
+        src: img('wf-odontologia/04-celular'),
+        caption:
+          'No celular: a abertura, os dentistas e um WhatsApp para cada unidade. É por ele que chegam quase nove em cada dez visitas, a maioria pelo Instagram (Framer Analytics, setembro a outubro de 2026).',
+        layout: 'full',
+      },
+    ],
+  },
+  {
+    slug: 'traveldone',
+    name: 'TravelDone',
+    year: '2025',
+    when: 'Março de 2025',
+    type: 'Web',
+    service: 'Landing page',
+    client: 'MetaCumprida',
+    industry: 'Infoproduto',
+    tools: 'Framer',
+    role: 'Design e construção no Framer',
+    link: 'https://traveldone.framer.website',
+    summary: 'Landing page para o infoproduto TravelDone, da MetaCumprida.',
+    challenge: [
+      'O TravelDone é um curso sobre planejar viagens em família, criado por um casal que viaja há mais de 15 anos. A página precisava vender essa promessa sem soar como propaganda genérica de curso online.',
+    ],
+    decisions: [],
+    images: [
+      { src: img('traveldone/01-capa'), caption: 'A promessa logo na abertura, com a chamada para começar.' },
+      { src: img('traveldone/02-sobre'), caption: 'Quem está por trás do curso, com selos de prova: mais de 15 países e 15 anos viajando.', layout: 'right' },
+      { src: img('traveldone/03-viagens'), caption: 'As viagens dos autores, em fotos com legenda à mão.', layout: 'left' },
+      { src: img('traveldone/04-oferta'), caption: 'A oferta: o que está incluso e a garantia de sete dias lado a lado.', layout: 'center' },
+      { src: img('traveldone/05-celular'), caption: 'No celular: a promessa, para quem é o curso e o preço, nessa ordem.', layout: 'full' },
+    ],
+  },
+  {
+    slug: 'real',
+    name: 'Real',
+    year: '2026',
+    when: '2026',
+    type: 'Web',
+    service: 'Landing page',
+    client: 'RealPlay',
+    industry: 'Psicologia, mentoria clínica',
+    tools: 'Framer',
+    role: 'Design e construção no Framer',
+    link: 'https://somosreal.framer.website',
+    summary: 'Landing page para o Real, uma mentoria clínica para psicólogos.',
+    challenge: [
+      'O Real é uma mentoria para psicólogos que sabem o que fazer, mas precisam de ajuda no como fazer na sessão. A página precisava explicar um programa longo, com encontros ao vivo e conteúdo gravado, e levar quem se identifica até a lista de espera.',
+    ],
+    decisions: [],
+    images: [
+      { src: img('real/01-capa'), caption: 'A abertura: o que é o Real em uma frase e o caminho para a lista de espera.' },
+      {
+        src: img('real/02-projeto'),
+        caption: 'Os dois mentores e o que a mentoria inclui, de sessões comentadas a trocas em grupo.',
+        layout: 'right',
+      },
+      {
+        src: img('real/03-celular'),
+        caption:
+          'No celular: a abertura, o que é o Real e para quem é. É por ele que chegam quase nove em cada dez visitas (Framer Analytics, setembro a outubro de 2026).',
+        layout: 'full',
+      },
+    ],
+  },
+  {
+    slug: 'sendeski-cafe',
+    name: 'Sendeski Café',
+    year: '2025',
+    when: 'Junho de 2025',
+    type: 'Produto (e-commerce)',
+    service: 'Protótipo',
+    client: 'Sendeski Café',
+    industry: 'Café gourmet',
+    tools: 'Framer',
+    summary: 'Protótipo de loja para uma marca de café gourmet brasileira, construído em torno do produto.',
+    challenge: [
+      'O Sendeski Café precisava de um site para vender café gourmet. O protótipo começou por uma análise de concorrentes, locais e internacionais, e por wireframes que colocam os produtos premium no topo da hierarquia.',
+    ],
+    decisions: [],
+    images: [
+      {
+        src: img('sendeski/01-capa'),
+        caption: 'A home abre com o ritual do café: foto de produto em tela cheia e tipografia serifada.',
+      },
+      {
+        src: img('sendeski/02-produto'),
+        caption: 'A página de produto, com variações de tamanho, preço e selos de qualidade logo abaixo da compra.',
+        layout: 'right',
+      },
+    ],
   },
 ];
 

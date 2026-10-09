@@ -8,14 +8,15 @@ interface Props {
   n: number;
 }
 const { p, n } = Astro.props;
-const cover = p.wall.img ?? p.images[0]?.src;
+const wall = p.wall ?? { col: '1 / -1', ratio: '16 / 10' };
+const cover = wall.img ?? p.images[0]?.src;
 const alt = p.images[0]?.caption ?? `${p.name}: diagrama`;
 ---
 
 <a
   href={`/obras/${p.slug}/`}
   class="work"
-  style={`grid-column:${p.wall.col}; --ratio:${p.wall.ratio}; --drop:${p.wall.drop ?? '0px'}`}
+  style={`grid-column:${wall.col}; --ratio:${wall.ratio}; --drop:${wall.drop ?? '0px'}`}
   data-r
 >
   <div class="work__frame" transition:name={`obra-${p.slug}`}>

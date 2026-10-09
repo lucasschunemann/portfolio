@@ -8,7 +8,7 @@ const page = await ctx.newPage();
 for (const u of urls) {
   await page.goto(u, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  await page.addStyleTag({ content: '#__framer-badge-container{display:none!important}' });
+  await page.addStyleTag({ content: `#__framer-badge-container${process.env.HIDE ? ', ' + process.env.HIDE : ''}{display:none!important}` });
   const name = u.split('/').filter(Boolean).pop();
   for (let y = 0; y < 2400; y += 300) { await page.evaluate((yy) => scrollTo(0, yy), y); await page.waitForTimeout(250); }
   await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(1200);

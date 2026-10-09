@@ -1,30 +1,63 @@
 # Projetos: o que existe e o que falta
 
-Estado em 09/10/2026. Imagens em `src/assets/work/<slug>/`. "Ao vivo" = dá para capturar de novo com `tools/capture`.
+Estado em 09/10/2026. Imagens e vídeos em `src/assets/work/<slug>/`. "Ao vivo" = dá para capturar de novo com `tools/capture`.
 
-| Nº | Obra | Ao vivo | Imagens hoje | Texto hoje |
-|---|---|---|---|---|
-| 01 | PF Advogados | passigfirmino.adv.br | 5 (capa, serviços, quem somos, dúvidas, celular) | 2 parágrafos |
-| 02 | Acronos | acronosds.framer.website | 6 (escuro, claro, componentes, cores, botões, celular) | 2 parágrafos + 2 listas |
-| 03 | WF Odontologia | wfodontologia.framer.website | 4 | 2 parágrafos |
-| 04 | TravelDone | traveldone.framer.website | 5 | 2 parágrafos |
-| 05 | Acompanha | não (produto em desenvolvimento) | 0 (só um diagrama) | 2 parágrafos + 1 lista |
-| 06 | Sendeski Café | não (protótipo) | 2 (telas do protótipo) | 2 parágrafos + 2 listas |
-| 07 | VON | galery-lemon.vercel.app | 6 | 2 parágrafos + 2 listas |
+## Como um caso é montado
 
-## O que só o Lucas pode dar (não dá para capturar)
+Menos obras, mais fundo. Só os casos completos vão para a parede da home (os que têm `wall` em `site.ts`);
+os outros ficam no índice, com uma página curta.
 
-**Todas:** objetivo do cliente, problema de partida, o que mudou depois, resultado com número real, depoimento.
+Ordem da página da obra (cada seção some quando está vazia):
 
-- **Acompanha:** prints liberados das telas (produto, motor de créditos, simulador, módulo de Educação), ou autorização do cliente. Sem isso fica o diagrama.
-- **Acronos:** arquivo do Figma (componentes, tokens, antes e depois de um componente), o estado dos produtos antes do sistema.
-- **Sendeski Café:** exportações do Figma/Framer (wireframes, páginas internas, mobile), moodboard e análise de concorrentes citada no texto.
-- **PF Advogados, WF Odontologia, TravelDone:** processo (wireframes, versões), antes e depois do site antigo, métricas se houver.
-- **VON:** vídeo curto da galeria rodando (andando, abrindo um caso), mais salas (lagoa, mirante, fliperama, estante).
+1. **Ficha:** ano, cliente, indústria, disciplina, *papel* (o que foi meu e o que foi do time), *duração*, ferramentas.
+2. **Fig. 1:** a capa.
+3. **Desafio:** o problema de partida, em uma ou duas frases.
+4. **Decisões:** duas ou três, cada uma com título, o porquê e a figura que mostra. Substituem listas genéricas.
+5. **Processo:** uma imagem (versões, wireframe) ou um parágrafo.
+6. **Resultado:** só com dado real. Sem número, sem seção.
+7. **Hoje eu faria diferente:** opcional, uma ou duas linhas.
+8. As figuras que sobram (celular, tema claro etc.).
 
-## O que eu consigo fazer sozinho na próxima sessão
+Legenda descreve; o texto da decisão explica o porquê. Uma figura pode ser um vídeo curto (`video` na figura, feito com
+`tools/capture/video.mjs`): toca sozinho só enquanto está na tela e fica parado com controles para quem pede menos movimento.
+
+## Estado
+
+| Nº | Obra | Na parede | Ao vivo | Decisões | Processo | Resultado | Falta |
+|---|---|---|---|---|---|---|---|
+| 01 | neth! | sim | somosneth.com | 3 | não | não | telas do painel por dentro, quais decisões foram do Lucas, números |
+| 02 | Acronos | sim | acronosds.framer.website | 3 | sim | não | adoção (produtos, times), antes e depois de um componente |
+| 03 | PF Advogados | sim | passigfirmino.adv.br | 3 (uma em vídeo) | não | sim, a confirmar | duração, frase dos sócios |
+| 04 | Acompanha | sim | não | 2, só texto | não | não | sem imagens por enquanto (decidido); nº de versões, módulo de Educação |
+| 05 | VON | sim | galery-lemon.vercel.app | 3 (uma em vídeo) | não | não | reação ou número |
+| 06 | WF Odontologia | não | wfodontologia.framer.website | não | não | não | só volta para a parede com material |
+| 07 | TravelDone | não | traveldone.framer.website | não | não | não | idem |
+| 08 | Real | não | somosreal.framer.website | não | não | não | ano, frase dos mentores |
+| 09 | Sendeski Café | não | não (protótipo) | não | não | não | decidir se sai de vez |
+
+Perguntas para o Lucas, uma por obra: `material/<slug>/notas.md` (também `material/area-central/` e `material/sites/`,
+que junta WF, TravelDone, Real e Sendeski). Esta pasta não vai para o git.
+
+## Fatos levantados (para não procurar de novo)
+
+- **PF Advogados:** o Wayback Machine tem o site em dez/2024, ainda sobre defesa de CNH ("Recebeu notificação de suspensão da
+  sua CNH??"), com as mesmas seções de hoje: Home, Nossos Serviços, Quem somos?, Perguntas frequentes, Avaliações. A cópia
+  arquivada está sem CSS, então não serve como imagem de antes. O site atual é de Rio do Sul, tem 6 áreas, 10 perguntas
+  frequentes e 6 avaliações do Google.
+- **Acronos:** changelog 0.1.0 em 25/11/2024; 4 guias de estilo (cores, tipografia, tamanhos, efeitos) e 12 componentes
+  documentados (menu lateral, menu superior, área de texto, avatar, alertas, botões, tabs, controles, date picker, inputs,
+  tabelas, paginação). Referências citadas na página Sobre: Carbon e Nimbus. Dois estilos de sombra.
+- **neth!:** somosneth.com (Next.js, não Framer). Três públicos: pessoa (R$ 19,90/mês ou R$ 15,92/mês no anual), empresa
+  (NR-01; o RH vê números do time, não o histórico de cada um) e neth! Clínica (1 profissional + 14 pacientes, R$ 89,90/mês).
+  Páginas: empresas, profissionais, planos, método, sobre. Personagem: a Janeth. O aviso de cookies cobre as capturas:
+  `HIDE='[role=dialog][aria-label="Preferências de cookies"]' node capture.mjs neth https://somosneth.com`.
+- **Real (RealPlay):** mentoria clínica para psicólogos, de Toia e João; turma com início em 17/03 (2026). A página de
+  contato no ar ainda tem texto de exemplo ("X SEGUIDORES", "Lorem ipsum").
+- **Analytics (Framer, 9 set. a 9 out. de 2026):** WF 29 visitantes (25 no celular, 24 pelo Instagram); Real 18 (16 no
+  celular). No site só aparece a proporção do celular, na legenda; os números absolutos ficam fora.
+
+## O que eu consigo fazer sozinho
 
 - Recapturar qualquer site ao vivo e recompor as pranchas (`tools/capture/README.md`).
-- Capturar páginas internas dos sites no ar, rolagens longas e estados (menu, FAQ aberto).
-- Reescrever cada case com a estrutura Desafio, Solução, Processo e Resultado assim que houver o material e os fatos.
-- Novos layouts de figura, galeria, vídeos curtos (mp4/webm) e comparações antes/depois.
+- Vídeos de rolagem no celular (`video.mjs`) e cortes de gravações de tela (ffmpeg, ver o comentário em `compose.mjs`).
+- Reescrever cada caso assim que as `notas.md` tiverem respostas.

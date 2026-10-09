@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import type { Figure } from '../data/site';
 
 interface Props {
@@ -9,11 +9,27 @@ interface Props {
 const { f, n } = Astro.props;
 const layout = f.layout ?? 'full';
 const sizes = layout === 'full' ? '100vw' : '(max-width: 760px) 100vw, 66vw';
+const poster = f.video ? await getImage({ src: f.src, width: 1600, format: 'webp' }) : undefined;
 ---
 
 <figure class={`fig fig--${layout} grid`} data-r>
   <div class="fig__frame">
-    <Image src={f.src} alt={f.caption} widths={[800, 1200, 1600, 2000, 2400]} sizes={sizes} />
+    {f.video && poster ? (
+      <video
+        src={f.video}
+        poster={poster.src}
+        width={f.src.width}
+        height={f.src.height}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-label={f.caption}
+        data-clip
+      />
+    ) : (
+      <Image src={f.src} alt={f.caption} widths={[800, 1200, 1600, 2000, 2400]} sizes={sizes} />
+    )}
   </div>
   <figcaption class="fig__cap">
     <span class="mono mute">Fig. {n}</span>

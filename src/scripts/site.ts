@@ -24,6 +24,30 @@ function reveal() {
   els.forEach((el) => io!.observe(el));
 }
 
+/** Vídeos das obras tocam só enquanto estão na tela. Com movimento reduzido, ficam parados, com controles. */
+let clipIo: IntersectionObserver | null = null;
+function clips() {
+  clipIo?.disconnect();
+  const vids = document.querySelectorAll<HTMLVideoElement>('video[data-clip]');
+  if (!vids.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    vids.forEach((v) => (v.controls = true));
+    return;
+  }
+  clipIo = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        const v = e.target as HTMLVideoElement;
+        // se o navegador bloquear o autoplay (economia de bateria, por exemplo), o play fica com quem visita
+        if (e.isIntersecting) v.play().catch(() => (v.controls = document.visibilityState === 'visible'));
+        else v.pause();
+      }
+    },
+    { threshold: 0.25 },
+  );
+  vids.forEach((v) => clipIo!.observe(v));
+}
+
 /** Hora de Blumenau no cabeçalho; os dois pontos piscam a cada segundo. */
 function clock() {
   clearInterval(clockTimer);
@@ -90,6 +114,7 @@ function toTop() {
 
 document.addEventListener('astro:page-load', () => {
   reveal();
+  clips();
   clock();
   light();
   copy();
