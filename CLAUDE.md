@@ -48,4 +48,5 @@ Veja `docs/PROJETOS.md` (estado obra por obra e fatos já levantados) e as pergu
 - Sendeski não está no ar: usa as telas do protótipo.
 - O site da PF Advogados hoje é de Direito Imobiliário; nasceu para defesa de CNH (Wayback, dez/2024). Isso está no Resultado, a confirmar.
 - Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image`.
+- O rodapé dos sites novos da WF e do TravelDone ("Site por") ainda leva a lucasvon.framer.website, o portfólio antigo. Trocar quando houver domínio.
 - Há "—" em títulos e anos (`2025—26`). Na galeria VON o Lucas tirou todo "—" do copy; confirmar se vale aqui.

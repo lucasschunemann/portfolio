@@ -51,7 +51,7 @@ export const services = [
     title: 'Sites e landing pages',
     text: 'Sites institucionais e páginas de venda em Framer, com código customizado quando precisa. Claros, rápidos e publicados no seu domínio.',
     fit: 'Clínicas, escritórios, marcas e infoprodutos',
-    refs: ['pf-advogados', 'wf-odontologia', 'traveldone'],
+    refs: ['traveldone', 'wf-odontologia', 'pf-advogados'],
   },
 ];
 
@@ -237,59 +237,65 @@ export const projects: Project[] = [
     ],
     wall: { col: '9 / span 4', ratio: '4 / 5', drop: '14vh', img: img('acronos/00-parede') },
   },
+  // segunda versão, em código; a primeira (Framer, 2025) segue em traveldone.framer.website
   {
-    slug: 'pf-advogados',
-    name: 'PF Advogados',
-    year: '2024',
-    when: 'Janeiro de 2024',
+    slug: 'traveldone',
+    name: 'TravelDone',
+    year: '2026',
+    when: 'Primeira versão em 2025, a atual em 2026',
     type: 'Web',
-    service: 'Website',
-    client: 'Passig & Firmino Advogados',
-    industry: 'Advocacia, direito imobiliário',
-    tools: 'Framer',
-    role: 'Design e construção no Framer',
-    link: 'https://passigfirmino.adv.br',
-    summary: 'Site institucional para um escritório de advocacia em Rio do Sul.',
+    service: 'Landing page',
+    client: 'MetaCumprida',
+    industry: 'Infoproduto',
+    tools: 'HTML, CSS e JavaScript, na Vercel',
+    role: 'Design e desenvolvimento',
+    link: 'https://traveldone.vercel.app',
+    summary: 'Página de venda de um curso sobre planejar viagens em família.',
     challenge: [
-      'Quem procura um advogado chega com um problema e pouca vontade de ler. O site precisava passar seriedade logo na abertura e levar a pessoa até uma conversa com o escritório, sem desvios no caminho.',
+      'O TravelDone é um curso online sobre juntar dinheiro, achar promoção, usar milhas e montar roteiro, ensinado por um casal que viaja em família há mais de 15 anos. A página precisava vender sem soar como propaganda de curso: mostrar quem ensina, para quem serve e quanto custa, sem esconder nada.',
     ],
     decisions: [
       {
-        title: 'Um caminho só',
-        text: 'Todas as seções terminam no mesmo lugar: a conversa pelo WhatsApp. O botão aparece na abertura, fica fixo no canto da tela durante a rolagem e volta no fechamento. Para um escritório pequeno, é o canal que o cliente já tem aberto.',
+        title: 'Preço, acesso e garantia antes de rolar',
+        text: 'Logo abaixo do botão de compra ficam as três respostas que decidem a compra: um ano de acesso, sete dias de garantia e 10× de R$ 27,70. No celular, uma barra com o preço, a garantia e o botão acompanha a rolagem.',
         fig: {
-          src: img('pf-advogados/05-rolagem'),
-          video: clip('pf-advogados/05-rolagem'),
-          caption: 'No celular, o botão do WhatsApp acompanha a rolagem do começo ao fim.',
+          src: img('traveldone/05-celular'),
+          caption: 'No celular: a abertura, para quem é o curso e o preço. A barra com a garantia e o botão de compra fica fixa no pé da tela.',
           layout: 'full',
         },
       },
       {
-        title: 'Serviços que descrevem situações',
-        text: 'Cada uma das seis áreas de atuação ganha um cartão curto, com o nome da área e, logo abaixo, as situações em que ela entra: imóvel sem escritura, construção não averbada, conflito com o condomínio. Quem chega se reconhece na descrição antes de saber o nome técnico.',
+        title: 'As viagens da família como prova',
+        text: 'Em vez de fotos de banco de imagens, quinze viagens do casal, de Barcelona a Fortaleza, passam na horizontal enquanto a página rola, com o lugar escrito embaixo de cada foto e um contador de 01 a 15.',
         fig: {
-          src: img('pf-advogados/02-servicos'),
-          caption: 'As áreas de atuação: compra e venda, contratos, regularização, locações, posse e condomínios.',
+          src: img('traveldone/02-viagens'),
+          video: clip('traveldone/02-viagens'),
+          caption: 'A galeria de viagens: a página para e as fotos correm na horizontal.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Depoimentos com a conversa original',
+        text: 'Os dois depoimentos aparecem ao lado do print da mensagem em que o aluno escreveu. Quem lê vê de onde a frase veio.',
+        fig: {
+          src: img('traveldone/03-depoimentos'),
+          caption: 'O que os alunos disseram, cada frase com o print da conversa.',
           layout: 'right',
         },
       },
-      {
-        title: 'As dúvidas antes da ligação',
-        text: 'Dez perguntas frequentes, escritas como o cliente perguntaria, respondidas uma de cada vez. Logo depois vêm as avaliações do Google, na voz de quem já foi atendido.',
-        fig: {
-          src: img('pf-advogados/04-duvidas'),
-          caption: 'As perguntas frequentes, abertas uma de cada vez.',
-          layout: 'center',
-        },
-      },
     ],
-    result: [
-      'O site nasceu para a defesa de motoristas com a CNH suspensa. Quando o escritório passou a atuar em Direito Imobiliário, a mesma estrutura de seções (serviços, quem somos, dúvidas e avaliações) recebeu o conteúdo novo.',
-    ],
+    process: {
+      text: 'A primeira versão foi feita no Framer, em 2025. A atual foi refeita do zero em HTML, CSS e JavaScript, com o pagamento pela Hotmart.',
+    },
     images: [
       {
-        src: img('pf-advogados/01-capa'),
-        caption: 'A abertura: o que o escritório faz em uma frase e o botão para falar com um advogado.',
+        src: img('traveldone/01-capa'),
+        caption: 'A abertura: a promessa, quem ensina e, logo abaixo do botão, acesso, garantia e parcelamento.',
+      },
+      {
+        src: img('traveldone/04-preco'),
+        caption: 'O preço como um ingresso: o que vem no curso de um lado, a garantia de sete dias do outro.',
+        layout: 'center',
       },
     ],
     wall: { col: '1 / span 6', ratio: '16 / 10' },
@@ -373,58 +379,119 @@ export const projects: Project[] = [
   },
 
   /* fora da parede: só no índice */
+  // segunda versão, em código; a primeira (Framer, 2025) segue em wfodontologia.framer.website
   {
     slug: 'wf-odontologia',
     name: 'WF Odontologia',
-    year: '2025',
-    when: 'Março de 2025',
+    year: '2026',
+    when: 'Primeira versão em 2025, a atual em 2026',
     type: 'Web',
     service: 'Website',
     client: 'WF Odontologia',
     industry: 'Odontologia',
-    tools: 'Framer',
-    role: 'Design e construção no Framer',
-    link: 'https://wfodontologia.framer.website',
-    summary: 'Landing page minimalista para uma clínica odontológica.',
+    tools: 'HTML, CSS e JavaScript, na Vercel',
+    role: 'Design e desenvolvimento',
+    link: 'https://wfodondotologia.vercel.app',
+    summary: 'Site de uma clínica odontológica com duas unidades no Alto Vale do Itajaí.',
     challenge: [
-      'A WF Odontologia precisava de uma presença digital que passasse confiança sem encher a tela de informação. Quem chega buscando um dentista quer saber quem vai atender e como marcar.',
+      'A WF tem duas clínicas, em Braço do Trombudo e em Rio do Sul, e atende todas as especialidades. A primeira versão do site, feita no Framer, abria com "Encontre sua Meta.", uma frase que não dizia nada disso. A segunda precisava dizer o que a clínica faz e onde, e levar cada pessoa ao WhatsApp da unidade certa.',
     ],
-    decisions: [],
-    images: [
-      { src: img('wf-odontologia/01-capa'), caption: 'A abertura: chamada curta, a foto da equipe e um único botão de contato.' },
-      { src: img('wf-odontologia/02-equipe'), caption: 'Os dentistas, as especialidades em etiquetas e os números da clínica.', layout: 'right' },
-      { src: img('wf-odontologia/03-contato'), caption: 'O fechamento leva direto ao WhatsApp de cada unidade.', layout: 'left' },
+    decisions: [
       {
-        src: img('wf-odontologia/04-celular'),
+        title: 'O quê e onde, na primeira linha',
+        text: 'A abertura agora diz o serviço e a região: odontologia completa no Alto Vale do Itajaí, com as duas cidades logo acima. É a mesma informação do título da página, que é o que aparece na busca.',
+        fig: {
+          src: img('wf-odontologia/02-antes-depois'),
+          caption: 'À esquerda, a primeira versão, no Framer; à direita, a atual.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Todas as especialidades, sem trocar de clínica',
+        text: 'O que diferencia a clínica é atender todas as áreas, então o tratamento inteiro fica com a mesma equipe. As oito especialidades viram uma lista que abre uma de cada vez, para quem quer saber o que cada uma inclui.',
+        fig: {
+          src: img('wf-odontologia/03-especialidades'),
+          caption: 'As especialidades, da clínica geral à odontopediatria.',
+          layout: 'right',
+        },
+      },
+      {
+        title: 'Um WhatsApp para cada unidade',
+        text: 'Cada clínica tem o seu cartão, com telefone, WhatsApp e mapa, e o fechamento pede para escolher a unidade antes de abrir a conversa. No celular, o botão de agendar fica fixo no pé da tela.',
+        fig: {
+          src: img('wf-odontologia/04-clinicas'),
+          caption: 'As duas unidades, cada uma com o seu WhatsApp e o seu mapa.',
+          layout: 'left',
+        },
+      },
+    ],
+    process: {
+      text: 'A primeira versão foi feita no Framer, em 2025, e continua no ar. A segunda foi refeita do zero em HTML, CSS e JavaScript, com o texto reescrito seção por seção e um passo a passo do atendimento: contato, avaliação, plano e acompanhamento.',
+    },
+    images: [
+      { src: img('wf-odontologia/01-capa'), caption: 'A abertura: o que a clínica faz, onde fica e a nota no Google.' },
+      {
+        src: img('wf-odontologia/05-celular'),
         caption:
-          'No celular: a abertura, os dentistas e um WhatsApp para cada unidade. É por ele que chegam quase nove em cada dez visitas, a maioria pelo Instagram (Framer Analytics, setembro a outubro de 2026).',
+          'No celular, o botão de agendar acompanha a rolagem. Na versão anterior, quase nove em cada dez visitas chegavam pelo celular, a maioria pelo Instagram (Framer Analytics, setembro a outubro de 2026).',
         layout: 'full',
       },
     ],
   },
   {
-    slug: 'traveldone',
-    name: 'TravelDone',
-    year: '2025',
-    when: 'Março de 2025',
+    slug: 'pf-advogados',
+    name: 'PF Advogados',
+    year: '2024',
+    when: 'Janeiro de 2024',
     type: 'Web',
-    service: 'Landing page',
-    client: 'MetaCumprida',
-    industry: 'Infoproduto',
+    service: 'Website',
+    client: 'Passig & Firmino Advogados',
+    industry: 'Advocacia, direito imobiliário',
     tools: 'Framer',
     role: 'Design e construção no Framer',
-    link: 'https://traveldone.framer.website',
-    summary: 'Landing page para o infoproduto TravelDone, da MetaCumprida.',
+    link: 'https://passigfirmino.adv.br',
+    summary: 'Site institucional para um escritório de advocacia em Rio do Sul.',
     challenge: [
-      'O TravelDone é um curso sobre planejar viagens em família, criado por um casal que viaja há mais de 15 anos. A página precisava vender essa promessa sem soar como propaganda genérica de curso online.',
+      'Quem procura um advogado chega com um problema e pouca vontade de ler. O site precisava passar seriedade logo na abertura e levar a pessoa até uma conversa com o escritório, sem desvios no caminho.',
     ],
-    decisions: [],
+    decisions: [
+      {
+        title: 'Um caminho só',
+        text: 'Todas as seções terminam no mesmo lugar: a conversa pelo WhatsApp. O botão aparece na abertura, fica fixo no canto da tela durante a rolagem e volta no fechamento. Para um escritório pequeno, é o canal que o cliente já tem aberto.',
+        fig: {
+          src: img('pf-advogados/05-rolagem'),
+          video: clip('pf-advogados/05-rolagem'),
+          caption: 'No celular, o botão do WhatsApp acompanha a rolagem do começo ao fim.',
+          layout: 'full',
+        },
+      },
+      {
+        title: 'Serviços que descrevem situações',
+        text: 'Cada uma das seis áreas de atuação ganha um cartão curto, com o nome da área e, logo abaixo, as situações em que ela entra: imóvel sem escritura, construção não averbada, conflito com o condomínio. Quem chega se reconhece na descrição antes de saber o nome técnico.',
+        fig: {
+          src: img('pf-advogados/02-servicos'),
+          caption: 'As áreas de atuação: compra e venda, contratos, regularização, locações, posse e condomínios.',
+          layout: 'right',
+        },
+      },
+      {
+        title: 'As dúvidas antes da ligação',
+        text: 'Dez perguntas frequentes, escritas como o cliente perguntaria, respondidas uma de cada vez. Logo depois vêm as avaliações do Google, na voz de quem já foi atendido.',
+        fig: {
+          src: img('pf-advogados/04-duvidas'),
+          caption: 'As perguntas frequentes, abertas uma de cada vez.',
+          layout: 'center',
+        },
+      },
+    ],
+    result: [
+      'O site nasceu para a defesa de motoristas com a CNH suspensa. Quando o escritório passou a atuar em Direito Imobiliário, a mesma estrutura de seções (serviços, quem somos, dúvidas e avaliações) recebeu o conteúdo novo.',
+    ],
     images: [
-      { src: img('traveldone/01-capa'), caption: 'A promessa logo na abertura, com a chamada para começar.' },
-      { src: img('traveldone/02-sobre'), caption: 'Quem está por trás do curso, com selos de prova: mais de 15 países e 15 anos viajando.', layout: 'right' },
-      { src: img('traveldone/03-viagens'), caption: 'As viagens dos autores, em fotos com legenda à mão.', layout: 'left' },
-      { src: img('traveldone/04-oferta'), caption: 'A oferta: o que está incluso e a garantia de sete dias lado a lado.', layout: 'center' },
-      { src: img('traveldone/05-celular'), caption: 'No celular: a promessa, para quem é o curso e o preço, nessa ordem.', layout: 'full' },
+      {
+        src: img('pf-advogados/01-capa'),
+        caption: 'A abertura: o que o escritório faz em uma frase e o botão para falar com um advogado.',
+      },
     ],
   },
   {

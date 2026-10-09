@@ -1,7 +1,9 @@
-// Vídeo curto de rolagem no celular, montado no mesmo passe-partout das pranchas.
+// Vídeo curto de rolagem, num celular (padrão) ou num desktop (--desk), no mesmo passe-partout das pranchas.
 // Captura quadro a quadro (a rolagem fica lisa mesmo com a página pesada) e grava mp4 + pôster jpg.
 //
-//   node tools/capture/video.mjs <slug> <url> <nome> [--tint #e6e1dc] [--down 8] [--max 6000]
+//   node tools/capture/video.mjs <slug> <url> <nome> [--desk] [--tint #e6e1dc] [--down 8] [--from 0] [--max 6000]
+//
+// --from e --max limitam o trecho da página (em px CSS), por exemplo só uma galeria fixada.
 //
 // Saída: src/assets/work/<slug>/<nome>.mp4 e <nome>.jpg (o primeiro quadro, usado como pôster).
 import { chromium } from 'playwright-core';
@@ -20,17 +22,20 @@ const arg = (k, d) => {
   return i > -1 ? process.argv[i + 1] : d;
 };
 if (!slug || !url || !name) {
-  console.error('uso: node video.mjs <slug> <url> <nome> [--tint #hex] [--down segundos] [--max px]');
+  console.error('uso: node video.mjs <slug> <url> <nome> [--desk] [--tint #hex] [--down segundos] [--from px] [--max px]');
   process.exit(1);
 }
 const tint = arg('tint', '#e6e1dc');
 const down = Number(arg('down', 8)); // segundos descendo
 const maxScroll = Number(arg('max', 6000)); // até onde rolar, em px CSS
+const from = Number(arg('from', 0)); // de onde começar
+const desk = process.argv.includes('--desk');
 const fps = 30;
 
-// passe-partout 16:10 com um celular no meio, como em compose.mjs
-const W = 1920, H = 1200, PH = 980, R = 48;
-const VW = 390, VH = 844, DPR = 2;
+// passe-partout 16:10 com um celular (ou uma tela de desktop) no meio, como em compose.mjs
+const W = 1920, H = 1200;
+const [VW, VH, DPR] = desk ? [1440, 900, 2] : [390, 844, 2];
+const [PH, R] = desk ? [920, 14] : [980, 48];
 const PW = Math.round((VW / VH) * PH);
 const PX = Math.round((W - PW) / 2), PY = Math.round((H - PH) / 2 - 8);
 
@@ -40,8 +45,8 @@ const browser = await chromium.launch({ executablePath: exe, headless: true });
 const page = await browser.newPage({
   viewport: { width: VW, height: VH },
   deviceScaleFactor: DPR,
-  isMobile: true,
-  hasTouch: true,
+  isMobile: !desk,
+  hasTouch: !desk,
 });
 await page.goto(url, { waitUntil: 'networkidle' });
 await page.addStyleTag({ content: 'html{scroll-behavior:auto!important} ::-webkit-scrollbar{display:none}' });
@@ -53,20 +58,20 @@ for (let y = 0; y <= end; y += 400) {
   await page.evaluate((y) => scrollTo(0, y), y);
   await page.waitForTimeout(120);
 }
-await page.evaluate(() => scrollTo(0, 0));
+await page.evaluate((y) => scrollTo(0, y), from);
 await page.waitForTimeout(1200);
 
-// linha do tempo: parado no topo, desce, parado no fim, volta ao topo (o loop fecha sem corte)
+// linha do tempo: parado no começo, desce, parado no fim, volta ao começo (o loop fecha sem corte)
 const hold = 0.8, up = 1.6;
 const ramp = (s, f) => {
   const n = Math.round(s * fps);
   return Array.from({ length: n }, (_, i) => f(ease(i / (n - 1))));
 };
 const timeline = [
-  ...Array(Math.round(hold * fps)).fill(0),
-  ...ramp(down, (t) => t * end),
+  ...Array(Math.round(hold * fps)).fill(from),
+  ...ramp(down, (t) => from + t * (end - from)),
   ...Array(Math.round(hold * fps)).fill(end),
-  ...ramp(up, (t) => (1 - t) * end),
+  ...ramp(up, (t) => end - t * (end - from)),
 ];
 
 // fundo com sombra e moldura, feito uma vez só

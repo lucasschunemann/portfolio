@@ -61,6 +61,25 @@ async function phones(srcs, bg, file, opts = {}) {
   await place(items, W, H, bg, file);
 }
 
+/** duas capturas de desktop lado a lado (antes e depois) */
+async function pair(a, b, bg, file) {
+  const W = 2400, H = 1500, gap = 80;
+  const w = (W - 2 * 160 - gap) / 2;
+  const [ma, mb] = await Promise.all([sharp(a).metadata(), sharp(b).metadata()]);
+  const h = Math.round((ma.height / ma.width) * w);
+  const y = (H - h) / 2 - 8;
+  await place(
+    [
+      { src: a, w, h: Math.round((ma.height / ma.width) * w), x: 160, y, r: 14 },
+      { src: b, w, h: Math.round((mb.height / mb.width) * w), x: 160 + w + gap, y, r: 14 },
+    ],
+    W,
+    H,
+    bg,
+    file,
+  );
+}
+
 /** tela cheia, sem passe-partout */
 async function raw(src, file, w = 2400) {
   await sharp(src).resize({ width: w }).jpeg({ quality: 86, mozjpeg: true, chromaSubsampling: '4:4:4' }).toFile(file);
@@ -76,7 +95,7 @@ const tint = {
   neth: '#ece3de',
   acronos: '#e9e6e8',
   'pf-advogados': '#e6e1dc',
-  'wf-odontologia': '#ece5e4',
+  'wf-odontologia': '#e5ded7',
   traveldone: '#e9e5ee',
   real: '#e2e7eb',
   sendeski: '#e9e2d8',
@@ -117,21 +136,25 @@ const jobs = {
     await desk(p('pf-advogados', 'd-03.png'), tint['pf-advogados'], o('pf-advogados', '04-duvidas.jpg'));
     // 05-rolagem (vídeo): node video.mjs pf-advogados https://passigfirmino.adv.br 05-rolagem --down 10 --max 99999
   },
+  // segunda versão, em código (2026); a primeira, em Framer, segue em wfodontologia.framer.website
   async 'wf-odontologia'() {
     clear('wf-odontologia');
-    await desk(p('wf-odontologia', 'd-00.png'), tint['wf-odontologia'], o('wf-odontologia', '01-capa.jpg'));
-    await desk(p('wf-odontologia', 'd-01.png'), tint['wf-odontologia'], o('wf-odontologia', '02-equipe.jpg'));
-    await desk(p('wf-odontologia', 'd-02.png'), tint['wf-odontologia'], o('wf-odontologia', '03-contato.jpg'));
-    await phones([p('wf-odontologia', 'm-00.png'), p('wf-odontologia', 'm-01.png'), p('wf-odontologia', 'm-03.png')], tint['wf-odontologia'], o('wf-odontologia', '04-celular.jpg'));
+    const wf = (f) => p('wf-odontologia', f);
+    await desk(wf('d-00.png'), tint['wf-odontologia'], o('wf-odontologia', '01-capa.jpg'));
+    await pair(wf('x-antes.png'), wf('d-00.png'), tint['wf-odontologia'], o('wf-odontologia', '02-antes-depois.jpg'));
+    await desk(wf('d-03.png'), tint['wf-odontologia'], o('wf-odontologia', '03-especialidades.jpg'));
+    await desk(wf('d-05.png'), tint['wf-odontologia'], o('wf-odontologia', '04-clinicas.jpg'));
+    await phones([wf('m-00.png'), wf('m-04.png'), wf('m-07.png')], tint['wf-odontologia'], o('wf-odontologia', '05-celular.jpg'));
   },
+  // segunda versão, em código (2026)
   async traveldone() {
     clear('traveldone');
-    await desk(p('traveldone', 'd-00.png'), tint.traveldone, o('traveldone', '01-capa.jpg'));
-    await desk(p('traveldone', 'd-01.png'), tint.traveldone, o('traveldone', '02-sobre.jpg'));
-    await desk(p('traveldone', 'd-05.png'), tint.traveldone, o('traveldone', '03-viagens.jpg'));
-    await desk(p('traveldone', 'd-03.png'), tint.traveldone, o('traveldone', '04-oferta.jpg'));
-    await phones([p('traveldone', 'm-00.png'), p('traveldone', 'm-03.png'), p('traveldone', 'm-05.png')], tint.traveldone, o('traveldone', '05-celular.jpg'));
-    await phones([p('traveldone', 'm-00.png')], tint.traveldone, o('traveldone', '00-parede.jpg'), { W: 1600, H: 2000, ph: 1640, r: 64 });
+    const td = (f) => p('traveldone', f);
+    await desk(td('d-00.png'), tint.traveldone, o('traveldone', '01-capa.jpg'));
+    // 02-viagens (vídeo): node video.mjs traveldone https://traveldone.vercel.app 02-viagens --desk --tint '#e9e5ee' --from 4545 --max 8899 --down 9
+    await desk(td('d-11.png'), tint.traveldone, o('traveldone', '03-depoimentos.jpg'));
+    await desk(td('x-preco.png'), '#2a1430', o('traveldone', '04-preco.jpg'), { alpha: 0.4, line: 'rgba(255,255,255,0.08)' });
+    await phones([td('m-00.png'), td('m-03.png'), td('m-08.png')], tint.traveldone, o('traveldone', '05-celular.jpg'));
   },
   async real() {
     clear('real');

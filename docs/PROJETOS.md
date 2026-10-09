@@ -27,11 +27,11 @@ Legenda descreve; o texto da decisão explica o porquê. Uma figura pode ser um 
 |---|---|---|---|---|---|---|---|
 | 01 | neth! | sim | somosneth.com | 3 | não | não | telas do painel por dentro, quais decisões foram do Lucas, números |
 | 02 | Acronos | sim | acronosds.framer.website | 3 | sim | não | adoção (produtos, times), antes e depois de um componente |
-| 03 | PF Advogados | sim | passigfirmino.adv.br | 3 (uma em vídeo) | não | sim, a confirmar | duração, frase dos sócios |
+| 03 | TravelDone | sim | traveldone.vercel.app | 3 (uma em vídeo) | sim | não | número de vendas ou alunos, se puder |
 | 04 | Acompanha | sim | não | 2, só texto | não | não | sem imagens por enquanto (decidido); nº de versões, módulo de Educação |
 | 05 | VON | sim | galery-lemon.vercel.app | 3 (uma em vídeo) | não | não | reação ou número |
-| 06 | WF Odontologia | não | wfodontologia.framer.website | não | não | não | só volta para a parede com material |
-| 07 | TravelDone | não | traveldone.framer.website | não | não | não | idem |
+| 06 | WF Odontologia | não | wfodondotologia.vercel.app | 3 (antes e depois) | sim | não | analytics da versão nova |
+| 07 | PF Advogados | não | passigfirmino.adv.br | 3 (uma em vídeo) | não | sim, a confirmar | saiu da parede em 09/10/2026 (o Lucas preferiu um site mais bonito) |
 | 08 | Real | não | somosreal.framer.website | não | não | não | ano, frase dos mentores |
 | 09 | Sendeski Café | não | não (protótipo) | não | não | não | decidir se sai de vez |
 
@@ -51,9 +51,13 @@ que junta WF, TravelDone, Real e Sendeski). Esta pasta não vai para o git.
   (NR-01; o RH vê números do time, não o histórico de cada um) e neth! Clínica (1 profissional + 14 pacientes, R$ 89,90/mês).
   Páginas: empresas, profissionais, planos, método, sobre. Personagem: a Janeth. O aviso de cookies cobre as capturas:
   `HIDE='[role=dialog][aria-label="Preferências de cookies"]' node capture.mjs neth https://somosneth.com`.
+- **WF e TravelDone, segunda versão (09/10/2026):** refeitos em HTML, CSS e JavaScript (com Lenis), na Vercel. As
+  versões em Framer seguem no ar (wfodontologia.framer.website, traveldone.framer.website); a abertura antiga da WF está
+  em `02-antes-depois`. A galeria do TravelDone é fixada (`#viagens`, de 4545 a 8899 px em 1440x900) e vira o vídeo
+  `02-viagens`. O rodapé dos dois ainda leva ao portfólio antigo (lucasvon.framer.website).
 - **Real (RealPlay):** mentoria clínica para psicólogos, de Toia e João; turma com início em 17/03 (2026). A página de
   contato no ar ainda tem texto de exemplo ("X SEGUIDORES", "Lorem ipsum").
-- **Analytics (Framer, 9 set. a 9 out. de 2026):** WF 29 visitantes (25 no celular, 24 pelo Instagram); Real 18 (16 no
+- **Analytics (Framer, 9 set. a 9 out. de 2026):** WF 29 visitantes (25 no celular, 24 pelo Instagram; medido na versão em Framer); Real 18 (16 no
   celular). No site só aparece a proporção do celular, na legenda; os números absolutos ficam fora.
 
 ## O que eu consigo fazer sozinho

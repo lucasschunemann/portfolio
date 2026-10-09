@@ -12,7 +12,7 @@ Scripts Node (ESM) que tiram capturas de sites no ar e montam as pranchas das ob
 | `von2.mjs`, `von3.mjs` | exemplos de captura do mundo 3D da VON (clica, abre caso, troca para noite) |
 | `sheet.mjs` | folhas de contato (`sheet-<slug>.jpg`) para escolher as melhores capturas |
 | `compose.mjs [slug...]` | monta as pranchas em passe-partout e grava em `src/assets/work/`; com slugs, só as dessas obras |
-| `video.mjs <slug> <url> <nome>` | vídeo curto de rolagem no celular, no mesmo passe-partout; grava `<nome>.mp4` e o pôster `<nome>.jpg` em `src/assets/work/<slug>/` |
+| `video.mjs <slug> <url> <nome>` | vídeo curto de rolagem no celular (ou no desktop, com `--desk`), no mesmo passe-partout; `--from`/`--max` limitam o trecho. Grava `<nome>.mp4` e o pôster `<nome>.jpg` em `src/assets/work/<slug>/` |
 | `og.mjs` | gera `public/og.jpg` a partir da home (precisa do dev server ligado) |
 
 Fluxo: `node capture.mjs <slug> <url>` → `node sheet.mjs` → olhar as folhas → ajustar e rodar `node compose.mjs`.
