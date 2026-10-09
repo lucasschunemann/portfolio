@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Work from '../components/Work.astro';
-import { bio, clients, facts, mailto, pad, process, projects, services, site, whatsapp } from '../data/site';
+import { bio, budgets, clients, facts, mailto, pad, process, projects, services, site, whatsapp } from '../data/site';
 import { getArticles } from '../data/articles';
 import rio from '../assets/retratos/rio.jpg';
 import copoPerto from '../assets/retratos/copo-perto.jpg';
@@ -31,7 +31,7 @@ const onWall = projects.filter((p) => p.wall);
       </span>
     </h1>
     <div class="intro__meta" data-r style="--d:160ms">
-      <a class="pill pill--solid" href={mailto()}>Iniciar um projeto →</a>
+      <a class="pill pill--solid" href="#contato">Iniciar um projeto →</a>
       <a class="pill" href="#obras">Ver obras</a>
       <span class="intro__status"><i class="dot" aria-hidden="true"></i>{site.status}</span>
     </div>
@@ -71,8 +71,8 @@ const onWall = projects.filter((p) => p.wall);
           <p class="mute">{s.text}</p>
           <dl class="service__meta">
             <div>
-              <dt class="mono mute">Ideal para</dt>
-              <dd>{s.fit}</dd>
+              <dt class="mono mute">A partir de</dt>
+              <dd>{s.from}</dd>
             </div>
             <div>
               <dt class="mono mute">Veja</dt>
@@ -194,13 +194,24 @@ const onWall = projects.filter((p) => p.wall);
         <p class="contact__lead">
           Vamos tirar o seu projeto do papel.{' '}
           <span class="mute">
-            Conte em poucas linhas o que você precisa, em que ponto está e qual é o prazo. Eu respondo com os próximos
-            passos.
+            Conte em poucas linhas o que você precisa, em que ponto está, o prazo e quanto pretende investir. Eu respondo
+            com os próximos passos.
           </span>
         </p>
+        <fieldset class="budget" data-budget>
+          <legend class="mono mute">Orçamento previsto</legend>
+          <div class="budget__opts">
+            {budgets.map((b) => (
+              <label class="pill choice">
+                <input type="radio" name="orcamento" value={b} />
+                {b}
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <div class="contact__actions">
-          <a class="pill pill--solid" href={mailto()}>Escrever um e-mail →</a>
-          <a class="pill" href={whatsapp()} target="_blank" rel="noopener">Chamar no WhatsApp ↗</a>
+          <a class="pill pill--solid" href={mailto()} data-mail>Escrever um e-mail →</a>
+          <a class="pill" href={whatsapp()} target="_blank" rel="noopener" data-wa>Chamar no WhatsApp ↗</a>
           <button type="button" class="pill" data-copy={site.email} data-copy-label="E-mail copiado ✓">Copiar e-mail</button>
         </div>
         <p class="contact__links">

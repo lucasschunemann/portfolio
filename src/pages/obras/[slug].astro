@@ -135,6 +135,16 @@ const personal = p.client === 'Projeto pessoal';
       </section>
     )}
 
+    {p.quote && (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>Depoimento</p>
+        <blockquote class="quote" data-r>
+          <p>“{p.quote.text}”</p>
+          <footer class="mute">{p.quote.author}, {p.quote.role}</footer>
+        </blockquote>
+      </section>
+    )}
+
     {p.retro && (
       <section class="room__text grid">
         <p class="room__k mono mute" data-r>Hoje eu faria diferente</p>

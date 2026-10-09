@@ -11,13 +11,16 @@ O visual é de catálogo de exposição: cubo branco, texto pequeno, imagens com
 - `npm run build` precisa passar. Teste desktop (1440) e celular (390) sem rolagem horizontal.
 - **Pergunte antes de subir para a `main`.** Commits em português, com o trailer de co-autoria.
 - Texto do site em pt-BR. Grafia: **"o neth!"** (masculino). Instagram: `_vonhelden`.
-- Não invente métricas nem depoimentos. Só números reais (os "4+ anos, 15+ projetos" vêm do Framer, não verificados).
+- Não invente métricas nem depoimentos. Só números reais ("5+ anos" confirmado pelo Lucas em 09/10/2026). Depoimento só com as palavras da pessoa, nome e permissão (`material/depoimentos.md`).
+- Tema: segue o aparelho. No rodapé, "Luz: automática / acesa / apagada" (chave `tema` no localStorage). O botão é `button[data-tema]`: o `<html>` também tem `data-luz`.
 
 ## Mapa
 
 | O quê | Onde |
 |---|---|
 | Todo o conteúdo (bio, serviços, processo, obras, legendas, layout das figuras) | `src/data/site.ts` |
+| E-mail, WhatsApp e faixas de orçamento do contato | `src/data/contato.ts` |
+| Preço de referência por serviço ("A partir de") e status da agenda | `services` e `site.status` em `src/data/site.ts` |
 | Textos/artigos (um Markdown cada) | `src/content/artigos/*.md` |
 | Imagens e vídeos das obras (pranchas já compostas) | `src/assets/work/<slug>/` |
 | Retratos | `src/assets/retratos/` |
@@ -45,8 +48,11 @@ Veja `docs/PROJETOS.md` (estado obra por obra e fatos já levantados) e as pergu
 
 - Textos que eu escrevi e o Lucas ainda deve revisar: abertura, serviços, etapas, "Vamos tirar o seu projeto do papel", "Eu respondo com os próximos passos", e os desafios e decisões de cada caso (a lista do que confirmar está em cada `notas.md`).
 - Acompanha fica sem imagens por enquanto (decidido em 09/10/2026): diagrama e duas decisões em texto.
-- Sendeski não está no ar: usa as telas do protótipo.
 - O site da PF Advogados hoje é de Direito Imobiliário; nasceu para defesa de CNH (Wayback, dez/2024). Isso está no Resultado, a confirmar.
+- Status "Próxima vaga: dezembro" (viagem do Lucas). Trocar quando dezembro chegar.
+- Preços de referência (09/10/2026): sites a partir de R$ 2 mil, produto e UX/UI R$ 8 mil, design systems R$ 15 mil. Faixas do contato: até R$ 5 mil, R$ 5 a 15 mil, acima de R$ 15 mil.
+- Depoimentos: o Lucas foi elogiado em todos os projetos; o da Área Central é do PM Rodrigo de Moraes. Falta o texto de cada um (`material/depoimentos.md`).
+- E-mail e domínio próprios: o Lucas vai mandar.
 - Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image`.
 - O rodapé dos sites novos da WF e do TravelDone ("Site por") ainda leva a lucasvon.framer.website, o portfólio antigo. Trocar quando houver domínio.
 - Há "—" em títulos e anos (`2025—26`). Na galeria VON o Lucas tirou todo "—" do copy; confirmar se vale aqui.

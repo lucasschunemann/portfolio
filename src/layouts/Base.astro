@@ -38,18 +38,26 @@ const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Produc
     <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)" />
     <script is:inline>
-      // tema: escolha salva > preferência do sistema; reaplicado a cada troca de página
+      // tema: segue o aparelho (e acompanha quando ele muda); "acesa" ou "apagada" só se a pessoa escolher no rodapé
       (function () {
+        var dark = matchMedia('(prefers-color-scheme: dark)');
         var apply = function (doc) {
           var t = null;
           try {
-            t = localStorage.getItem('luz');
+            t = localStorage.getItem('tema');
           } catch (e) {}
-          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'apagada' : 'acesa';
+          if (t !== 'acesa' && t !== 'apagada') t = dark.matches ? 'apagada' : 'acesa';
           doc.documentElement.dataset.luz = t;
           doc.documentElement.classList.add('js');
         };
+        try {
+          // chave antiga, gravada por cliques sem querer: todo mundo volta a seguir o aparelho
+          localStorage.removeItem('luz');
+        } catch (e) {}
         apply(document);
+        dark.addEventListener('change', function () {
+          apply(document);
+        });
         document.addEventListener('astro:before-swap', function (e) {
           apply(e.newDocument);
         });

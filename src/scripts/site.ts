@@ -1,4 +1,5 @@
 // Comportamentos pequenos. Rodam a cada página, inclusive depois das View Transitions.
+import { mailto, whatsapp } from '../data/contato';
 
 let clockTimer = 0;
 let io: IntersectionObserver | null = null;
@@ -62,21 +63,35 @@ function clock() {
   clockTimer = window.setInterval(tick, 15_000);
 }
 
-/** "Luz: acesa / apagada" troca o tema, com uma transição suave quando o navegador permite. */
+/**
+ * "Luz" no rodapé: automática (segue o aparelho), acesa ou apagada, nessa ordem.
+ * O botão é procurado pela tag: o <html> também tem data-luz, e foi assim que o clique já pegou a página inteira.
+ */
+const modes = ['automática', 'acesa', 'apagada'] as const;
+type Mode = (typeof modes)[number];
 function light() {
-  const btn = document.querySelector<HTMLButtonElement>('[data-luz]');
-  const label = document.querySelector<HTMLElement>('[data-luz-label]');
+  const btn = document.querySelector<HTMLButtonElement>('button[data-tema]');
+  const label = btn?.querySelector<HTMLElement>('[data-tema-label]');
   if (!btn || !label) return;
   const root = document.documentElement;
-  label.textContent = root.dataset.luz === 'apagada' ? 'apagada' : 'acesa';
+  const saved = (): Mode => {
+    try {
+      const t = localStorage.getItem('tema');
+      if (t === 'acesa' || t === 'apagada') return t;
+    } catch {}
+    return 'automática';
+  };
+  label.textContent = saved();
   btn.onclick = () => {
-    const nextLuz = root.dataset.luz === 'apagada' ? 'acesa' : 'apagada';
+    const next = modes[(modes.indexOf(saved()) + 1) % modes.length];
+    const auto = matchMedia('(prefers-color-scheme: dark)').matches ? 'apagada' : 'acesa';
     const apply = () => {
-      root.dataset.luz = nextLuz;
-      label.textContent = nextLuz;
       try {
-        localStorage.setItem('luz', nextLuz);
+        if (next === 'automática') localStorage.removeItem('tema');
+        else localStorage.setItem('tema', next);
       } catch {}
+      root.dataset.luz = next === 'automática' ? auto : next;
+      label.textContent = next;
     };
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (document.startViewTransition && !reduce) {
@@ -85,6 +100,19 @@ function light() {
     } else {
       apply();
     }
+  };
+}
+
+/** A faixa de orçamento escolhida no contato vai junto no e-mail e no WhatsApp. */
+function budget() {
+  const box = document.querySelector<HTMLFieldSetElement>('[data-budget]');
+  const mail = document.querySelector<HTMLAnchorElement>('[data-mail]');
+  const wa = document.querySelector<HTMLAnchorElement>('[data-wa]');
+  if (!box) return;
+  box.onchange = (e) => {
+    const value = (e.target as HTMLInputElement).value;
+    if (mail) mail.href = mailto('Novo projeto', value);
+    if (wa) wa.href = whatsapp(value);
   };
 }
 
@@ -117,6 +145,7 @@ document.addEventListener('astro:page-load', () => {
   clips();
   clock();
   light();
+  budget();
   copy();
   toTop();
 });

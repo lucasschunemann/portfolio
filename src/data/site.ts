@@ -1,36 +1,22 @@
 import type { ImageMetadata } from 'astro';
+import { email, phone } from './contato';
+
+export { budgets, mailto, whatsapp } from './contato';
 
 export const site = {
   name: 'Lucas Schünemann',
   role: 'Product designer, UX/UI',
   city: 'Blumenau, Brasil',
   coords: '26°55′S 49°04′W',
-  email: 'lucas.vhschunemann@gmail.com',
-  /** só dígitos, com DDI e DDD */
-  whatsapp: '5547992396261',
+  email,
+  whatsapp: phone,
   linkedin: 'https://www.linkedin.com/in/lucas-von-helden/',
   instagram: 'https://www.instagram.com/_vonhelden/',
-  status: 'Agenda aberta para novos projetos',
+  /** troque quando a data passar */
+  status: 'Próxima vaga: dezembro',
   description:
     'Lucas Schünemann, product designer em Blumenau. Design de produtos digitais, design systems e sites para startups, SaaS e negócios, do discovery à interface pronta para desenvolvimento.',
 };
-
-/** Link de e-mail já com assunto e um roteiro curto, para facilitar o primeiro contato. */
-export const mailto = (subject = 'Novo projeto') => {
-  const body = [
-    'Olá, Lucas!',
-    '',
-    'O que eu preciso:',
-    'Em que ponto o projeto está:',
-    'Prazo ideal:',
-    '',
-  ].join('\n');
-  return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-};
-
-/** Conversa no WhatsApp já com uma primeira frase. */
-export const whatsapp = () =>
-  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Olá, Lucas! Vi o seu portfólio e quero conversar sobre um projeto.')}`;
 
 export const clients = ['Área Central', 'neth!', 'Acompanha', 'PF Advogados', 'WF Odontologia', 'RealPlay', 'MetaCumprida', 'Sendeski Café'];
 
@@ -38,19 +24,20 @@ export const services = [
   {
     title: 'Produto e UX/UI',
     text: 'Telas e fluxos para SaaS e plataformas de dados. Pesquisa, arquitetura de informação, protótipos e interface em alta fidelidade no Figma, prontos para o time desenvolver.',
-    fit: 'Startups e times de produto',
+    /** preço de referência: ancora o valor e já filtra quem chega */
+    from: 'R$ 8 mil',
     refs: ['neth', 'acompanha', 'acronos'],
   },
   {
     title: 'Design systems',
     text: 'Componentes, tokens e documentação para manter vários produtos consistentes e parar de redecidir o que já foi decidido.',
-    fit: 'Empresas com mais de um produto ou time',
+    from: 'R$ 15 mil',
     refs: ['acronos'],
   },
   {
     title: 'Sites e landing pages',
-    text: 'Sites institucionais e páginas de venda em Framer, com código customizado quando precisa. Claros, rápidos e publicados no seu domínio.',
-    fit: 'Clínicas, escritórios, marcas e infoprodutos',
+    text: 'Sites institucionais e páginas de venda, no Framer ou direto em código. Claros, rápidos e publicados no seu domínio.',
+    from: 'R$ 2 mil',
     refs: ['traveldone', 'wf-odontologia', 'pf-advogados'],
   },
 ];
@@ -72,7 +59,7 @@ export const bio = [
 export const facts: [string, string][] = [
   ['Hoje', 'CPO e co-fundador no neth!'],
   ['Também', 'UX/UI designer na Área Central'],
-  ['Experiência', '4+ anos, 15+ projetos'],
+  ['Experiência', '5+ anos'],
   ['Formação', 'Interaction Design Foundation'],
   ['Base', 'Blumenau, Santa Catarina (GMT-3)'],
 ];
@@ -122,6 +109,8 @@ export type Project = {
   process?: { text: string; figs?: Figure[] };
   /** só com dado real; sem isso a seção não aparece */
   result?: string[];
+  /** as palavras de quem contratou, como foram ditas, com nome e permissão */
+  quote?: { text: string; author: string; role: string };
   /** o que eu faria diferente hoje */
   retro?: string;
   /** a capa (a primeira) e as figuras que não pertencem a nenhuma decisão */
@@ -523,33 +512,6 @@ export const projects: Project[] = [
         caption:
           'No celular: a abertura, o que é o Real e para quem é. É por ele que chegam quase nove em cada dez visitas (Framer Analytics, setembro a outubro de 2026).',
         layout: 'full',
-      },
-    ],
-  },
-  {
-    slug: 'sendeski-cafe',
-    name: 'Sendeski Café',
-    year: '2025',
-    when: 'Junho de 2025',
-    type: 'Produto (e-commerce)',
-    service: 'Protótipo',
-    client: 'Sendeski Café',
-    industry: 'Café gourmet',
-    tools: 'Framer',
-    summary: 'Protótipo de loja para uma marca de café gourmet brasileira, construído em torno do produto.',
-    challenge: [
-      'O Sendeski Café precisava de um site para vender café gourmet. O protótipo começou por uma análise de concorrentes, locais e internacionais, e por wireframes que colocam os produtos premium no topo da hierarquia.',
-    ],
-    decisions: [],
-    images: [
-      {
-        src: img('sendeski/01-capa'),
-        caption: 'A home abre com o ritual do café: foto de produto em tela cheia e tipografia serifada.',
-      },
-      {
-        src: img('sendeski/02-produto'),
-        caption: 'A página de produto, com variações de tamanho, preço e selos de qualidade logo abaixo da compra.',
-        layout: 'right',
       },
     ],
   },

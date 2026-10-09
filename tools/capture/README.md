@@ -19,4 +19,3 @@ Fluxo: `node capture.mjs <slug> <url>` → `node sheet.mjs` → olhar as folhas 
 
 Atenção: `compose.mjs` **apaga e recria** as pranchas das obras listadas nele (os vídeos e os pôsteres ficam). Antes de rodar,
 confira a lista no topo do arquivo e lembre de que o resultado precisa bater com os nomes usados em `src/data/site.ts`.
-O Sendeski é montado a partir de `material/sendeski/*-original.jpg`.

@@ -98,7 +98,6 @@ const tint = {
   'wf-odontologia': '#e5ded7',
   traveldone: '#e9e5ee',
   real: '#e2e7eb',
-  sendeski: '#e9e2d8',
   von: '#d9e6f2',
 };
 
@@ -161,14 +160,6 @@ const jobs = {
     await desk(p('real', 'd-00.png'), tint.real, o('real', '01-capa.jpg'));
     await desk(p('real', 'd-01.png'), tint.real, o('real', '02-projeto.jpg'));
     await phones([p('real', 'm-00.png'), p('real', 'm-01.png'), p('real', 'm-06.png')], tint.real, o('real', '03-celular.jpg'));
-  },
-  // sem site no ar: telas do protótipo, guardadas em material/sendeski
-  async sendeski() {
-    const s1 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/01-original.jpg');
-    const s2 = fs.readFileSync('/Users/lucas/Developer/portfolio/material/sendeski/02-original.jpg');
-    clear('sendeski');
-    await desk(s1, tint.sendeski, o('sendeski', '01-capa.jpg'), { maxW: 1600 });
-    await desk(s2, tint.sendeski, o('sendeski', '02-produto.jpg'), { maxW: 1600 });
   },
   async von() {
     await raw(p('von', 'd-00-intro.png'), o('von', '01-capa.jpg'));

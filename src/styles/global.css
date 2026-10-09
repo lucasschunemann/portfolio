@@ -737,6 +737,19 @@ html.luz-switch::view-transition-old(root) {
   letter-spacing: -0.012em;
   margin-bottom: 0.3em;
 }
+.quote {
+  grid-column: 4 / span 6;
+}
+.quote p {
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  text-wrap: pretty;
+}
+.quote footer {
+  margin-top: 14px;
+  font-size: 13px;
+}
 .items {
   grid-column: 4 / span 6;
   border-bottom: 1px solid var(--line);
@@ -756,6 +769,7 @@ html.luz-switch::view-transition-old(root) {
 @media (max-width: 760px) {
   .room__k,
   .prose,
+  .quote,
   .items {
     grid-column: 1 / -1;
   }
@@ -1206,7 +1220,40 @@ h1.intro__text {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 28px;
+}
+/* orçamento: escolhas em pílula; a marcada fica cheia */
+.budget {
+  border: 0;
+  min-width: 0;
   margin-top: 36px;
+}
+.budget legend {
+  margin-bottom: 12px;
+}
+.budget__opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.choice {
+  position: relative;
+  cursor: pointer;
+}
+.choice input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.choice:has(input:checked) {
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: none;
+}
+.choice:has(input:focus-visible) {
+  outline: 1px solid var(--fg);
+  outline-offset: 3px;
 }
 .contact__links {
   align-items: baseline;

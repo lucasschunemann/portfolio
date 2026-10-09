@@ -15,8 +15,9 @@ Ordem da página da obra (cada seção some quando está vazia):
 4. **Decisões:** duas ou três, cada uma com título, o porquê e a figura que mostra. Substituem listas genéricas.
 5. **Processo:** uma imagem (versões, wireframe) ou um parágrafo.
 6. **Resultado:** só com dado real. Sem número, sem seção.
-7. **Hoje eu faria diferente:** opcional, uma ou duas linhas.
-8. As figuras que sobram (celular, tema claro etc.).
+7. **Depoimento:** as palavras de quem contratou, com nome, cargo e permissão. Sem texto, não aparece.
+8. **Hoje eu faria diferente:** opcional, uma ou duas linhas.
+9. As figuras que sobram (celular, tema claro etc.).
 
 Legenda descreve; o texto da decisão explica o porquê. Uma figura pode ser um vídeo curto (`video` na figura, feito com
 `tools/capture/video.mjs`): toca sozinho só enquanto está na tela e fica parado com controles para quem pede menos movimento.
@@ -33,10 +34,10 @@ Legenda descreve; o texto da decisão explica o porquê. Uma figura pode ser um 
 | 06 | WF Odontologia | não | wfodondotologia.vercel.app | 3 (antes e depois) | sim | não | analytics da versão nova |
 | 07 | PF Advogados | não | passigfirmino.adv.br | 3 (uma em vídeo) | não | sim, a confirmar | saiu da parede em 09/10/2026 (o Lucas preferiu um site mais bonito) |
 | 08 | Real | não | somosreal.framer.website | não | não | não | ano, frase dos mentores |
-| 09 | Sendeski Café | não | não (protótipo) | não | não | não | decidir se sai de vez |
 
 Perguntas para o Lucas, uma por obra: `material/<slug>/notas.md` (também `material/area-central/` e `material/sites/`,
-que junta WF, TravelDone, Real e Sendeski). Esta pasta não vai para o git.
+que junta WF, TravelDone e Real). Depoimentos: `material/depoimentos.md`.
+O Sendeski saiu do site em 09/10/2026 (protótipo, fora do ar); as telas originais seguem em `material/sendeski/`. Esta pasta não vai para o git.
 
 ## Fatos levantados (para não procurar de novo)
 
