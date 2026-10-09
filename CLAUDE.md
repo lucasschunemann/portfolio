@@ -51,7 +51,7 @@ Veja `docs/PROJETOS.md` (estado obra por obra e fatos já levantados) e as pergu
 - O site da PF Advogados hoje é de Direito Imobiliário; nasceu para defesa de CNH (Wayback, dez/2024). Isso está no Resultado, a confirmar.
 - Status "Próxima vaga: dezembro" (viagem do Lucas). Trocar quando dezembro chegar.
 - Preços de referência (09/10/2026): sites a partir de R$ 2 mil, produto e UX/UI R$ 8 mil, design systems R$ 15 mil. Faixas do contato: até R$ 5 mil, R$ 5 a 15 mil, acima de R$ 15 mil.
-- Depoimentos: o Lucas foi elogiado em todos os projetos; o da Área Central é do PM Rodrigo de Moraes. Falta o texto de cada um (`material/depoimentos.md`).
+- Depoimentos (09/10/2026): rascunhados por mim e aprovados um a um pelas pessoas, em seis obras (o neth! fica sem, por ser a empresa do Lucas). Novo depoimento segue o mesmo caminho: rascunho em `material/depoimentos.md`, aprovação, publicação.
 - E-mail e domínio próprios: o Lucas vai mandar.
 - Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image`.
 - O rodapé dos sites novos da WF e do TravelDone ("Site por") ainda leva a lucasvon.framer.website, o portfólio antigo. Trocar quando houver domínio.

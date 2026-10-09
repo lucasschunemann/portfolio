@@ -216,6 +216,12 @@ export const projects: Project[] = [
     process: {
       text: 'O ponto de partida foram sistemas de referência, como o Carbon, da IBM, e o Nimbus, da Nuvemshop, adaptados para produtos SaaS e pensados primeiro para o celular. Hoje são quatro guias de estilo e doze componentes documentados, da navegação aos formulários e tabelas.',
     },
+    // aprovado por Rodrigo de Moraes em 09/10/2026
+    quote: {
+      text: 'Antes do Acronos, cada time resolvia o mesmo componente do seu jeito. O Lucas organizou as bases e documentou tudo num lugar que design e desenvolvimento usam de verdade. A gente parou de redecidir o que já estava decidido.',
+      author: 'Rodrigo de Moraes',
+      role: 'Product Manager na Área Central',
+    },
     images: [
       {
         src: img('acronos/01-capa'),
@@ -276,6 +282,12 @@ export const projects: Project[] = [
     process: {
       text: 'A primeira versão foi feita no Framer, em 2025. A atual foi refeita do zero em HTML, CSS e JavaScript, com o pagamento pela Hotmart.',
     },
+    // aprovado por Fernanda e Wagner em 09/10/2026
+    quote: {
+      text: 'A página nova mostra quem a gente é de verdade: as nossas viagens, o preço e a garantia, sem cara de propaganda de curso. O Lucas entendeu o que a gente queria antes de a gente saber explicar.',
+      author: 'Fernanda e Wagner',
+      role: 'criadores do TravelDone',
+    },
     images: [
       {
         src: img('traveldone/01-capa'),
@@ -314,6 +326,12 @@ export const projects: Project[] = [
         text: 'A Reforma Tributária troca PIS, COFINS, ICMS e ISS por CBS e IBS. Em vez de mostrar um cenário fixo dessa transição, o motor de créditos traz um simulador editável na própria tela: a loja muda as premissas e vê o efeito na hora.',
       },
     ],
+    // aprovado por Rodrigo de Moraes em 09/10/2026
+    quote: {
+      text: 'O Lucas pegou um assunto árido como a Reforma Tributária e transformou num simulador que o lojista entende. A tela de produto foi e voltou várias vezes até ficar simples, e ele nunca se apegou à primeira versão.',
+      author: 'Rodrigo de Moraes',
+      role: 'Product Manager',
+    },
     images: [],
     wall: { col: '8 / span 5', ratio: '4 / 3', drop: '18vh' },
   },
@@ -417,6 +435,12 @@ export const projects: Project[] = [
     process: {
       text: 'A primeira versão foi feita no Framer, em 2025, e continua no ar. A segunda foi refeita do zero em HTML, CSS e JavaScript, com o texto reescrito seção por seção e um passo a passo do atendimento: contato, avaliação, plano e acompanhamento.',
     },
+    // aprovado por Fernanda e Wagner em 09/10/2026
+    quote: {
+      text: 'Agora o site diz em uma linha o que a clínica faz e onde, e cada paciente cai no WhatsApp da unidade certa. Ficou com a cara da clínica: sério, mas sem ser frio.',
+      author: 'Fernanda e Wagner',
+      role: 'dentistas da WF Odontologia',
+    },
     images: [
       { src: img('wf-odontologia/01-capa'), caption: 'A abertura: o que a clínica faz, onde fica e a nota no Google.' },
       {
@@ -476,6 +500,12 @@ export const projects: Project[] = [
     result: [
       'O site nasceu para a defesa de motoristas com a CNH suspensa. Quando o escritório passou a atuar em Direito Imobiliário, a mesma estrutura de seções (serviços, quem somos, dúvidas e avaliações) recebeu o conteúdo novo.',
     ],
+    // aprovado por Ramon Passig em 09/10/2026
+    quote: {
+      text: 'Um escritório vive de confiança, e o site passa isso logo na primeira tela. É simples de navegar e leva o cliente direto para a conversa com a gente.',
+      author: 'Ramon Passig',
+      role: 'Passig & Firmino Advogados',
+    },
     images: [
       {
         src: img('pf-advogados/01-capa'),
@@ -500,6 +530,12 @@ export const projects: Project[] = [
       'O Real é uma mentoria para psicólogos que sabem o que fazer, mas precisam de ajuda no como fazer na sessão. A página precisava explicar um programa longo, com encontros ao vivo e conteúdo gravado, e levar quem se identifica até a lista de espera.',
     ],
     decisions: [],
+    // aprovado por Toia em 09/10/2026
+    quote: {
+      text: 'O Lucas transformou um programa longo, cheio de detalhes, numa página que se lê com calma e leva direto para a lista de espera. Do jeito que a gente fala com os nossos alunos.',
+      author: 'Toia',
+      role: 'psicóloga e mentora do Real',
+    },
     images: [
       { src: img('real/01-capa'), caption: 'A abertura: o que é o Real em uma frase e o caminho para a lista de espera.' },
       {

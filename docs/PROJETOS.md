@@ -36,7 +36,7 @@ Legenda descreve; o texto da decisão explica o porquê. Uma figura pode ser um 
 | 08 | Real | não | somosreal.framer.website | não | não | não | ano, frase dos mentores |
 
 Perguntas para o Lucas, uma por obra: `material/<slug>/notas.md` (também `material/area-central/` e `material/sites/`,
-que junta WF, TravelDone e Real). Depoimentos: `material/depoimentos.md`.
+que junta WF, TravelDone e Real). Depoimentos aprovados em Acronos, TravelDone, Acompanha, WF, PF e Real (`material/depoimentos.md`).
 O Sendeski saiu do site em 09/10/2026 (protótipo, fora do ar); as telas originais seguem em `material/sendeski/`. Esta pasta não vai para o git.
 
 ## Fatos levantados (para não procurar de novo)
