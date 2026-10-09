@@ -1,0 +1,35 @@
+import { chromium } from 'playwright-core';
+const exe = process.env.CHROME_PATH || '/Users/lucas/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const out = new URL('./out/von/', import.meta.url).pathname;
+const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--ignore-gpu-blocklist', '--enable-gpu', '--use-angle=metal'] });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2, locale: 'pt-BR' });
+const page = await ctx.newPage();
+const shot = (n) => page.screenshot({ path: out + n + '.png' });
+await page.goto('https://galery-lemon.vercel.app', { waitUntil: 'networkidle', timeout: 60000 });
+await page.waitForTimeout(4000);
+await page.getByText('Entrar sem som').click();
+await page.waitForTimeout(4500);
+await shot('d-01-atrio');
+const labels = await page.$$eval('[aria-label], [title]', (els) => els.map((e) => e.getAttribute('aria-label') || e.getAttribute('title')).filter(Boolean).slice(0, 60));
+console.log('labels:', JSON.stringify(labels));
+await page.keyboard.press('2');
+await page.waitForTimeout(1800);
+await shot('d-02-danca');
+await page.getByRole('button', { name: 'Catálogo' }).first().click();
+await page.waitForTimeout(1800);
+await shot('d-03-catalogo');
+await page.getByText('Acronos', { exact: false }).first().click().catch((e) => console.log('cat click', e.message));
+await page.waitForTimeout(8000);
+await shot('d-04-placa');
+const caso = page.getByText('Abrir o caso completo');
+if (await caso.count()) {
+  await caso.first().click();
+  await page.waitForTimeout(3500);
+  await shot('d-05-caso');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(1200);
+}
+await page.keyboard.press('Escape');
+await page.waitForTimeout(1500);
+await shot('d-06-sala');
+await browser.close();

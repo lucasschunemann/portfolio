@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core';
+const exe = process.env.CHROME_PATH || '/Users/lucas/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--hide-scrollbars'] });
+const ctx = await browser.newContext({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 2, colorScheme: 'light', reducedMotion: 'reduce' });
+await ctx.addInitScript(() => localStorage.setItem('luz', 'acesa'));
+const page = await ctx.newPage();
+await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+await page.addStyleTag({ content: '.intro{padding-top:120px!important} .top__place{visibility:hidden}' });
+await page.waitForTimeout(1500);
+await page.screenshot({ path: '/Users/lucas/Developer/portfolio/public/og.png' });
+await browser.close();

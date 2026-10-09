@@ -1,0 +1,15 @@
+import { chromium } from 'playwright-core';
+const exe = process.env.CHROME_PATH || '/Users/lucas/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const out = new URL('./out/acronos/', import.meta.url).pathname;
+const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--hide-scrollbars'] });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2, colorScheme: 'dark' });
+const page = await ctx.newPage();
+await page.goto('https://acronosds.framer.website/', { waitUntil: 'networkidle' });
+await page.waitForTimeout(2500);
+await page.addStyleTag({ content: '#__framer-badge-container{display:none!important}' });
+await page.screenshot({ path: out + 'x-dark-auto.png' });
+await page.goto('https://acronosds.framer.website/projects/cores', { waitUntil: 'networkidle' });
+await page.waitForTimeout(2500);
+await page.addStyleTag({ content: '#__framer-badge-container{display:none!important}' });
+await page.screenshot({ path: out + 'x-dark-cores.png' });
+await browser.close();
