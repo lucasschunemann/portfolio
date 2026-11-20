@@ -14,7 +14,7 @@ const budgetLine = (budget = '') => (budget ? `Orçamento: ${budget}` : 'Orçame
 
 /** Link de e-mail já com assunto e um roteiro curto, orçamento incluído. */
 export const mailto = (subject = 'Novo projeto', budget = '') => {
-  const body = ['Olá, Lucas!', '', 'O que eu preciso:', 'Em que ponto o projeto está:', 'Prazo ideal:', budgetLine(budget), ''].join(
+  const body = ['Olá!', '', 'O que eu preciso:', 'Em que ponto o projeto está:', 'Prazo ideal:', budgetLine(budget), ''].join(
     '\n',
   );
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -23,5 +23,5 @@ export const mailto = (subject = 'Novo projeto', budget = '') => {
 /** Conversa no WhatsApp já com uma primeira frase e o orçamento. */
 export const whatsapp = (budget = '') =>
   `https://wa.me/${phone}?text=${encodeURIComponent(
-    `Olá, Lucas! Vi o site da Quieto e quero conversar sobre um projeto. ${budgetLine(budget)} `.trimEnd(),
+    `Olá! Vi o site da Quieto e quero conversar sobre um projeto. ${budgetLine(budget)} `.trimEnd(),
   )}`;

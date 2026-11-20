@@ -9,8 +9,9 @@ O visual continua de catálogo de exposição: cubo branco, texto pequeno, image
 `brand/` tem o kit da Quieto. Do guia (`brand/QUIETO-BRAND.md`) vale **só a marca**: logo, cores e fontes.
 **Não aplicar** o layout, a estrutura de páginas, a especificação de componentes nem os exemplos de copy do guia
 (decisão do Lucas em 20/11/2026: a versão anterior do site era melhor, e frases como "sem pressa" ou "produto que precisa de calma" estão vetadas).
-- Cores vêm de `brand/tokens.css` (importado em `Base.astro`); `global.css` aponta `--bg`, `--fg`, `--mute`, `--panel`, `--ok` para elas.
-- Logo em `src/components/Logo.astro`; a barra baixa fica sálvia no tema escuro.
+- Cores vêm de `brand/tokens.css` (importado em `Base.astro`); `global.css` aponta `--bg`, `--fg`, `--mute`, `--panel`, `--ok` para elas. No site, o índigo (`--q-indigo` #33456B, `--q-indigo-claro` #9DB0D1) ocupa o lugar do musgo e da sálvia (20/11/2026).
+- Voz de estúdio: o Lucas aparece só na ficha do Sobre ("Fundador"), na assinatura dos textos e nos depoimentos (que não se reescrevem). Sem retratos na home.
+- Logo em `src/components/Logo.astro`; a barra baixa fica índigo claro no tema escuro.
 - Motion com as barras do símbolo (o Lucas curte motion design): campo interativo `src/components/Quiet.astro` (abertura abaixa, rodapé sobe), status com três barras, fios de seção desenhando, cortina nas imagens e linha do tempo no "Como funciona" (`steps()` em `site.ts`). Tudo para com movimento reduzido.
 
 ## Como trabalhar aqui

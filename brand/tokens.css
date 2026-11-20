@@ -12,6 +12,8 @@
   --q-grafite: #141412;  /* texto e blocos de peso, nunca preto puro */
   --q-musgo:   #5F6E49;  /* ação, links, seleção */
   --q-salvia:  #9DB876;  /* acento em fundo escuro, barra baixa do símbolo. Nunca texto sobre claro */
+  --q-indigo:        #33456B;  /* no site, ocupa o lugar do musgo (20/11/2026) */
+  --q-indigo-claro:  #9DB0D1;  /* no site, ocupa o lugar da sálvia (20/11/2026) */
   --q-argila:  #C7B299;  /* superfície quente */
   --q-nevoa:   #D9DCD3;  /* superfície fria */
   --q-papel:   #FBFAF7;  /* superfície de interface (telas, formulários, portal) */

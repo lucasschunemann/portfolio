@@ -5,7 +5,7 @@ export { budgets, mailto, whatsapp } from './contato';
 
 export const site = {
   name: 'Quieto',
-  /** quem desenha cada projeto; assina os textos */
+  /** aparece só na ficha do Sobre e na assinatura dos textos (escritos em primeira pessoa) */
   founder: 'Lucas Schünemann',
   role: 'Estúdio de design de produto',
   city: 'Blumenau, Brasil',
@@ -51,10 +51,10 @@ export const process = [
 ];
 
 export const bio = [
-  'A Quieto é o estúdio de Lucas Schünemann, product designer há mais de cinco anos. Ele desenha cada projeto, da pesquisa ao handoff, e por isso a gente pega poucos clientes por vez.',
-  'Lucas é co-fundador e CPO do neth!, uma startup de saúde e bem-estar digital, onde cuida da direção de produto, da prototipação em Figma, do roadmap e do time de desenvolvimento.',
-  'Na Área Central, como UX/UI designer, liderou a criação de um design system multiplataforma que unificou padrões visuais e de interação entre vários produtos, encurtando o caminho do design até o desenvolvimento. Também reestruturou o fluxo de visualização de documentos de uma plataforma complexa, reduzindo atrito nas telas principais e aumentando a conclusão das tarefas.',
-  'No estúdio, a maior parte dos projetos são plataformas de dados B2B e sites.',
+  'A Quieto é um estúdio de design de produto em Blumenau. Acompanhamos cada projeto da pesquisa ao handoff, e por isso pegamos poucos clientes por vez.',
+  'No neth!, startup de saúde e bem-estar digital, cuidamos da direção de produto, da prototipação em Figma, do roadmap e do time de desenvolvimento.',
+  'Na Área Central, criamos um design system multiplataforma que unificou padrões visuais e de interação entre vários produtos, encurtando o caminho do design até o desenvolvimento. Também reestruturamos o fluxo de visualização de documentos de uma plataforma complexa, reduzindo atrito nas telas principais e aumentando a conclusão das tarefas.',
+  'A maior parte dos projetos são plataformas de dados B2B e sites.',
 ];
 
 export const facts: [string, string][] = [

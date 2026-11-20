@@ -1,12 +1,9 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Work from '../components/Work.astro';
 import Quiet from '../components/Quiet.astro';
 import { bio, budgets, clients, facts, mailto, pad, process, projects, services, site, whatsapp } from '../data/site';
 import { getArticles } from '../data/articles';
-import perfil from '../assets/retratos/perfil.jpg';
-import copo from '../assets/retratos/copo.jpg';
 
 const articles = await getArticles();
 const featuredArticles = articles.filter((a) => a.data.featured);
@@ -21,7 +18,7 @@ const onWall = projects.filter((p) => p.wall);
     <h1 class="intro__text" data-r style="--d:80ms">
       Desenhamos produtos digitais e sites que as pessoas entendem de primeira.{' '}
       <span class="mute">
-        A Quieto é o estúdio de design de Lucas Schünemann, em Blumenau. Ajudamos startups, SaaS e negócios a sair da
+        A Quieto é um estúdio de design em Blumenau. Ajudamos startups, SaaS e negócios a sair da
         ideia e chegar numa interface clara, pronta para desenvolvimento ou já publicada.
       </span>
     </h1>
@@ -130,16 +127,6 @@ const onWall = projects.filter((p) => p.wall);
     <header class="block__head grid" data-r>
       <h2 id="sobre-t">Sobre</h2>
     </header>
-    <div class="diptych grid">
-      <figure class="diptych__a" data-r>
-        <Image src={perfil} alt="Lucas de perfil, olhando um rio, com morros e prédios ao fundo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 50vw, 30vw" />
-        <figcaption class="mono mute">Retrato, I</figcaption>
-      </figure>
-      <figure class="diptych__b" data-r style="--d:120ms">
-        <Image src={copo} alt="Lucas de boné, bebendo de um copo, diante de casas em estilo enxaimel" widths={[480, 800]} sizes="(max-width: 760px) 50vw, 22vw" />
-        <figcaption class="mono mute">Retrato, II</figcaption>
-      </figure>
-    </div>
     <div class="about grid">
       <div class="about__text" data-r>
         <p class="about__lead">{bio[0]}</p>

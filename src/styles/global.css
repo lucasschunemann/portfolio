@@ -9,7 +9,7 @@
   --mute: var(--neutro-400);
   --line: color-mix(in srgb, var(--fg) 12%, transparent);
   --panel: var(--neutro-100);
-  --ok: var(--q-musgo);
+  --ok: var(--q-indigo);
   --logo-low: currentColor;
 
   --sans: 'Host Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
@@ -25,8 +25,8 @@ html[data-luz='apagada'] {
   --fg: var(--q-perola);
   --mute: var(--neutro-400);
   --panel: var(--neutro-900);
-  --ok: var(--q-salvia);
-  --logo-low: var(--q-salvia);
+  --ok: var(--q-indigo-claro);
+  --logo-low: var(--q-indigo-claro);
 }
 
 /* ==========================================================================
@@ -993,37 +993,6 @@ html.luz-switch::view-transition-old(root) {
   }
 }
 
-.diptych {
-  align-items: start;
-  margin-bottom: clamp(72px, 14vh, 160px);
-}
-.diptych figure {
-  display: grid;
-  gap: 10px;
-}
-.diptych img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  background: var(--panel);
-}
-.diptych__a {
-  grid-column: 4 / span 4;
-}
-.diptych__b {
-  grid-column: 9 / span 3;
-  margin-top: clamp(80px, 22vh, 260px);
-}
-@media (max-width: 760px) {
-  .diptych__a {
-    grid-column: 1 / span 2;
-  }
-  .diptych__b {
-    grid-column: 3 / span 2;
-    margin-top: 64px;
-  }
-}
-
 /* ==========================================================================
    Botões
    ========================================================================== */
@@ -1441,14 +1410,12 @@ h1.intro__text {
 
 /* imagens: entram como uma cortina subindo, em vez de só aparecer */
 .js .work[data-r] .work__frame,
-.js .fig[data-r] .fig__frame,
-.js .diptych figure[data-r] img {
+.js .fig[data-r] .fig__frame {
   clip-path: inset(100% 0 0 0);
   transition: clip-path 1.3s var(--ease) calc(var(--d, 0ms) + 0.1s);
 }
 .js .work[data-r].in .work__frame,
-.js .fig[data-r].in .fig__frame,
-.js .diptych figure[data-r].in img {
+.js .fig[data-r].in .fig__frame {
   clip-path: inset(0 0 0 0);
 }
 
@@ -1483,8 +1450,7 @@ h1.intro__text {
 @media (prefers-reduced-motion: reduce) {
   .js .block__head::before,
   .js .work[data-r] .work__frame,
-  .js .fig[data-r] .fig__frame,
-  .js .diptych figure[data-r] img {
+  .js .fig[data-r] .fig__frame {
     scale: 1 1;
     clip-path: none;
     transition: none;
