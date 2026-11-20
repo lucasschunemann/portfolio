@@ -264,7 +264,7 @@ html.luz-switch::view-transition-old(root) {
    ========================================================================== */
 .intro {
   padding-top: clamp(120px, 24vh, 260px);
-  padding-bottom: clamp(120px, 22vh, 240px);
+  padding-bottom: clamp(96px, 16vh, 180px);
 }
 .intro__text {
   grid-column: 4 / span 7;
@@ -281,21 +281,6 @@ html.luz-switch::view-transition-old(root) {
   margin-top: 36px;
   font-size: 13px;
   align-items: baseline;
-}
-.dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: var(--ok);
-  vertical-align: 1px;
-  animation: breathe 3.2s ease-in-out infinite;
-}
-@keyframes breathe {
-  50% {
-    opacity: 0.35;
-  }
 }
 @media (max-width: 760px) {
   .intro {
@@ -980,39 +965,31 @@ html.luz-switch::view-transition-old(root) {
 /* ==========================================================================
    Retratos
    ========================================================================== */
-.portrait {
-  grid-column: 1 / span 2;
-  grid-row: 1 / span 2;
-  align-self: start;
-  position: relative;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  background: var(--panel);
-  margin-top: 0.35em;
+/* campo de barras da abertura (src/components/Quiet.astro) */
+.quiet {
+  grid-column: 1 / -1;
+  height: clamp(200px, 34vh, 380px);
+  margin-top: clamp(72px, 14vh, 160px);
+  touch-action: pan-y;
 }
-.portrait img {
-  position: absolute;
-  inset: 0;
+.quiet svg {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
-/* no hover, a outra foto entra devagar */
-.portrait__alt {
-  opacity: 0;
-  transition: opacity 0.9s var(--ease);
+.quiet rect {
+  fill: var(--fg);
 }
-.portrait:hover .portrait__alt {
-  opacity: 1;
+.quiet .quiet__last {
+  fill: var(--ok);
 }
 .intro {
   align-items: start;
 }
 @media (max-width: 760px) {
-  .portrait {
-    grid-column: 1 / span 2;
-    grid-row: auto;
-    margin: 0 0 32px;
+  .quiet {
+    height: 180px;
+    margin-top: 64px;
   }
 }
 
@@ -1122,7 +1099,6 @@ h1.intro__text {
 .clients {
   align-items: baseline;
   padding-bottom: clamp(96px, 16vh, 180px);
-  margin-top: calc(-1 * clamp(40px, 8vh, 100px));
 }
 .clients > p {
   grid-column: 1 / span 3;
@@ -1403,4 +1379,117 @@ h1.intro__text {
 }
 .diagram--compact .d-m {
   font-size: 22px;
+}
+
+/* ==========================================================================
+   Movimento com as barras da Quieto
+   ========================================================================== */
+
+/* status: três barras respirando, a última na cor de ação (no lugar da bolinha) */
+.dot,
+.top__cta .dot,
+.block__head .dot {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: auto;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 0;
+  background: none;
+  vertical-align: -1px;
+  animation: none;
+}
+.dot i {
+  width: 2.5px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: 50% 100%;
+  animation: q-eq 1.6s var(--ease-inout) infinite;
+}
+.dot i:nth-child(2) {
+  height: 80%;
+  animation-delay: 0.2s;
+}
+.dot i:nth-child(3) {
+  height: 60%;
+  background: var(--ok);
+  animation-delay: 0.4s;
+}
+
+/* fios de seção: desenham da esquerda para a direita quando o título entra */
+.js .block__head {
+  position: relative;
+  border-top-color: transparent;
+}
+.js .block__head::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+  transform-origin: 0 50%;
+  scale: 0 1;
+  transition: scale 1.4s var(--ease) 0.1s;
+}
+.js .block__head.in::before {
+  scale: 1 1;
+}
+
+/* imagens: entram como uma cortina subindo, em vez de só aparecer */
+.js .work[data-r] .work__frame,
+.js .fig[data-r] .fig__frame,
+.js .diptych figure[data-r] img {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.3s var(--ease) calc(var(--d, 0ms) + 0.1s);
+}
+.js .work[data-r].in .work__frame,
+.js .fig[data-r].in .fig__frame,
+.js .diptych figure[data-r].in img {
+  clip-path: inset(0 0 0 0);
+}
+
+/* como funciona: o fio de cada etapa enche conforme a rolagem (--p vem do site.ts) */
+.steps li {
+  position: relative;
+}
+.steps li::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--fg);
+  transform-origin: 0 50%;
+  scale: var(--p, 0) 1;
+}
+.steps li h3 {
+  transition: opacity var(--dur-base) var(--ease);
+}
+.js .steps li:not(.on) h3 {
+  opacity: 0.4;
+}
+
+/* rodapé: campo de barras que sobe com o cursor */
+.foot__bars {
+  height: clamp(96px, 16vh, 168px);
+  margin: clamp(24px, 6vh, 64px) var(--pad) 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .block__head::before,
+  .js .work[data-r] .work__frame,
+  .js .fig[data-r] .fig__frame,
+  .js .diptych figure[data-r] img {
+    scale: 1 1;
+    clip-path: none;
+    transition: none;
+  }
+  .js .steps li:not(.on) h3 {
+    opacity: 1;
+  }
 }

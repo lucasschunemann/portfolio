@@ -140,7 +140,53 @@ function toTop() {
   });
 }
 
+/** Como funciona: o fio de cada etapa enche conforme a seção passa pela tela. */
+let stepsOff: (() => void) | null = null;
+function steps() {
+  stepsOff?.();
+  stepsOff = null;
+  const list = document.querySelector<HTMLElement>('[data-steps]');
+  if (!list) return;
+  const items = [...list.children] as HTMLElement[];
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    items.forEach((li) => {
+      li.style.setProperty('--p', '1');
+      li.classList.add('on');
+    });
+    return;
+  }
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    const r = list.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // 0 quando o topo da lista chega a 85% da tela; 1 quando ela chega a 35%
+    const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.5)));
+    // empilhadas (celular), cada etapa enche quando ela mesma passa; lado a lado, uma depois da outra
+    const stacked = items.length > 1 && items[1].offsetTop > items[0].offsetTop;
+    items.forEach((li, i) => {
+      const own = stacked
+        ? Math.min(1, Math.max(0, (vh * 0.85 - li.getBoundingClientRect().top) / (vh * 0.3)))
+        : Math.min(1, Math.max(0, p * items.length - i));
+      li.style.setProperty('--p', own.toFixed(3));
+      li.classList.toggle('on', own > 0.5);
+    });
+  };
+  const onScroll = () => {
+    if (!raf) raf = requestAnimationFrame(update);
+  };
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  stepsOff = () => {
+    cancelAnimationFrame(raf);
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+  };
+}
+
 document.addEventListener('astro:page-load', () => {
+  steps();
   reveal();
   clips();
   clock();

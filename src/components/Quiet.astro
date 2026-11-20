@@ -1,0 +1,170 @@
+---
+/*
+  Campo de barras. As barras são as do símbolo da Quieto (pontas redondas, alinhadas pela base).
+  - mode "quiet" (abertura): descem da esquerda para a direita; perto do cursor abaixam, como volume baixando.
+  - mode "rise" (rodapé): ficam baixas; perto do cursor sobem. Sem cursor (celular), uma onda lenta passa sozinha.
+  O cursor vale na seção inteira em volta do campo. Com movimento reduzido, fica parado.
+*/
+interface Props {
+  mode?: 'quiet' | 'rise';
+  class?: string;
+}
+const { mode = 'quiet', class: cls } = Astro.props;
+---
+
+<div class:list={['quiet', `quiet--${mode}`, cls]} data-quiet={mode} aria-hidden="true">
+  <svg></svg>
+</div>
+
+<script>
+  type Bar = { el: SVGRectElement; base: number; h: number; phase: number };
+
+  let stops: (() => void)[] = [];
+  const NS = 'http://www.w3.org/2000/svg';
+
+  function field(box: HTMLElement) {
+    const svg = box.querySelector('svg');
+    if (!svg) return;
+    const rise = box.dataset.quiet === 'rise';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let bars: Bar[] = [];
+    let W = 0;
+    let H = 0;
+    let step = 0;
+    let bw = 0;
+    let pointer: number | null = null; // x do cursor dentro do campo
+    let raf = 0;
+    let visible = false;
+    let born = -1; // a entrada começa quando o campo aparece pela primeira vez
+
+    const build = () => {
+      W = box.clientWidth;
+      H = box.clientHeight;
+      if (!W || !H) return;
+      const n = Math.max(14, Math.round(W / (W < 640 ? 24 : 38)));
+      step = W / n;
+      bw = Math.min(step * 0.42, 14);
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.replaceChildren();
+      bars = Array.from({ length: n }, (_, i) => {
+        const el = document.createElementNS(NS, 'rect');
+        el.setAttribute('x', String(i * step + (step - bw) / 2));
+        el.setAttribute('width', String(bw));
+        el.setAttribute('rx', String(bw / 2));
+        // a última barra leva a cor de ação, como a barra baixa do símbolo
+        if (i === n - 1) el.classList.add('quiet__last');
+        svg.appendChild(el);
+        const t = i / (n - 1);
+        // abertura: de quase inteira até um quarto · rodapé: baixas, quase planas
+        const base = rise ? Math.max(bw * 1.4, H * (0.16 - t * 0.06)) : H * (1 - t * 0.72);
+        return { el, base, h: reduce ? base : bw, phase: i * 0.45 };
+      });
+      draw();
+    };
+
+    const draw = () => {
+      for (const b of bars) {
+        const h = Math.min(H, Math.max(bw, b.h));
+        b.el.setAttribute('y', String(H - h));
+        b.el.setAttribute('height', String(h));
+      }
+    };
+
+    const near = (x: number, i: number, spread: number) => {
+      const d = (i + 0.5) * step - x;
+      return Math.exp(-(d * d) / (2 * spread * spread));
+    };
+
+    const frame = (t: number) => {
+      raf = 0;
+      if (!visible) return;
+      if (born < 0) born = t;
+      const sec = t / 1000;
+      const since = t - born;
+      const spread = Math.max(90, W * 0.07);
+      // sem cursor, no rodapé, uma onda lenta atravessa o campo
+      const ghost = rise && pointer === null ? (Math.sin(sec * 0.35) * 0.5 + 0.5) * W : null;
+      bars.forEach((b, i) => {
+        // entrada: nascem da esquerda para a direita
+        const grow = Math.min(1, Math.max(0, (since - i * 18) / 700));
+        let target = b.base * (1 - Math.pow(1 - grow, 3));
+        // respiração leve, para o campo não parecer congelado
+        target *= 1 + Math.sin(sec * 0.9 + b.phase) * (rise ? 0.08 : 0.025);
+        if (rise) {
+          const k = pointer !== null ? near(pointer, i, spread) : ghost !== null ? near(ghost, i, spread * 1.6) * 0.55 : 0;
+          target += (H * 0.92 - target) * k * grow;
+        } else if (pointer !== null) {
+          target *= 1 - near(pointer, i, spread) * 0.82;
+        }
+        b.h += (target - b.h) * 0.12;
+      });
+      draw();
+      // a respiração mantém o laço vivo enquanto o campo está na tela
+      raf = requestAnimationFrame(frame);
+    };
+
+    const kick = () => {
+      if (!raf && visible && !reduce) raf = requestAnimationFrame(frame);
+    };
+    const onMove = (e: PointerEvent) => {
+      pointer = e.clientX - box.getBoundingClientRect().left;
+      kick();
+    };
+    const onLeave = () => {
+      pointer = null;
+      kick();
+    };
+    const onUp = (e: PointerEvent) => e.pointerType === 'touch' && onLeave();
+
+    build();
+    const ro = new ResizeObserver(() => {
+      const keep = bars.length;
+      build();
+      // depois da primeira entrada, redimensionar não refaz a animação
+      if (keep || reduce) bars.forEach((b) => (b.h = b.base));
+      draw();
+    });
+    ro.observe(box);
+
+    if (reduce) {
+      bars.forEach((b) => (b.h = b.base));
+      draw();
+      stops.push(() => ro.disconnect());
+      return;
+    }
+
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) kick();
+    });
+    io.observe(box);
+
+    const zone = box.closest<HTMLElement>('section, footer') ?? box;
+    zone.addEventListener('pointermove', onMove);
+    zone.addEventListener('pointerleave', onLeave);
+    // no celular, ao soltar o dedo ou rolar a página, as barras voltam
+    zone.addEventListener('pointerup', onUp);
+    zone.addEventListener('pointercancel', onLeave);
+
+    stops.push(() => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      zone.removeEventListener('pointermove', onMove);
+      zone.removeEventListener('pointerleave', onLeave);
+      zone.removeEventListener('pointerup', onUp);
+      zone.removeEventListener('pointercancel', onLeave);
+    });
+  }
+
+  function stopAll() {
+    stops.forEach((s) => s());
+    stops = [];
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    stopAll();
+    document.querySelectorAll<HTMLElement>('[data-quiet]').forEach(field);
+  });
+  document.addEventListener('astro:before-swap', stopAll);
+</script>

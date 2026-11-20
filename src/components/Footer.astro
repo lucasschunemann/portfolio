@@ -1,4 +1,5 @@
 ---
+import Quiet from './Quiet.astro';
 import { site } from '../data/site';
 const updated = new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo',
@@ -10,7 +11,9 @@ const updated = new Intl.DateTimeFormat('pt-BR', {
   .replace(/\//g, '.');
 ---
 
-<footer class="colophon grid">
+<footer class="foot">
+  <Quiet mode="rise" class="foot__bars" />
+  <div class="colophon grid">
   <span>© 2026 {site.name}</span>
   <span class="mute">Composto em Host Grotesk e Fragment Mono</span>
   <span class="mute">Atualizado em <span class="mono">{updated}</span></span>
@@ -20,4 +23,5 @@ const updated = new Intl.DateTimeFormat('pt-BR', {
     </button>
     <a href="#top" class="link" data-top>Topo ↑</a>
   </span>
+  </div>
 </footer>

@@ -11,6 +11,7 @@ O visual continua de catálogo de exposição: cubo branco, texto pequeno, image
 (decisão do Lucas em 20/11/2026: a versão anterior do site era melhor, e frases como "sem pressa" ou "produto que precisa de calma" estão vetadas).
 - Cores vêm de `brand/tokens.css` (importado em `Base.astro`); `global.css` aponta `--bg`, `--fg`, `--mute`, `--panel`, `--ok` para elas.
 - Logo em `src/components/Logo.astro`; a barra baixa fica sálvia no tema escuro.
+- Motion com as barras do símbolo (o Lucas curte motion design): campo interativo `src/components/Quiet.astro` (abertura abaixa, rodapé sobe), status com três barras, fios de seção desenhando, cortina nas imagens e linha do tempo no "Como funciona" (`steps()` em `site.ts`). Tudo para com movimento reduzido.
 
 ## Como trabalhar aqui
 
