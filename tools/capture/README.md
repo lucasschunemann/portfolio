@@ -13,7 +13,7 @@ Scripts Node (ESM) que tiram capturas de sites no ar e montam as pranchas das ob
 | `sheet.mjs` | folhas de contato (`sheet-<slug>.jpg`) para escolher as melhores capturas |
 | `compose.mjs [slug...]` | monta as pranchas em passe-partout e grava em `src/assets/work/`; com slugs, só as dessas obras |
 | `video.mjs <slug> <url> <nome>` | vídeo curto de rolagem no celular (ou no desktop, com `--desk`), no mesmo passe-partout; `--from`/`--max` limitam o trecho. Grava `<nome>.mp4` e o pôster `<nome>.jpg` em `src/assets/work/<slug>/` |
-| `og.mjs` | gera `public/og.jpg` a partir da home (precisa do dev server ligado) |
+| `og.mjs` | gera `public/og.jpg`: logo, frase da abertura e campo de barras (não precisa do dev server) |
 
 Fluxo: `node capture.mjs <slug> <url>` → `node sheet.mjs` → olhar as folhas → ajustar e rodar `node compose.mjs`.
 
