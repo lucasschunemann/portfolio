@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>rect{fill:#f4f3ef}circle{fill:#141413}@media (prefers-color-scheme:dark){rect{fill:#141413}circle{fill:#f4f3ef}}</style>
-  <rect width="64" height="64" rx="14"/>
-  <circle cx="32" cy="32" r="9"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#141412"/><rect x="9.25" y="7" width="5" height="18" rx="2.5" fill="#EEEAE2"/><rect x="17.75" y="12" width="5" height="13" rx="2.5" fill="#9DB876"/></svg>

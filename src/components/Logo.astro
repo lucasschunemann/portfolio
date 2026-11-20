@@ -1,0 +1,33 @@
+---
+// Assinatura horizontal da Quieto (brand/QUIETO-BRAND.md, seção 2): símbolo + nome em HTML, porque o nome ainda não foi vetorizado.
+interface Props {
+  class?: string;
+  /** toca a entrada do logo uma vez por visita, só na home */
+  intro?: boolean;
+}
+const { class: cls, intro = false } = Astro.props;
+---
+
+<a class:list={['q-logo', cls]} href="/" aria-label="Quieto, início" data-logo>
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <rect class="q-bar-1" x="22" y="14" width="20" height="72" rx="10" fill="currentColor"></rect>
+    <rect class="q-bar-2" x="56" y="34" width="20" height="52" rx="10"></rect>
+  </svg>
+  <span class="q-word">quieto</span>
+</a>
+{
+  intro && (
+    <script is:inline>
+      (function () {
+        try {
+          if (sessionStorage.getItem('q-intro')) return;
+          sessionStorage.setItem('q-intro', '1');
+        } catch (e) {
+          return;
+        }
+        var logos = document.querySelectorAll('[data-logo]');
+        logos[logos.length - 1].classList.add('q-logo--intro');
+      })();
+    </script>
+  )
+}

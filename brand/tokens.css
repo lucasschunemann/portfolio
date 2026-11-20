@@ -1,0 +1,170 @@
+/* =========================================================
+   Quieto · tokens de design · v1.1
+   Fonte única de verdade para cor, tipo, espaço, raio,
+   sombra e movimento. Importe antes de qualquer outro CSS.
+   Fontes: Host Grotesk (400, 500, 600) e Fragment Mono (400),
+   ambas no Google Fonts.
+   ========================================================= */
+
+:root {
+  /* ---------- Cores da marca ---------- */
+  --q-perola:  #EEEAE2;  /* fundo principal da marca */
+  --q-grafite: #141412;  /* texto e blocos de peso, nunca preto puro */
+  --q-musgo:   #5F6E49;  /* ação, links, seleção */
+  --q-salvia:  #9DB876;  /* acento em fundo escuro, barra baixa do símbolo. Nunca texto sobre claro */
+  --q-argila:  #C7B299;  /* superfície quente */
+  --q-nevoa:   #D9DCD3;  /* superfície fria */
+  --q-papel:   #FBFAF7;  /* superfície de interface (telas, formulários, portal) */
+
+  /* ---------- Escala musgo ---------- */
+  --musgo-50:  #EBEBE4;
+  --musgo-100: #DCDED3;
+  --musgo-200: #C0C5B5;
+  --musgo-300: #A2AA93;
+  --musgo-400: #838F71;
+  --musgo-500: #6E7C5A;
+  --musgo-600: #5F6E49; /* base, primeiro tom seguro para texto sobre pérola */
+  --musgo-700: #4C583B;
+  --musgo-800: #3B432F;
+  --musgo-900: #2A2F22;
+
+  /* ---------- Escala neutra quente ---------- */
+  --neutro-50:  #F3F0EA;
+  --neutro-100: #E6E3DD;
+  --neutro-200: #CFCDC7;
+  --neutro-300: #B0AEA9;
+  --neutro-400: #8F8D89;
+  --neutro-500: #6D6C68;
+  --neutro-600: #52524E;
+  --neutro-700: #3C3C39;
+  --neutro-800: #2A2A28;
+  --neutro-900: #1D1D1B;
+
+  /* ---------- Semânticos · tema claro ---------- */
+  --bg-base:        var(--q-perola);
+  --bg-surface:     #F3F0EA;
+  --bg-app:         var(--q-papel);
+  --bg-inverse:     var(--q-grafite);
+
+  --text-primary:   var(--q-grafite);
+  --text-secondary: #5E5A52;  /* 5,7:1 sobre pérola */
+  --text-tertiary:  #6D6C68;  /* só 13 px ou maior, sobre papel */
+  --text-inverse:   var(--q-perola);
+
+  --border:         #D3CDC1;
+  --hairline:       rgba(20, 20, 18, 0.08);
+
+  --action:         var(--q-musgo);   /* 4,6:1 sobre pérola */
+  --action-hover:   var(--musgo-700);
+  --on-action:      #F3F0EA;
+
+  --fill-secondary: rgba(20, 20, 18, 0.06);  /* botão secundário, busca, trilho do segmented */
+  --hover:          rgba(20, 20, 18, 0.05);
+  --pressed:        rgba(20, 20, 18, 0.09);
+  --focus-ring:     0 0 0 3px rgba(95, 110, 73, 0.22);
+
+  --status-sucesso: #5F6E49;
+  --status-aviso:   #7A5C24;
+  --status-erro:    #A3412E;
+  --status-info:    #4A5F7A;
+
+  /* Tags com fundo suave (texto / fundo) */
+  --tag-musgo-fg:  #3B432F; --tag-musgo-bg:  #DCDED3;
+  --tag-argila-fg: #5C4A34; --tag-argila-bg: #EDE5D9;
+  --tag-nevoa-fg:  #3E4A3B; --tag-nevoa-bg:  #E3E6DF;
+  --tag-neutro-fg: #52524E; --tag-neutro-bg: #E6E3DD;
+  --tag-aviso-fg:  #7A5C24; --tag-aviso-bg:  #EFE4CF;
+  --tag-erro-fg:   #8A3524; --tag-erro-bg:   #F2DFD9;
+
+  /* ---------- Tipografia ---------- */
+  --font-sans: 'Host Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Fragment Mono', ui-monospace, monospace;
+
+  /* tamanho / entrelinha / tracking / peso */
+  --t-display: clamp(52px, 9vw, 132px);  --lh-display: 0.92; --tr-display: -0.055em;
+  --t-h1:      clamp(40px, 5vw, 64px);   --lh-h1: 0.95;      --tr-h1: -0.05em;
+  --t-h2:      clamp(32px, 3.6vw, 44px); --lh-h2: 1;         --tr-h2: -0.045em;
+  --t-h3:      28px;                     --lh-h3: 1.15;      --tr-h3: -0.03em;
+  --t-lead:    20px;                     --lh-lead: 1.45;    --tr-lead: -0.01em;
+  --t-body:    16px;                     --lh-body: 1.55;
+  --t-ui:      14px;                     --lh-ui: 1.45;
+  --t-small:   13px;                     --lh-small: 1.5;
+  --t-label:   11px;                     --lh-label: 1.45;   --tr-label: 0.06em;
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-strong:  600;
+
+  /* ---------- Espaço (base 4) ---------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+
+  /* ---------- Layout ---------- */
+  --container: 1344px;
+  --margin:    clamp(20px, 4vw, 48px);
+  --gutter:    20px;
+  --measure:   68ch;
+
+  /* ---------- Raio (cresce com o tamanho) ---------- */
+  --r-tag:     6px;
+  --r-item:    8px;   /* item de menu, botão de ícone */
+  --r-control: 10px;  /* botão, campo, select */
+  --r-menu:    12px;  /* popover, paleta de comandos, lista agrupada */
+  --r-card:    14px;
+  --r-full:    999px; /* toggle, toast, avatar */
+  --r-block:   0;     /* blocos editoriais e imagens do site */
+
+  /* ---------- Sombra ---------- */
+  --shadow-1:     0 1px 2px rgba(20,20,18,.06), 0 0 0 1px rgba(20,20,18,.06);
+  --shadow-2:     0 16px 40px rgba(20,20,18,.16), 0 2px 6px rgba(20,20,18,.06), 0 0 0 1px rgba(20,20,18,.08);
+  --shadow-toast: 0 8px 24px rgba(20,20,18,.20);
+  --shadow-thumb: 0 1px 3px rgba(20,20,18,.12), 0 0 0 .5px rgba(20,20,18,.06);
+
+  /* ---------- Movimento ---------- */
+  --ease-out:   cubic-bezier(0.2, 0, 0, 1);      /* padrão: sai rápido, chega devagar */
+  --ease-inout: cubic-bezier(0.45, 0, 0.55, 1);  /* loops, loader */
+  --dur-fast:   160ms;  /* hover, foco, toggle */
+  --dur-base:   320ms;  /* menus, painéis, acordeão */
+  --dur-slow:   640ms;  /* entrada de página, logo */
+}
+
+/* ---------- Tema escuro ---------- */
+[data-theme="dark"] {
+  --bg-base:        #141412;
+  --bg-surface:     #1E1E1B;
+  --bg-app:         #1A1A18;
+  --bg-inverse:     #EEEAE2;
+
+  --text-primary:   #EEEAE2;
+  --text-secondary: #A9A397;
+  --text-tertiary:  #8F8D89;
+  --text-inverse:   #141412;
+
+  --border:         #3C3C39;
+  --hairline:       rgba(238, 234, 226, 0.10);
+
+  --action:         var(--q-salvia);
+  --action-hover:   #B3C894;
+  --on-action:      #141412;
+
+  --fill-secondary: rgba(238, 234, 226, 0.08);
+  --hover:          rgba(238, 234, 226, 0.06);
+  --pressed:        rgba(238, 234, 226, 0.10);
+  --focus-ring:     0 0 0 3px rgba(157, 184, 118, 0.35);
+
+  --status-sucesso: #9DB876;
+  --status-aviso:   #D4B06A;
+  --status-erro:    #D98A73;
+  --status-info:    #9DB2CF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-base: #141412; --bg-surface: #1E1E1B; --bg-app: #1A1A18; --bg-inverse: #EEEAE2;
+    --text-primary: #EEEAE2; --text-secondary: #A9A397; --text-tertiary: #8F8D89; --text-inverse: #141412;
+    --border: #3C3C39; --hairline: rgba(238,234,226,.10);
+    --action: #9DB876; --action-hover: #B3C894; --on-action: #141412;
+    --fill-secondary: rgba(238,234,226,.08); --hover: rgba(238,234,226,.06); --pressed: rgba(238,234,226,.10);
+    --focus-ring: 0 0 0 3px rgba(157,184,118,.35);
+    --status-sucesso: #9DB876; --status-aviso: #D4B06A; --status-erro: #D98A73; --status-info: #9DB2CF;
+  }
+}

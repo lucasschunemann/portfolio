@@ -4,10 +4,11 @@ import { email, phone } from './contato';
 export { budgets, mailto, whatsapp } from './contato';
 
 export const site = {
-  name: 'Lucas Schünemann',
-  role: 'Product designer, UX/UI',
+  name: 'Quieto',
+  /** quem desenha cada projeto; assina os textos */
+  founder: 'Lucas Schünemann',
+  role: 'Estúdio de design de produto',
   city: 'Blumenau, Brasil',
-  coords: '26°55′S 49°04′W',
   email,
   whatsapp: phone,
   linkedin: 'https://www.linkedin.com/in/lucas-von-helden/',
@@ -15,7 +16,7 @@ export const site = {
   /** troque quando a data passar */
   status: 'Próxima vaga: dezembro',
   description:
-    'Lucas Schünemann, product designer em Blumenau. Design de produtos digitais, design systems e sites para startups, SaaS e negócios, do discovery à interface pronta para desenvolvimento.',
+    'A Quieto é um estúdio de design em Blumenau. Desenhamos produtos digitais, design systems e sites para startups, SaaS e empresas B2B, com poucos projetos por vez.',
 };
 
 export const clients = ['Área Central', 'neth!', 'Acompanha', 'PF Advogados', 'WF Odontologia', 'RealPlay', 'MetaCumprida', 'Sendeski Café'];
@@ -43,25 +44,26 @@ export const services = [
 ];
 
 export const process = [
-  { title: 'Conversa', text: 'Entendo o negócio, quem vai usar e o que precisa mudar. Daqui saem o escopo e o prazo.' },
+  { title: 'Conversa', text: 'Entendemos o negócio, quem vai usar e o que precisa mudar. Daqui saem o escopo e o prazo.' },
   { title: 'Estrutura', text: 'Mapeamento de jornada e arquitetura de informação: o que entra, em que ordem e por quê.' },
   { title: 'Interface', text: 'Protótipo e alta fidelidade no Figma, ou direto no Framer quando é site. Você vê e comenta a cada etapa.' },
   { title: 'Entrega', text: 'Handoff com o time de desenvolvimento, ou o site publicado no seu domínio.' },
 ];
 
 export const bio = [
-  'Sou product designer com foco em UX/UI, co-fundador e CPO do neth!, uma startup de saúde e bem-estar digital.',
-  'No meu trabalho principal sou UX/UI designer na Área Central. Liderei a criação de um design system multiplataforma que unificou padrões visuais e de interação entre vários produtos, encurtando o caminho do design até o desenvolvimento. Também reestruturei o fluxo de visualização de documentos de uma plataforma complexa, reduzindo atrito nas telas principais e aumentando a conclusão das tarefas.',
-  'No neth! cuido da direção de produto, da prototipação em Figma, do roadmap e da gestão do time de desenvolvimento.',
-  'Em paralelo pego projetos freelance B2B e B2C, na maioria plataformas de inteligência de dados e sites. Vou do discovery e do mapeamento de jornada até a interface em alta fidelidade, pronta para desenvolvimento.',
+  'A Quieto é o estúdio de Lucas Schünemann, product designer há mais de cinco anos. Ele desenha cada projeto, da pesquisa ao handoff, e por isso a gente pega poucos clientes por vez.',
+  'Lucas é co-fundador e CPO do neth!, uma startup de saúde e bem-estar digital, onde cuida da direção de produto, da prototipação em Figma, do roadmap e do time de desenvolvimento.',
+  'Na Área Central, como UX/UI designer, liderou a criação de um design system multiplataforma que unificou padrões visuais e de interação entre vários produtos, encurtando o caminho do design até o desenvolvimento. Também reestruturou o fluxo de visualização de documentos de uma plataforma complexa, reduzindo atrito nas telas principais e aumentando a conclusão das tarefas.',
+  'No estúdio, a maior parte dos projetos são plataformas de dados B2B e sites.',
 ];
 
 export const facts: [string, string][] = [
-  ['Hoje', 'CPO e co-fundador no neth!'],
-  ['Também', 'UX/UI designer na Área Central'],
+  ['Fundador', 'Lucas Schünemann'],
   ['Experiência', '5+ anos'],
   ['Formação', 'Interaction Design Foundation'],
-  ['Base', 'Blumenau, Santa Catarina (GMT-3)'],
+  ['Base', 'Blumenau, Santa Catarina'],
+  ['Fuso', 'GMT-3'],
+  ['Ferramentas', 'Figma, Framer e código'],
 ];
 
 /* ------------------------------------------------------------------ obras */
@@ -111,7 +113,7 @@ export type Project = {
   result?: string[];
   /** as palavras de quem contratou, como foram ditas, com nome e permissão */
   quote?: { text: string; author: string; role: string };
-  /** o que eu faria diferente hoje */
+  /** o que faríamos diferente hoje */
   retro?: string;
   /** a capa (a primeira) e as figuras que não pertencem a nenhuma decisão */
   images: Figure[];

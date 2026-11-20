@@ -2,6 +2,8 @@
 import '@fontsource-variable/host-grotesk/wght.css';
 import '@fontsource-variable/host-grotesk/wght-italic.css';
 import '@fontsource/fragment-mono/400.css';
+import '../../brand/tokens.css';
+import '../../brand/motion.css';
 import '../styles/global.css';
 
 import { ClientRouter } from 'astro:transitions';
@@ -16,7 +18,7 @@ interface Props {
 }
 
 const { title, description = site.description, section } = Astro.props;
-const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Product designer, UX/UI e sites`;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Estúdio de design de produto em Blumenau`;
 ---
 
 <!doctype html>
@@ -35,8 +37,8 @@ const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Produc
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#EEEAE2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141412" media="(prefers-color-scheme: dark)" />
     <script is:inline>
       // tema: segue o aparelho (e acompanha quando ele muda); "acesa" ou "apagada" só se a pessoa escolher no rodapé
       (function () {

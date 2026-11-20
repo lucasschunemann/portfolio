@@ -147,7 +147,7 @@ const personal = p.client === 'Projeto pessoal';
 
     {p.retro && (
       <section class="room__text grid">
-        <p class="room__k mono mute" data-r>Hoje eu faria diferente</p>
+        <p class="room__k mono mute" data-r>Hoje faríamos diferente</p>
         <div class="prose" data-r>
           <p>{p.retro}</p>
         </div>
@@ -163,7 +163,7 @@ const personal = p.client === 'Projeto pessoal';
           {personal
             ? 'Quer algo fora do comum para a sua marca?'
             : `Precisa de ${p.service === 'Design system' ? 'um design system' : p.type === 'Web' ? 'um site assim' : 'um produto assim'}?`}{' '}
-          <span class="mute">Conte o que você precisa e eu respondo com os próximos passos.</span>
+          <span class="mute">Conte o que você precisa e a gente responde com os próximos passos.</span>
         </p>
         <a class="pill pill--solid" href={mailto(`Projeto parecido com ${p.name}`)}>Iniciar um projeto →</a>
       </div>

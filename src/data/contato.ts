@@ -23,5 +23,5 @@ export const mailto = (subject = 'Novo projeto', budget = '') => {
 /** Conversa no WhatsApp já com uma primeira frase e o orçamento. */
 export const whatsapp = (budget = '') =>
   `https://wa.me/${phone}?text=${encodeURIComponent(
-    `Olá, Lucas! Vi o seu portfólio e quero conversar sobre um projeto. ${budgetLine(budget)} `.trimEnd(),
+    `Olá, Lucas! Vi o site da Quieto e quero conversar sobre um projeto. ${budgetLine(budget)} `.trimEnd(),
   )}`;

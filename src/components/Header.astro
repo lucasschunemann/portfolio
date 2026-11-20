@@ -1,4 +1,5 @@
 ---
+import Logo from './Logo.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -14,7 +15,7 @@ const nav = [
 ---
 
 <header class="top grid">
-  <a href="/" class="top__name">{site.name}</a>
+  <Logo class="top__name" intro={Astro.url.pathname === '/'} />
   <span class="top__role mute">{site.role}</span>
   <span class="top__place mute">
     Blumenau <span class="mono" data-clock aria-label="Horário em Blumenau">--<i>:</i>--</span>

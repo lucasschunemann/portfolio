@@ -1,8 +1,16 @@
-# Portfólio do Lucas Schünemann
+# Quieto, estúdio do Lucas Schünemann
 
 Site estático em Astro 7 (pt-BR). Objetivo: **atrair clientes** (produto, UX/UI, design systems e sites).
-O visual é de catálogo de exposição: cubo branco, texto pequeno, imagens como obras na parede.
+Desde 20/11/2026 o site é da Quieto, o estúdio do Lucas: só a marca mudou (nome, logo, cores, favicon, texto em "a gente").
+O visual continua de catálogo de exposição: cubo branco, texto pequeno, imagens como obras na parede.
 **Menos é mais:** antes de acrescentar, veja o que dá para tirar.
+
+## Marca
+`brand/` tem o kit da Quieto. Do guia (`brand/QUIETO-BRAND.md`) vale **só a marca**: logo, cores e fontes.
+**Não aplicar** o layout, a estrutura de páginas, a especificação de componentes nem os exemplos de copy do guia
+(decisão do Lucas em 20/11/2026: a versão anterior do site era melhor, e frases como "sem pressa" ou "produto que precisa de calma" estão vetadas).
+- Cores vêm de `brand/tokens.css` (importado em `Base.astro`); `global.css` aponta `--bg`, `--fg`, `--mute`, `--panel`, `--ok` para elas.
+- Logo em `src/components/Logo.astro`; a barra baixa fica sálvia no tema escuro.
 
 ## Como trabalhar aqui
 
@@ -24,6 +32,7 @@ O visual é de catálogo de exposição: cubo branco, texto pequeno, imagens com
 | Textos/artigos (um Markdown cada) | `src/content/artigos/*.md` |
 | Imagens e vídeos das obras (pranchas já compostas) | `src/assets/work/<slug>/` |
 | Retratos | `src/assets/retratos/` |
+| Marca (guia, tokens, movimento, símbolo) | `brand/` · logo em `src/components/Logo.astro` |
 | Home / obra / textos | `src/pages/index.astro`, `src/pages/obras/[slug].astro`, `src/pages/artigos/` |
 | Figura da obra (layouts `full/right/left/center`, imagem ou vídeo) | `src/components/Fig.astro` |
 | Diagrama do Acompanha | `src/components/Diagram.astro` |

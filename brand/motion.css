@@ -1,0 +1,70 @@
+/* =========================================================
+   Quieto · movimento · v1.1
+   Depende de tokens.css (--ease-*, --dur-*).
+   Regra: uma coisa se move por vez, deslocamentos de 4 a 16 px,
+   nada quica, nada estica. Com "reduzir movimento", corte seco.
+   ========================================================= */
+
+/* ---------- Entrada do logo (toca uma vez) ----------
+   Marcação esperada:
+   <a class="q-logo q-logo--intro" href="/">
+     <svg viewBox="0 0 100 100" aria-hidden="true">
+       <rect class="q-bar-1" x="22" y="14" width="20" height="72" rx="10"/>
+       <rect class="q-bar-2" x="56" y="34" width="20" height="52" rx="10"/>
+     </svg>
+     <span class="q-word">quieto</span>
+   </a>
+   Linha do tempo: barra alta 0 ms, segunda barra 240 ms (mesma altura),
+   segunda barra desce 1u a partir de 560 ms, nome entra em 1000 ms.
+*/
+@keyframes q-rise   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes q-fade   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes q-settle { from { transform: scaleY(1.385); } to { transform: scaleY(1); } }
+@keyframes q-word   { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+
+.q-logo--intro .q-bar-1,
+.q-logo--intro .q-bar-2 { transform-box: fill-box; transform-origin: 50% 100%; }
+
+.q-logo--intro .q-bar-1 { animation: q-rise var(--dur-slow) var(--ease-out) both; }
+.q-logo--intro .q-bar-2 { animation: q-fade var(--dur-base) var(--ease-out) 240ms both,
+                                     q-settle var(--dur-slow) var(--ease-out) 560ms both; }
+.q-logo--intro .q-word  { display: inline-block; animation: q-word var(--dur-slow) var(--ease-out) 1000ms both; }
+
+/* ---------- Loader (barras respirando) ---------- */
+@keyframes q-eq { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
+.q-loader rect { transform-box: fill-box; transform-origin: 50% 100%; animation: q-eq 1.6s var(--ease-inout) infinite; }
+.q-loader rect:nth-child(2) { animation-delay: .2s; }
+.q-loader rect:nth-child(3) { animation-delay: .4s; }
+
+/* ---------- Hover de botão com seta ---------- */
+.q-arrow { display: inline-block; transition: transform var(--dur-fast) var(--ease-out); }
+a:hover .q-arrow, button:hover .q-arrow { transform: translateX(4px); }
+
+/* ---------- Estados de interface ---------- */
+.q-interactive { transition: background-color var(--dur-fast) var(--ease-out),
+                             box-shadow var(--dur-fast) var(--ease-out),
+                             color var(--dur-fast) var(--ease-out); }
+
+/* ---------- Revelar ao rolar ----------
+   Adicione .q-reveal ao bloco. Um IntersectionObserver coloca .is-visible.
+   Atraso em cascata: style="--q-delay: 80ms" nos filhos, de 80 em 80 ms, no máximo 4 itens.
+*/
+.q-reveal { opacity: 0; transform: translateY(12px);
+            transition: opacity var(--dur-slow) var(--ease-out) var(--q-delay, 0ms),
+                        transform var(--dur-slow) var(--ease-out) var(--q-delay, 0ms); }
+.q-reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Popover e paleta de comandos ---------- */
+@keyframes q-pop { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: none; } }
+.q-popover[data-open="true"] { animation: q-pop var(--dur-base) var(--ease-out) both; }
+
+/* ---------- Toast ---------- */
+@keyframes q-toast-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.q-toast { animation: q-toast-in var(--dur-base) var(--ease-out) both; }
+
+/* ---------- Reduzir movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important;
+                           animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  .q-reveal { opacity: 1; transform: none; }
+}

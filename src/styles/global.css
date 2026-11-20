@@ -3,12 +3,14 @@
    ========================================================================== */
 :root {
   color-scheme: light;
-  --bg: #f4f3ef;
-  --fg: #141413;
-  --mute: #8a8882;
-  --line: rgba(20, 20, 19, 0.12);
-  --panel: #e8e6e0;
-  --ok: #3f8f5c;
+  /* cores da Quieto (brand/tokens.css) */
+  --bg: var(--q-perola);
+  --fg: var(--q-grafite);
+  --mute: var(--neutro-400);
+  --line: color-mix(in srgb, var(--fg) 12%, transparent);
+  --panel: var(--neutro-100);
+  --ok: var(--q-musgo);
+  --logo-low: currentColor;
 
   --sans: 'Host Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Fragment Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -19,12 +21,12 @@
 }
 html[data-luz='apagada'] {
   color-scheme: dark;
-  --bg: #121211;
-  --fg: #eceae4;
-  --mute: #84827c;
-  --line: rgba(236, 234, 228, 0.12);
-  --panel: #1c1c1a;
-  --ok: #62b07e;
+  --bg: var(--q-grafite);
+  --fg: var(--q-perola);
+  --mute: var(--neutro-400);
+  --panel: var(--neutro-900);
+  --ok: var(--q-salvia);
+  --logo-low: var(--q-salvia);
 }
 
 /* ==========================================================================
@@ -192,7 +194,23 @@ html.luz-switch::view-transition-old(root) {
 }
 .top__name {
   grid-column: 1 / span 3;
-  font-weight: 500;
+  justify-self: start;
+}
+/* logo da Quieto: símbolo + nome (brand/QUIETO-BRAND.md, seção 2) */
+.q-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.17em;
+  font: 600 22px/0.9 var(--sans);
+  letter-spacing: -0.055em;
+}
+.q-logo svg {
+  width: 0.64em;
+  height: 0.64em;
+  overflow: visible;
+}
+.q-logo .q-bar-2 {
+  fill: var(--logo-low);
 }
 .top__role {
   grid-column: 4 / span 3;
