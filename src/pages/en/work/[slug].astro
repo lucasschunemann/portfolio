@@ -1,0 +1,15 @@
+---
+import Room from '../../../views/Room.astro';
+import { content } from '../../../i18n';
+
+export function getStaticPaths() {
+  const { projects } = content('en');
+  const at = (i: number) => (i + projects.length) % projects.length;
+  return projects.map((p, i) => ({
+    params: { slug: p.slug },
+    props: { p, n: i + 1, prev: projects[at(i - 1)], prevN: at(i - 1) + 1, next: projects[at(i + 1)], nextN: at(i + 1) + 1 },
+  }));
+}
+---
+
+<Room {...(Astro.props as any)} lang="en" />

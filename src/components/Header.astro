@@ -1,31 +1,38 @@
 ---
 import Logo from './Logo.astro';
-import { site } from '../data/site';
+import { content, href, ui, type Lang } from '../i18n';
 
 interface Props {
   section?: 'obras' | 'textos' | 'sobre';
+  lang: Lang;
+  /** a mesma página no outro idioma */
+  alt: string;
 }
-const { section } = Astro.props;
+const { section, lang, alt } = Astro.props;
+const t = ui[lang];
+const { site } = content(lang);
 const nav = [
-  { label: 'Obras', href: '/#obras', key: 'obras' },
-  { label: 'Serviços', href: '/#servicos', key: 'servicos' },
-  { label: 'Sobre', href: '/#sobre', key: 'sobre', hide: true },
-  { label: 'Textos', href: '/artigos/', key: 'textos', hide: true },
+  { label: t.nav.obras, href: href(lang, '/#obras'), key: 'obras' },
+  { label: t.nav.servicos, href: href(lang, '/#servicos'), key: 'servicos' },
+  { label: t.nav.sobre, href: href(lang, '/#sobre'), key: 'sobre', hide: true },
+  { label: t.nav.textos, href: href(lang, '/artigos/'), key: 'textos', hide: true },
 ];
+const other = lang === 'pt' ? 'en' : 'pt-BR';
 ---
 
 <header class="top grid">
-  <Logo class="top__name" intro={Astro.url.pathname === '/'} />
+  <Logo class="top__name" lang={lang} intro={Astro.url.pathname === href(lang, '/')} />
   <span class="top__role mute">{site.role}</span>
   <span class="top__place mute">
-    Blumenau <span class="mono" data-clock aria-label="Horário em Blumenau">--<i>:</i>--</span>
+    Blumenau <span class="mono" data-clock aria-label={t.clock}>--<i>:</i>--</span>
   </span>
-  <nav class="top__nav" aria-label="Principal">
+  <nav class="top__nav" aria-label={t.nav.main}>
     {nav.map((n) => (
       <a href={n.href} class:list={{ 'hide-s': n.hide }} aria-current={section === n.key ? 'page' : undefined}>
         {n.label}
       </a>
     ))}
-    <a href="/#contato" class="top__cta"><i class="dot" aria-hidden="true"><i></i><i></i><i></i></i>Contato</a>
+    <a href={href(lang, '/#contato')} class="top__cta"><i class="dot" aria-hidden="true"><i></i><i></i><i></i></i>{t.nav.contato}</a>
+    <a href={alt} class="top__lang" hreflang={other} lang={other} title={t.switchTo.title}>{t.switchTo.label}</a>
   </nav>
 </header>

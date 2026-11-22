@@ -1,0 +1,43 @@
+---
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import type { Article } from '../data/articles';
+import { pad, site } from '../data/site';
+import { href, ui, type Lang } from '../i18n';
+
+interface Props {
+  a: Article;
+  next: Article;
+  lang: Lang;
+}
+
+const { a, next, lang } = Astro.props;
+const t = ui[lang].texts;
+const { Content } = await render(a);
+---
+
+<Base title={a.data.title} description={a.data.excerpt} section="textos">
+  <article class="text grid">
+    <aside class="text__meta mono mute" data-r>
+      <a class="link" href={href(lang, '/artigos/')}>{t.back}</a>
+      <span>Nº {pad(a.n)}</span>
+      <span>{a.dateLabel}</span>
+      <span>{a.data.theme}</span>
+      <span>{a.minutes} {t.read}</span>
+    </aside>
+    <div class="text__main">
+      <h1 data-r style="--d:60ms">{a.data.title}</h1>
+      <div class="prose prose--long" data-r style="--d:120ms">
+        <Content />
+      </div>
+      <p class="text__sign mute">— {site.founder}, {site.name}</p>
+    </div>
+  </article>
+
+  <nav class="pager pager--single grid" aria-label={t.nextAria}>
+    <a class="pager__next" href={next.href}>
+      <span class="mono mute">{t.next}</span>
+      <span>{next.data.title}</span>
+    </a>
+  </nav>
+</Base>

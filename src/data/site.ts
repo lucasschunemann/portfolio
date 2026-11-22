@@ -1,7 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { email, phone } from './contato';
 
-export { budgets, mailto, whatsapp } from './contato';
 
 export const site = {
   name: 'Quieto',
@@ -112,7 +111,7 @@ export type Project = {
   /** só com dado real; sem isso a seção não aparece */
   result?: string[];
   /** as palavras de quem contratou, como foram ditas, com nome e permissão */
-  quote?: { text: string; author: string; role: string };
+  quote?: { text: string; author: string; role: string; /** só no inglês, marcada como tradução */ translation?: string };
   /** o que faríamos diferente hoje */
   retro?: string;
   /** a capa (a primeira) e as figuras que não pertencem a nenhuma decisão */

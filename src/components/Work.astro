@@ -2,19 +2,21 @@
 import { Image } from 'astro:assets';
 import Diagram from './Diagram.astro';
 import { pad, type Project } from '../data/site';
+import { href, type Lang } from '../i18n';
 
 interface Props {
   p: Project;
   n: number;
+  lang: Lang;
 }
-const { p, n } = Astro.props;
+const { p, n, lang } = Astro.props;
 const wall = p.wall ?? { col: '1 / -1', ratio: '16 / 10' };
 const cover = wall.img ?? p.images[0]?.src;
 const alt = p.images[0]?.caption ?? `${p.name}: diagrama`;
 ---
 
 <a
-  href={`/obras/${p.slug}/`}
+  href={href(lang, `/obras/${p.slug}/`)}
   class="work"
   style={`grid-column:${wall.col}; --ratio:${wall.ratio}; --drop:${wall.drop ?? '0px'}`}
   data-r
@@ -29,7 +31,7 @@ const alt = p.images[0]?.caption ?? `${p.name}: diagrama`;
         loading={n <= 2 ? 'eager' : 'lazy'}
       />
     ) : (
-      <Diagram compact />
+      <Diagram compact lang={lang} />
     )}
   </div>
   <div class="label">

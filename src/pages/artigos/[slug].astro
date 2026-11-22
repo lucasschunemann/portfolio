@@ -1,48 +1,11 @@
 ---
-import { render } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import { getArticles, type Article } from '../../data/articles';
-import { pad, site } from '../../data/site';
+import Text from '../../views/Text.astro';
+import { getArticles } from '../../data/articles';
 
 export async function getStaticPaths() {
-  const list = await getArticles();
-  return list.map((a, i) => ({
-    params: { slug: a.id },
-    props: { a, next: list[(i + 1) % list.length] },
-  }));
+  const list = await getArticles('pt');
+  return list.map((a, i) => ({ params: { slug: a.id }, props: { a, next: list[(i + 1) % list.length] } }));
 }
-
-interface Props {
-  a: Article;
-  next: Article;
-}
-
-const { a, next } = Astro.props;
-const { Content } = await render(a);
 ---
 
-<Base title={a.data.title} description={a.data.excerpt} section="textos">
-  <article class="text grid">
-    <aside class="text__meta mono mute" data-r>
-      <a class="link" href="/artigos/">← Textos</a>
-      <span>Nº {pad(a.n)}</span>
-      <span>{a.dateLabel}</span>
-      <span>{a.data.theme}</span>
-      <span>{a.minutes} min de leitura</span>
-    </aside>
-    <div class="text__main">
-      <h1 data-r style="--d:60ms">{a.data.title}</h1>
-      <div class="prose prose--long" data-r style="--d:120ms">
-        <Content />
-      </div>
-      <p class="text__sign mute">— {site.founder}, {site.name}</p>
-    </div>
-  </article>
-
-  <nav class="pager pager--single grid" aria-label="Próximo texto">
-    <a class="pager__next" href={next.href}>
-      <span class="mono mute">Próximo texto →</span>
-      <span>{next.data.title}</span>
-    </a>
-  </nav>
-</Base>
+<Text {...(Astro.props as any)} lang="pt" />

@@ -1,10 +1,14 @@
 ---
 // Prancha didática do Acompanha (as telas do produto não são públicas).
 // Os quatro tributos de hoje convergem nos dois da Reforma, como o motor de créditos simula.
+import { ui, type Lang } from '../i18n';
+
 interface Props {
   compact?: boolean;
+  lang?: Lang;
 }
-const { compact = false } = Astro.props;
+const { compact = false, lang = 'pt' } = Astro.props;
+const t = ui[lang].diagram;
 const from = ['PIS', 'COFINS', 'ICMS', 'ISS'];
 const to = ['CBS', 'IBS'];
 const ys = [250, 370, 490, 610];
@@ -17,10 +21,10 @@ const paths = from.map((_, i) => {
 });
 ---
 
-<div class:list={['diagram', { 'diagram--compact': compact }]} role="img" aria-label="Diagrama: PIS, COFINS, ICMS e ISS convergem em CBS e IBS no motor de créditos do Acompanha. As telas do produto não são públicas.">
+<div class:list={['diagram', { 'diagram--compact': compact }]} role="img" aria-label={t.aria}>
   <svg viewBox="0 0 1200 860" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <text x="80" y="96" class="d-k">Motor de créditos</text>
-    <text x="80" y="124" class="d-m">Simulação da Reforma Tributária, editável na própria tela</text>
+    <text x="80" y="96" class="d-k">{t.title}</text>
+    <text x="80" y="124" class="d-m">{t.sub}</text>
     {paths.map((d) => <path d={d} class="d-line" />)}
     {from.map((f, i) => (
       <g>
@@ -34,7 +38,7 @@ const paths = from.map((_, i) => {
         <text x={x1 + 28} y={ts[i] + 13} class="d-t d-t--to">{t}</text>
       </g>
     ))}
-    <text x="80" y="780" class="d-m">Diagrama · as telas do produto não são públicas</text>
-    <text x="1120" y="780" text-anchor="end" class="d-m">Coleção particular</text>
+    <text x="80" y="780" class="d-m">{t.foot}</text>
+    <text x="1120" y="780" text-anchor="end" class="d-m">{t.collection}</text>
   </svg>
 </div>

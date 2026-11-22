@@ -9,20 +9,30 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { altPath, content, htmlLang, langOf, ogLocale, ui } from '../i18n';
 
 interface Props {
   title?: string;
   description?: string;
   section?: 'obras' | 'textos' | 'sobre';
+  /** false em páginas sem equivalente no outro idioma (404) */
+  alternate?: boolean;
 }
 
-const { title, description = site.description, section } = Astro.props;
-const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Estúdio de design de produto em Blumenau`;
+const lang = langOf(Astro.url.pathname);
+const other = lang === 'pt' ? 'en' : 'pt';
+const { site } = content(lang);
+const { title, description = site.description, section, alternate = true } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${ui[lang].title}`;
+const alt = altPath(Astro.url.pathname);
+const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
+const here = Astro.url.pathname;
+const ptPath = lang === 'pt' ? here : alt;
+const enPath = lang === 'en' ? here : alt;
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={htmlLang[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,8 +41,16 @@ const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Estúdio
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:image" content="/og.jpg" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[other]} />
+    <meta property="og:image" content={lang === 'en' ? '/og-en.jpg' : '/og.jpg'} />
+    {alternate && (
+      <>
+        <link rel="alternate" hreflang="pt-BR" href={abs(ptPath)} />
+        <link rel="alternate" hreflang="en" href={abs(enPath)} />
+        <link rel="alternate" hreflang="x-default" href={abs(ptPath)} />
+      </>
+    )}
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -68,12 +86,12 @@ const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Estúdio
     <ClientRouter />
   </head>
   <body>
-    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
-    <Header section={section} />
+    <a class="skip" href="#conteudo">{ui[lang].skip}</a>
+    <Header section={section} lang={lang} alt={alt} />
     <main id="conteudo">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
     <script>
       import '../scripts/site.ts';
     </script>

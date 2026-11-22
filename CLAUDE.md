@@ -20,7 +20,8 @@ O visual continua de catálogo de exposição: cubo branco, texto pequeno, image
 - Depois de trocar dependências, reinicie o dev server (o cache do Vite fica velho).
 - `npm run build` precisa passar. Teste desktop (1440) e celular (390) sem rolagem horizontal.
 - **Pergunte antes de subir para a `main`.** Commits em português, com o trailer de co-autoria.
-- Texto do site em pt-BR. Grafia: **"o neth!"** (masculino). Instagram: `_vonhelden`.
+- Texto do site em pt-BR, com versão em inglês em `/en/` (`/en/work/<slug>/`, `/en/writing/<slug>/`). O inglês mora em `src/data/site.en.ts` (conteúdo e casos, mesmas chaves de `site.ts`), `src/content/artigos-en/` (artigos, mesmo nome de arquivo) e `ui.en` em `src/i18n.ts` (textos fixos e rotas). Mudou um texto em português? Mude o inglês também; o build reclama se faltar decisão ou legenda. Depoimentos ficam no original, com a tradução marcada ("Translated from Portuguese") embaixo.
+- Grafia: **"o neth!"** (masculino). Instagram: `_vonhelden`.
 - Não invente métricas nem depoimentos. Só números reais ("5+ anos" confirmado pelo Lucas em 09/10/2026). Depoimento só com as palavras da pessoa, nome e permissão (`material/depoimentos.md`).
 - Tema: segue o aparelho. No rodapé, "Luz: automática / acesa / apagada" (chave `tema` no localStorage). O botão é `button[data-tema]`: o `<html>` também tem `data-luz`.
 
@@ -29,20 +30,23 @@ O visual continua de catálogo de exposição: cubo branco, texto pequeno, image
 | O quê | Onde |
 |---|---|
 | Todo o conteúdo (bio, serviços, processo, obras, legendas, layout das figuras) | `src/data/site.ts` |
+| O mesmo conteúdo em inglês (só texto) | `src/data/site.en.ts` |
+| Rotas por idioma, textos fixos de interface (pt e en) e a junção do conteúdo | `src/i18n.ts` |
+| Páginas de verdade (uma por tipo, recebem `lang`); `src/pages/` só as chama | `src/views/` |
 | E-mail, WhatsApp e faixas de orçamento do contato | `src/data/contato.ts` |
 | Preço de referência por serviço ("A partir de") e status da agenda | `services` e `site.status` em `src/data/site.ts` |
 | Textos/artigos (um Markdown cada) | `src/content/artigos/*.md` |
 | Imagens e vídeos das obras (pranchas já compostas) | `src/assets/work/<slug>/` |
 | Retratos | `src/assets/retratos/` |
 | Marca (guia, tokens, movimento, símbolo) | `brand/` · logo em `src/components/Logo.astro` |
-| Home / obra / textos | `src/pages/index.astro`, `src/pages/obras/[slug].astro`, `src/pages/artigos/` |
+| Home / obra / textos | `src/views/Home.astro`, `Room.astro`, `Texts.astro`, `Text.astro` |
 | Figura da obra (layouts `full/right/left/center`, imagem ou vídeo) | `src/components/Fig.astro` |
 | Diagrama do Acompanha | `src/components/Diagram.astro` |
 | Estilo (tokens no `:root`) | `src/styles/global.css` |
 | Material bruto e perguntas por obra (não vai pro git) | `material/<slug>/`, `material/<slug>/notas.md` |
 | Ferramentas de captura e composição | `tools/capture/` |
 
-Para uma obra nova: um objeto em `projects` (`site.ts`) e as imagens em `src/assets/work/<slug>/`. A página sai sozinha.
+Para uma obra nova: um objeto em `projects` (`site.ts`), o texto em inglês em `projects` (`site.en.ts`) e as imagens em `src/assets/work/<slug>/`. As duas páginas saem sozinhas.
 Só vai para a parede da home quem tem `wall`; o resto fica no índice. Textos com `featured: true` aparecem na home.
 
 ## Próxima sessão: preencher os casos com o que o Lucas responder
@@ -63,7 +67,8 @@ Veja `docs/PROJETOS.md` (estado obra por obra e fatos já levantados) e as pergu
 - Status "Próxima vaga: dezembro" (viagem do Lucas). Trocar quando dezembro chegar.
 - Preços de referência (09/10/2026): sites a partir de R$ 2 mil, produto e UX/UI R$ 8 mil, design systems R$ 15 mil. Faixas do contato: até R$ 5 mil, R$ 5 a 15 mil, acima de R$ 15 mil.
 - Depoimentos (09/10/2026): rascunhados por mim e aprovados um a um pelas pessoas, em seis obras (o neth! fica sem, por ser a empresa do Lucas). Novo depoimento segue o mesmo caminho: rascunho em `material/depoimentos.md`, aprovação, publicação.
+- Inglês (22/11/2026): traduções minhas, a revisar pelo Lucas. Preços continuam em reais ("From R$ 8k"). As traduções dos depoimentos não passaram pelas pessoas; se preferir, apague `quote.text` em `site.en.ts` e só o original aparece.
 - E-mail e domínio próprios: o Lucas vai mandar.
-- Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image`.
+- Domínio próprio: definir `site` em `astro.config.mjs` e usar URL absoluta no `og:image` (os `hreflang` já viram absolutos quando `site` existir). `og.jpg` e `og-en.jpg` saem de `tools/capture/og.mjs`.
 - O rodapé dos sites novos da WF e do TravelDone ("Site por") ainda leva a lucasvon.framer.website, o portfólio antigo. Trocar quando houver domínio.
 - Há "—" em títulos e anos (`2025—26`). Na galeria VON o Lucas tirou todo "—" do copy; confirmar se vale aqui.

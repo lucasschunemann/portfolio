@@ -1,0 +1,169 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Diagram from '../components/Diagram.astro';
+import Fig from '../components/Fig.astro';
+import { pad, type Figure } from '../data/site';
+import { content, href, ui, type Lang, type LocalProject as Project } from '../i18n';
+
+interface Props {
+  p: Project;
+  n: number;
+  prev: Project;
+  prevN: number;
+  next: Project;
+  nextN: number;
+  lang: Lang;
+}
+
+const { p, n, prev, prevN, next, nextN, lang } = Astro.props;
+const t = ui[lang].room;
+const { mailto } = content(lang);
+const [cover, ...rest] = p.images;
+
+// Fig. 1 é a capa; as outras seguem a ordem em que aparecem na página.
+const figs: Figure[] = [
+  ...p.decisions.flatMap((d) => (d.fig ? [d.fig] : [])),
+  ...(p.process?.figs ?? []),
+  ...rest,
+];
+const fig = (f: Figure) => figs.indexOf(f) + 2;
+
+const meta = [p.when, p.client, p.industry, p.service, p.role, p.duration, p.tools]
+  .map((v, i) => [t.meta[i], v] as [string, string | undefined])
+  .filter((m): m is [string, string] => !!m[1]);
+const personal = p.kind === 'personal';
+---
+
+<Base title={p.name} description={p.summary} section="obras">
+  <article class="room">
+    <header class="room__head grid">
+      <p class="room__crumb mono mute" data-r>
+        <a class="link" href={href(lang, '/#obras')}>{t.crumb}</a> / Nº {pad(n)}
+      </p>
+      <div class="room__title" data-r style="--d:60ms">
+        <h1>{p.name}</h1>
+        <p class="mute">{p.summary}</p>
+        {p.link && (
+          <a class="pill" href={p.link} target="_blank" rel="noopener">
+            {personal ? t.liveGallery : t.live}
+          </a>
+        )}
+      </div>
+      <dl class="room__meta" data-r style="--d:120ms">
+        {meta.map(([k, v]) => (
+          <div>
+            <dt class="mute">{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </header>
+
+    <figure class="fig fig--full grid">
+      <div class="fig__frame" transition:name={`obra-${p.slug}`}>
+        {cover ? (
+          <Image src={cover.src} alt={cover.caption} widths={[800, 1200, 1600, 2000, 2400]} sizes="100vw" loading="eager" />
+        ) : (
+          <Diagram lang={lang} />
+        )}
+      </div>
+      <figcaption class="fig__cap">
+        <span class="mono mute">Fig. 1</span>
+        <span class="mute">
+          {cover ? cover.caption : t.noCover}
+        </span>
+      </figcaption>
+    </figure>
+
+    <section class="room__text grid">
+      <p class="room__k mono mute" data-r>{t.challenge}</p>
+      <div class="prose" data-r>
+        {p.challenge.map((t) => <p>{t}</p>)}
+      </div>
+    </section>
+
+    {p.decisions.map((d, i) => (
+      <>
+        <section class="room__text grid">
+          <p class="room__k mono mute" data-r>{t.decision} {pad(i + 1)}</p>
+          <div class="prose" data-r>
+            <h2>{d.title}</h2>
+            <p>{d.text}</p>
+          </div>
+        </section>
+        {d.fig && <Fig f={d.fig} n={fig(d.fig)} />}
+      </>
+    ))}
+
+    {p.process && (
+      <>
+        <section class="room__text grid">
+          <p class="room__k mono mute" data-r>{t.process}</p>
+          <div class="prose" data-r>
+            <p>{p.process.text}</p>
+          </div>
+        </section>
+        {p.process.figs?.map((f) => <Fig f={f} n={fig(f)} />)}
+      </>
+    )}
+
+    {p.result && (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>{t.result}</p>
+        <div class="prose" data-r>
+          {p.result.map((t) => <p>{t}</p>)}
+        </div>
+      </section>
+    )}
+
+    {p.quote && (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>{t.quote}</p>
+        <blockquote class="quote" data-r>
+          <p lang="pt-BR">“{p.quote.text}”</p>
+          {p.quote.translation && (
+            <p class="quote__tr" lang="en">
+              <span class="mono mute">{t.translated}</span>
+              <span class="mute">{p.quote.translation}</span>
+            </p>
+          )}
+          <footer class="mute">{p.quote.author}, {p.quote.role}</footer>
+        </blockquote>
+      </section>
+    )}
+
+    {p.retro && (
+      <section class="room__text grid">
+        <p class="room__k mono mute" data-r>{t.retro}</p>
+        <div class="prose" data-r>
+          <p>{p.retro}</p>
+        </div>
+      </section>
+    )}
+
+    {rest.map((f) => <Fig f={f} n={fig(f)} />)}
+
+    <section class="cta grid" data-r>
+      <p class="room__k mono mute">{personal ? t.contact : t.next}</p>
+      <div class="cta__body">
+        <p class="cta__lead">
+          {p.kind === 'personal' ? t.ctaPersonal : t.cta[p.kind]}{' '}
+          <span class="mute">{t.ctaMute}</span>
+        </p>
+        <a class="pill pill--solid" href={mailto(t.mailSubject(p.name))}>{t.start}</a>
+      </div>
+    </section>
+
+    <nav class="pager grid" aria-label={t.pager}>
+      <a class="pager__prev" href={href(lang, `/obras/${prev.slug}/`)}>
+        <span class="mono mute">← Nº {pad(prevN)}</span>
+        <span>{prev.name}</span>
+      </a>
+      <a class="pager__next" href={href(lang, `/obras/${next.slug}/`)}>
+        <span class="mono mute">Nº {pad(nextN)} →</span>
+        <span>{next.name}</span>
+      </a>
+    </nav>
+  </article>
+</Base>

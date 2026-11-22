@@ -1,0 +1,11 @@
+---
+import Text from '../../../views/Text.astro';
+import { getArticles } from '../../../data/articles';
+
+export async function getStaticPaths() {
+  const list = await getArticles('en');
+  return list.map((a, i) => ({ params: { slug: a.id }, props: { a, next: list[(i + 1) % list.length] } }));
+}
+---
+
+<Text {...(Astro.props as any)} lang="en" />

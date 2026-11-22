@@ -66,6 +66,7 @@ function clock() {
 /**
  * "Luz" no rodapé: automática (segue o aparelho), acesa ou apagada, nessa ordem.
  * O botão é procurado pela tag: o <html> também tem data-luz, e foi assim que o clique já pegou a página inteira.
+ * O que fica guardado é sempre o nome em português; data-tema-labels traz os nomes que aparecem (no inglês, auto/on/off).
  */
 const modes = ['automática', 'acesa', 'apagada'] as const;
 type Mode = (typeof modes)[number];
@@ -74,6 +75,8 @@ function light() {
   const label = btn?.querySelector<HTMLElement>('[data-tema-label]');
   if (!btn || !label) return;
   const root = document.documentElement;
+  const names = btn.dataset.temaLabels?.split('|') ?? [...modes];
+  const show = (m: Mode) => names[modes.indexOf(m)] ?? m;
   const saved = (): Mode => {
     try {
       const t = localStorage.getItem('tema');
@@ -81,7 +84,7 @@ function light() {
     } catch {}
     return 'automática';
   };
-  label.textContent = saved();
+  label.textContent = show(saved());
   btn.onclick = () => {
     const next = modes[(modes.indexOf(saved()) + 1) % modes.length];
     const auto = matchMedia('(prefers-color-scheme: dark)').matches ? 'apagada' : 'acesa';
@@ -91,7 +94,7 @@ function light() {
         else localStorage.setItem('tema', next);
       } catch {}
       root.dataset.luz = next === 'automática' ? auto : next;
-      label.textContent = next;
+      label.textContent = show(next);
     };
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (document.startViewTransition && !reduce) {
@@ -111,8 +114,9 @@ function budget() {
   if (!box) return;
   box.onchange = (e) => {
     const value = (e.target as HTMLInputElement).value;
-    if (mail) mail.href = mailto('Novo projeto', value);
-    if (wa) wa.href = whatsapp(value);
+    const lang = document.documentElement.lang.startsWith('en') ? 'en' : 'pt';
+    if (mail) mail.href = mailto(undefined, value, lang);
+    if (wa) wa.href = whatsapp(value, lang);
   };
 }
 
@@ -124,7 +128,7 @@ function copy() {
         await navigator.clipboard.writeText(btn.dataset.copy!);
         btn.textContent = btn.dataset.copyLabel ?? 'copiado';
       } catch {
-        btn.textContent = 'Não deu, copie à mão';
+        btn.textContent = btn.dataset.copyFail ?? 'Não deu, copie à mão';
       }
       setTimeout(() => (btn.textContent = original), 1600);
     };

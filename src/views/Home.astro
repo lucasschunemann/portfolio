@@ -1,0 +1,209 @@
+---
+import Base from '../layouts/Base.astro';
+import Work from '../components/Work.astro';
+import Quiet from '../components/Quiet.astro';
+import { pad } from '../data/site';
+import { getArticles } from '../data/articles';
+import { content, href, ui, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home;
+const { bio, budgets, clients, facts, mailto, process, projects, services, site, whatsapp } = content(lang);
+const articles = await getArticles(lang);
+const featuredArticles = articles.filter((a) => a.data.featured);
+const years = projects.flatMap((p) => p.when.match(/\d{4}/g) ?? []).sort();
+const bySlug = new Map(projects.map((p) => [p.slug, p]));
+const onWall = projects.filter((p) => p.wall);
+---
+
+<Base>
+  <!-- abertura -->
+  <section class="intro grid">
+    <h1 class="intro__text" data-r style="--d:80ms">
+      {t.lead}{' '}
+      <span class="mute">{t.leadMute}</span>
+    </h1>
+    <div class="intro__meta" data-r style="--d:160ms">
+      <a class="pill pill--solid" href="#contato">{t.start}</a>
+      <a class="pill" href="#obras">{t.seeWork}</a>
+      <span class="intro__status"><i class="dot" aria-hidden="true"><i></i><i></i><i></i></i>{site.status}</span>
+    </div>
+    <Quiet />
+  </section>
+
+  <!-- com quem -->
+  <section class="clients grid" aria-label={t.clients} data-r>
+    <p class="mono mute">{t.clients}</p>
+    <ul>
+      {clients.map((c) => <li>{c}</li>)}
+    </ul>
+  </section>
+
+  <!-- parede -->
+  <section class="block" id="obras" aria-labelledby="obras-t">
+    <header class="block__head grid" data-r>
+      <h2 id="obras-t">{t.wall}</h2>
+      <span class="mono mute">Nº 01—{pad(onWall.length)}</span>
+      <span class="mute block__aside">{years[0]}—{years[years.length - 1]}</span>
+    </header>
+    <div class="wall grid">
+      {onWall.map((p, i) => <Work p={p} n={i + 1} lang={lang} />)}
+    </div>
+  </section>
+
+  <!-- serviços -->
+  <section class="block" id="servicos" aria-labelledby="servicos-t">
+    <header class="block__head grid" data-r>
+      <h2 id="servicos-t">{t.services}</h2>
+      <span class="mute">{t.servicesAside}</span>
+    </header>
+    <ol class="services grid">
+      {services.map((s, i) => (
+        <li class="service" data-r style={`--d:${i * 80}ms`}>
+          <span class="mono mute">{pad(i + 1)}</span>
+          <h3>{s.title}</h3>
+          <p class="mute">{s.text}</p>
+          <dl class="service__meta">
+            <div>
+              <dt class="mono mute">{t.from}</dt>
+              <dd>{s.from}</dd>
+            </div>
+            <div>
+              <dt class="mono mute">{t.see}</dt>
+              <dd>
+                {s.refs.map((slug, j) => (
+                  <>
+                    {j > 0 && ', '}
+                    <a class="link link--line" href={href(lang, `/obras/${slug}/`)}>{bySlug.get(slug)!.name}</a>
+                  </>
+                ))}
+              </dd>
+            </div>
+          </dl>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- como funciona -->
+  <section class="block" aria-labelledby="processo-t">
+    <header class="block__head grid" data-r>
+      <h2 id="processo-t">{t.process}</h2>
+      <span class="mute">{t.processAside}</span>
+    </header>
+    <ol class="steps grid" data-steps>
+      {process.map((s, i) => (
+        <li data-r style={`--d:${i * 80}ms`}>
+          <span class="mono mute">{pad(i + 1)}</span>
+          <h3>{s.title}</h3>
+          <p class="mute">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- índice -->
+  <section class="block" aria-labelledby="indice-t">
+    <header class="block__head grid" data-r>
+      <h2 id="indice-t">{t.index}</h2>
+      <span class="mono mute">{pad(projects.length)} {t.works}</span>
+    </header>
+    <ol class="rows rows--works" data-r>
+      {projects.map((p, i) => (
+        <li>
+          <a class="row" href={href(lang, `/obras/${p.slug}/`)}>
+            <span class="mono mute">Nº {pad(i + 1)}</span>
+            <span class="row__t">{p.name}</span>
+            <span class="mute">{p.service}</span>
+            <span class="mute hide-s">{p.client}</span>
+            <span class="mono mute">{p.year}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- sobre -->
+  <section class="block" id="sobre" aria-labelledby="sobre-t">
+    <header class="block__head grid" data-r>
+      <h2 id="sobre-t">{t.about}</h2>
+    </header>
+    <div class="about grid">
+      <div class="about__text" data-r>
+        <p class="about__lead">{bio[0]}</p>
+        {bio.slice(1).map((b) => <p>{b}</p>)}
+      </div>
+      <div class="about__side" data-r style="--d:120ms">
+        <dl class="facts">
+          {facts.map(([k, v]) => (
+            <div>
+              <dt class="mute">{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- textos -->
+  <section class="block" aria-labelledby="textos-t">
+    <header class="block__head grid" data-r>
+      <h2 id="textos-t">{t.texts}</h2>
+      <span class="mono mute">{pad(articles.length)} {t.textsCount}</span>
+      <a class="link block__aside" href={href(lang, '/artigos/')}>{t.allTexts}</a>
+    </header>
+    <ol class="rows rows--texts" data-r>
+      {featuredArticles.map((a) => (
+        <li>
+          <a class="row" href={a.href}>
+            <span class="mono mute">{a.dateLabel}</span>
+            <span class="row__t">{a.data.title}</span>
+            <span class="mute hide-s">{a.data.theme}</span>
+            <span class="mono mute">{a.minutes} min</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- contato -->
+  <section class="block contact" id="contato" aria-labelledby="contato-t">
+    <header class="block__head grid" data-r>
+      <h2 id="contato-t">{t.contact}</h2>
+      <span class="mute"><i class="dot" aria-hidden="true"><i></i><i></i><i></i></i>{site.status}</span>
+    </header>
+    <div class="grid">
+      <div class="contact__body" data-r>
+        <p class="contact__lead">
+          {t.contactLead}{' '}
+          <span class="mute">{t.contactMute}</span>
+        </p>
+        <fieldset class="budget" data-budget>
+          <legend class="mono mute">{t.budget}</legend>
+          <div class="budget__opts">
+            {budgets.map((b) => (
+              <label class="pill choice">
+                <input type="radio" name="orcamento" value={b} />
+                {b}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="contact__actions">
+          <a class="pill pill--solid" href={mailto()} data-mail>{t.email}</a>
+          <a class="pill" href={whatsapp()} target="_blank" rel="noopener" data-wa>{t.wa}</a>
+          <button type="button" class="pill" data-copy={site.email} data-copy-label={t.copied} data-copy-fail={t.copyFail}>{t.copy}</button>
+        </div>
+        <p class="contact__links">
+          <a class="link" href={site.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="link" href={site.instagram} target="_blank" rel="noopener">Instagram ↗</a>
+          <span class="mute">{site.city} · GMT-3</span>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

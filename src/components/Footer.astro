@@ -1,6 +1,13 @@
 ---
 import Quiet from './Quiet.astro';
-import { site } from '../data/site';
+import { content, ui, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].foot;
+const { site } = content(lang);
 const updated = new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo',
   day: '2-digit',
@@ -15,13 +22,14 @@ const updated = new Intl.DateTimeFormat('pt-BR', {
   <Quiet mode="rise" class="foot__bars" />
   <div class="colophon grid">
   <span>© 2026 {site.name}</span>
-  <span class="mute">Composto em Host Grotesk e Fragment Mono</span>
-  <span class="mute">Atualizado em <span class="mono">{updated}</span></span>
+  <span class="mute">{t.set}</span>
+  <span class="mute">{t.updated} <span class="mono">{updated}</span></span>
   <span class="colophon__end">
-    <button type="button" class="link" data-tema aria-label="Tema da página">
-      Luz: <span data-tema-label>automática</span>
+    <!-- os valores guardados continuam "acesa" e "apagada"; data-tema-labels só troca o que aparece -->
+    <button type="button" class="link" data-tema data-tema-labels={t.lightModes.join('|')} aria-label={t.lightAria}>
+      {t.light}: <span data-tema-label>{t.lightModes[0]}</span>
     </button>
-    <a href="#top" class="link" data-top>Topo ↑</a>
+    <a href="#top" class="link" data-top>{t.top}</a>
   </span>
   </div>
 </footer>
